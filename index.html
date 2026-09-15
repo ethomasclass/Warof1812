@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The War of 1812 Investigation</title>
+<meta name="description" content="A point-and-click investigation into the causes of the War of 1812.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>">
+<link rel="stylesheet" href="assets/css/game.css">
+</head>
+<body>
+
+<main id="app">
+
+  <!-- ============ TITLE ============ -->
+  <section id="screen-title" class="screen is-active">
+    <div class="title-art" aria-hidden="true"></div>
+    <div class="title-inner">
+      <p class="title-kicker">Washington City &middot; 1811</p>
+      <h1 class="title-name">The War of 1812<br><span>Investigation</span></h1>
+      <p class="title-blurb">
+        You are a printer's apprentice at the <em>National Intelligencer</em>.
+        Your editor wants the real story behind the war talk &mdash; not the headlines.
+        Find the evidence. Fill your notebook.
+      </p>
+      <button class="btn btn-primary" id="btn-start">Begin the assignment</button>
+      <p class="title-foot">Have your worksheet ready. There is no timer and no wrong answer.</p>
+    </div>
+  </section>
+
+  <!-- ============ GAME ============ -->
+  <section id="screen-game" class="screen">
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <div class="stage-art" id="stage-art"></div>
+        <div class="hotspots" id="hotspots"></div>
+        <div class="stage-vignette" aria-hidden="true"></div>
+        <p class="nudge" id="nudge" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <!-- dialogue overlay for the street beats -->
+    <div class="dialogue" id="dialogue" hidden>
+      <div class="dialogue-box">
+        <p class="dialogue-who" id="dialogue-who"></p>
+        <p class="dialogue-line" id="dialogue-line"></p>
+        <button class="dialogue-next" id="dialogue-next">Continue &rsaquo;</button>
+      </div>
+    </div>
+
+    <!-- notebook rail: objective + progress -->
+    <div class="rail">
+      <div class="rail-left">
+        <span class="rail-label">Your notebook</span>
+        <p class="rail-objective" id="objective" aria-live="polite">&nbsp;</p>
+      </div>
+      <div class="rail-right">
+        <div class="pips" id="pips" aria-label="Evidence collected"></div>
+        <button class="btn btn-ghost" id="btn-help" hidden>Where do I look?</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EVIDENCE MODAL ============ -->
+  <div class="modal-scrim" id="scrim" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <p class="modal-tag" id="modal-tag"></p>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <blockquote class="modal-quote" id="modal-quote"></blockquote>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-record">
+        <p class="modal-record-label">Write this in your notebook</p>
+        <p class="modal-record-text" id="modal-record"></p>
+      </div>
+      <button class="btn btn-primary" id="modal-close">Got it &mdash; keep looking</button>
+    </div>
+  </div>
+
+  <!-- ============ INTERSTITIAL / END ============ -->
+  <section id="screen-card" class="screen">
+    <div class="card-inner">
+      <p class="card-kicker" id="card-kicker"></p>
+      <h2 class="card-title" id="card-title"></h2>
+      <p class="card-text" id="card-text"></p>
+      <button class="btn btn-primary" id="card-next"></button>
+    </div>
+  </section>
+
+</main>
+
+<script src="assets/js/scenes.js"></script>
+<script src="assets/js/content.js"></script>
+<script src="assets/js/game.js"></script>
+</body>
+</html>
