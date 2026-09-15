@@ -7,6 +7,7 @@
 <meta name="description" content="A point-and-click investigation into the causes of the War of 1812.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>">
 <link rel="stylesheet" href="assets/css/game.css">
+<link rel="stylesheet" href="assets/css/documents.css">
 </head>
 <body>
 <main id="app">
@@ -47,6 +48,11 @@
 
         <p class="nudge" id="nudge" role="status" aria-live="polite"></p>
 
+        <!-- ambient detail: a slip of paper, not a dialog -->
+        <div class="caption" id="caption" role="status" aria-live="polite" hidden>
+          <p class="caption-text" id="caption-text"></p>
+        </div>
+
         <!-- NPC dialogue -->
         <div class="dialogue" id="dialogue" hidden>
           <div class="dialogue-box">
@@ -74,15 +80,8 @@
 
   <!-- ===================== EVIDENCE ===================== -->
   <div class="scrim" id="scrim" hidden>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
-      <p class="modal-tag" id="modal-tag"></p>
-      <h2 class="modal-heading" id="modal-heading"></h2>
-      <blockquote class="modal-quote" id="modal-quote"></blockquote>
-      <div class="modal-body" id="modal-body"></div>
-      <div class="record">
-        <p class="record-label">Write this in your notebook</p>
-        <p class="record-text" id="modal-record"></p>
-      </div>
+    <div class="modal modal-evidence" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+      <div id="evidence-mount"></div>
       <button class="btn btn-primary" id="modal-close">Got it</button>
     </div>
   </div>
@@ -127,6 +126,7 @@
 </main>
 
 <script src="assets/js/scenes.js"></script>
+<script src="assets/js/documents.js"></script>
 <script src="assets/js/content.js"></script>
 <script src="assets/js/game.js"></script>
 </body>

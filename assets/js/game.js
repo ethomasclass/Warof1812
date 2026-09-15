@@ -22,7 +22,7 @@
   const DEPTH = { back: 0.5, mid: 1, fg: 1.25 };
   const WIDTH = { back: 1.8, mid: 2.5, fg: 3.0 };
   const VIEW  = 1 / WORLD * 100;     // % of the world visible at once = 40
-  const WALK_SPEED = 26;             // world-% per second
+  const WALK_SPEED = 15;             // world-% per second — an unhurried walk
 
   const $ = id => document.getElementById(id);
   const el = {
@@ -33,8 +33,8 @@
     dialogue: $('dialogue'), dWho: $('dialogue-who'), dLine: $('dialogue-line'), dNext: $('dialogue-next'),
     objective: $('objective'), pips: $('pips'),
     btnStart: $('btn-start'), btnHelp: $('btn-help'), btnNotebook: $('btn-notebook'),
-    scrim: $('scrim'), mTag: $('modal-tag'), mHeading: $('modal-heading'),
-    mQuote: $('modal-quote'), mBody: $('modal-body'), mRecord: $('modal-record'), mClose: $('modal-close'),
+    scrim: $('scrim'), evMount: $('evidence-mount'), mClose: $('modal-close'),
+    caption: $('caption'), captionText: $('caption-text'),
     pScrim: $('puzzle-scrim'), pNotebook: $('puzzle-notebook'), pPrompt: $('puzzle-prompt'), pRiddle: $('puzzle-riddle'),
     dials: $('dials'), pMsg: $('puzzle-msg'), pTry: $('puzzle-try'), pSkip: $('puzzle-skip'),
     nScrim: $('notebook-scrim'), nBody: $('notebook-body'), nClose: $('notebook-close'),
@@ -65,12 +65,16 @@
   <svg viewBox="0 0 120 260" xmlns="http://www.w3.org/2000/svg">
     <g class="a-legs">
       <g class="a-leg a-leg-b">
-        <path d="M52 150 l-6 84 l22 0 l2 -80 z" fill="#0a2229"/>
-        <path d="M44 232 l30 0 l0 14 l-34 0 z" fill="#04141a"/>
+        <path d="M52 150 l-6 84 l22 0 l2 -80 z" fill="#123a42"/>
+        <path d="M52 150 l-3 84 l5 0 l2 -82 z" fill="#4fd3c4" opacity="0.3"/>
+        <path d="M44 232 l30 0 l0 15 l-34 0 z" fill="#0b2128"/>
+        <path d="M44 232 l30 0 l0 3 l-30 0 z" fill="#7fe3d6" opacity="0.35"/>
       </g>
       <g class="a-leg a-leg-a">
-        <path d="M64 150 l10 84 l-22 0 l-4 -80 z" fill="#123840"/>
-        <path d="M50 232 l32 0 l0 14 l-36 0 z" fill="#061820"/>
+        <path d="M64 150 l10 84 l-22 0 l-4 -80 z" fill="#1b5058"/>
+        <path d="M70 150 l10 84 l-6 0 l-8 -84 z" fill="#ffb45c" opacity="0.3"/>
+        <path d="M50 232 l32 0 l0 15 l-36 0 z" fill="#0f2a31"/>
+        <path d="M50 232 l32 0 l0 3 l-32 0 z" fill="#7fe3d6" opacity="0.4"/>
       </g>
     </g>
     <!-- coat -->
@@ -174,15 +178,17 @@
   /* =================================================================
      HOTSPOTS
   ==================================================================*/
+  /* Ambient objects are always live. The chain shows only its next
+     link. Curiosity is never gated; the lesson still has one path. */
   function visibleSpots() {
+    const ambient = state.scene.ambient || [];
     const spots = state.scene.hotspots;
-    if (state.editing) return spots;
+    if (state.editing) return ambient.concat(spots);
     if (!state.scene.chained) {
-      return spots.filter(s => !s.hidden || state.found.indexOf(s.id) >= 0);
+      return ambient.concat(spots.filter(s => !s.hidden || state.found.indexOf(s.id) >= 0));
     }
-    // chained: only the next unfound link is live
     const next = spots[state.chainIndex];
-    return next ? [next] : [];
+    return next ? ambient.concat([next]) : ambient.slice();
   }
 
   function renderHotspots() {
@@ -191,7 +197,7 @@
     visibleSpots().forEach(spot => {
       const b = spot.box;
       const btn = document.createElement('button');
-      btn.className = 'hotspot';
+      btn.className = spot.kind === 'look' ? 'hotspot hotspot-look' : 'hotspot';
       btn.type = 'button';
       btn.style.left = b.left + '%';
       btn.style.top = b.top + '%';
@@ -216,6 +222,7 @@
     if (spot.kind === 'evidence')  return openEvidence(spot);
     if (spot.kind === 'puzzle')    return openPuzzle(spot);
     if (spot.kind === 'exit')      return gotoScene(spot.to);
+    if (spot.kind === 'look')      return showCaption(spot.caption);
   }
 
   function renderPips() {
@@ -262,11 +269,7 @@
      EVIDENCE
   ==================================================================*/
   function openEvidence(spot) {
-    el.mTag.innerHTML = spot.tag;
-    el.mHeading.innerHTML = spot.heading;
-    el.mQuote.innerHTML = spot.quote;
-    el.mBody.innerHTML = spot.body.map(p => '<p>' + p + '</p>').join('');
-    el.mRecord.innerHTML = spot.record;
+    el.evMount.innerHTML = buildEvidence(spot);
     el.scrim.hidden = false;
     el.mClose.focus({ preventScroll: true });
 
@@ -433,6 +436,7 @@
   el.stage.addEventListener('click', e => {
     if (e.target.closest('.hotspot')) return;
     if (!el.scrim.hidden || !el.pScrim.hidden || !el.nScrim.hidden) return;
+    hideCaption();
     if (!el.dialogue.hidden) return;
     const r = el.stage.getBoundingClientRect();
     const frac = (e.clientX - r.left) / r.width;              // 0..1 across the view
@@ -443,18 +447,35 @@
   });
 
   el.btnHelp.addEventListener('click', () => {
-    const spot = visibleSpots()[0];
+    const spot = (state.scene.hotspots || []).filter(
+      (h, i) => state.scene.chained ? i === state.chainIndex : !h.hidden)[0];
     if (!spot) return;
     // pan to it so the student can see where it is, then flash it
     state.x = spot.standAt;
     placeActor();
     renderHotspots();
-    const node = el.hotspots.querySelector('.hotspot');
+    const node = el.hotspots.querySelector('.hotspot:not(.hotspot-look)');
     if (!node) return;
     node.classList.remove('is-pinged');
     void node.offsetWidth;
     node.classList.add('is-pinged');
   });
+
+  let captionTimer = null;
+  function showCaption(text) {
+    el.captionText.innerHTML = text;
+    el.caption.hidden = false;
+    el.caption.classList.remove('is-shown');
+    void el.caption.offsetWidth;
+    el.caption.classList.add('is-shown');
+    clearTimeout(captionTimer);
+    captionTimer = setTimeout(hideCaption, 9000);
+  }
+  function hideCaption() {
+    el.caption.classList.remove('is-shown');
+    clearTimeout(captionTimer);
+    captionTimer = setTimeout(() => { el.caption.hidden = true; }, 350);
+  }
 
   let nudgeTimer = null;
   function nudge(text) {

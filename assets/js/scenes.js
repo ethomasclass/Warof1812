@@ -83,83 +83,203 @@ const books = (x, y, n, seed) =>
     return `<rect x="${x + i * 23}" y="${y + (72 - h)}" width="17" height="${h}" fill="#0e2d34"/>`;
   }).join('');
 
+
+/* ==================================================================
+   SCALE
+   -----
+   One foot = 73 world units. A 5'8" person is 414 units tall and
+   stands on y=760; the wall meets the floor at y=660, so the camera
+   sees about 22 feet of room at a time. Every piece of furniture below
+   is built from real dimensions: a desk is 30 inches high, a mantel is
+   4'6", a door is 7 feet. Getting this wrong was what made the first
+   pass read as a giant empty hall.
+==================================================================*/
+const FT = 73;
+const FLOOR = 660;        // wall/floor junction, for things against the wall
+const STAND = 760;        // where the character's feet are
+
+/* a framed map or chart, the walls of the cabinet room were covered
+   in them: "maps, globes, charts, &c." */
+const chart = (x, y, w, h, seed) => `
+  <g>
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#0c262e"/>
+    <rect x="${x + 5}" y="${y + 5}" width="${w - 10}" height="${h - 10}" fill="#d9cfae"/>
+    <rect x="${x}" y="${y}" width="${w}" height="4" fill="#c98a3c" opacity="0.45"/>
+    <g opacity="0.55" fill="none" stroke="#5b6b52" stroke-width="2">
+      <path d="M${x + 14} ${y + h * 0.62} q${w * 0.16} -${h * 0.2} ${w * 0.3} -${h * 0.05}
+               q${w * 0.14} ${h * 0.14} ${w * 0.28} -${h * 0.1}
+               q${w * 0.12} -${h * 0.12} ${w * 0.24} ${h * 0.02}"/>
+      <path d="M${x + 14} ${y + h * 0.4} q${w * 0.2} ${h * 0.12} ${w * 0.38} 0"/>
+    </g>
+    <g opacity="0.3" stroke="#7a6a48" stroke-width="1">
+      ${Array.from({ length: 4 }, (_, i) => `<line x1="${x + 10}" y1="${y + 12 + i * (h - 24) / 3}" x2="${x + w - 10}" y2="${y + 12 + i * (h - 24) / 3}"/>`).join('')}
+      ${Array.from({ length: 3 }, (_, i) => `<line x1="${x + 14 + i * (w - 28) / 2}" y1="${y + 10}" x2="${x + 14 + i * (w - 28) / 2}" y2="${y + h - 10}"/>`).join('')}
+    </g>
+    <circle cx="${x + w * (0.3 + (seed % 3) * 0.16)}" cy="${y + h * 0.5}" r="4" fill="#8e2b22"/>
+  </g>`;
+
+/* Latrobe's klismos chair: the Finlay brothers of Baltimore made them,
+   and three were broken inside four months by men leaning back. */
+const klismos = (x, base, flip) => `
+  <g transform="translate(${x} ${base}) scale(${flip || 1} 1)">
+    <path d="M0 0 q-6 -40 -4 -74" stroke="#0a2229" stroke-width="9" fill="none"/>
+    <path d="M52 0 q10 -38 6 -74" stroke="#0a2229" stroke-width="9" fill="none"/>
+    <path d="M-6 -74 L62 -74 L58 -86 L-2 -86 Z" fill="#123840"/>
+    <path d="M-2 -86 q-16 -54 -8 -92" stroke="#0a2229" stroke-width="10" fill="none"/>
+    <path d="M56 -86 q-14 -52 -6 -90" stroke="#0a2229" stroke-width="10" fill="none"/>
+    <path d="M-12 -178 q34 -16 66 -2 l-3 16 q-30 -12 -60 2 z" fill="#1b5a5f"/>
+  </g>`;
+
+/* wall sconce, two candles, feeble next to an Argand lamp */
+const sconce = (x, y) => `
+  <g>
+    <path d="M${x} ${y} q10 -16 20 0" stroke="#c98a3c" stroke-width="4" fill="none" opacity="0.7"/>
+    <rect x="${x - 2}" y="${y - 26}" width="5" height="26" fill="#f2e4c4"/>
+    <rect x="${x + 17}" y="${y - 22}" width="5" height="22" fill="#f2e4c4"/>
+    <path d="M${x} ${y - 34} q6 8 0 12 q-6 -4 0 -12 z" fill="#ffd48a"/>
+    <path d="M${x + 19} ${y - 30} q6 8 0 12 q-6 -4 0 -12 z" fill="#ffd48a"/>
+    <circle cx="${x + 10}" cy="${y - 26}" r="64" fill="url(#bloomCand)" opacity="0.5"/>
+  </g>`;
+
+/* the Argand lamp: a brass font, a glass chimney, and six times the
+   light of a candle. Jefferson and Madison both used them. */
+const argand = (x, base) => `
+  <g>
+    <ellipse cx="${x}" cy="${base}" rx="34" ry="9" fill="#8a6a2c"/>
+    <path d="M${x - 22} ${base} q6 -26 22 -30 q16 4 22 30 z" fill="#c98a3c"/>
+    <rect x="${x - 7}" y="${base - 54}" width="14" height="26" fill="#a8762f"/>
+    <path d="M${x - 24} ${base - 54} l48 0 l-5 -16 l-38 0 z" fill="#c98a3c"/>
+    <path d="M${x - 19} ${base - 128} q4 -34 19 -34 q15 0 19 34 q-4 14 -19 14 q-15 0 -19 -14 z"
+          fill="#ffeec4" opacity="0.32"/>
+    <rect x="${x - 19}" y="${base - 128}" width="38" height="58" fill="#ffeec4" opacity="0.22"/>
+    <path d="M${x} ${base - 106} q11 16 0 30 q-11 -14 0 -30 z" fill="#ffd88a"/>
+    <path d="M${x} ${base - 100} q6 10 0 18 q-6 -8 0 -18 z" fill="#fff6dd"/>
+    <circle cx="${x}" cy="${base - 96}" r="230" fill="url(#bloomCand)"/>
+  </g>`;
+
 /* ==================================================================
    ACT 1, SCENE 1 — the street outside the President's House, dusk 1811
 ==================================================================*/
 const street = {
   back: svg(2880, `
     <rect width="2880" height="900" fill="url(#skyG)"/>
-    <circle cx="2100" cy="640" r="520" fill="url(#bloomW)"/>
-    <circle cx="2100" cy="628" r="52" fill="#ffd9a0"/>
-    <g opacity="0.5" fill="#1b3340">
-      <ellipse cx="700" cy="250" rx="360" ry="40"/>
-      <ellipse cx="1500" cy="180" rx="300" ry="32"/>
-      <ellipse cx="2400" cy="290" rx="380" ry="36"/>
+    <circle cx="2260" cy="700" r="560" fill="url(#bloomW)"/>
+    <circle cx="2260" cy="690" r="54" fill="#ffd9a0"/>
+    <g opacity="0.45" fill="#1b3340">
+      <ellipse cx="640"  cy="230" rx="380" ry="38"/>
+      <ellipse cx="1560" cy="164" rx="320" ry="30"/>
+      <ellipse cx="2440" cy="272" rx="400" ry="34"/>
     </g>
-    <path d="M0 600 q140 -60 280 -16 q160 -66 330 -12 q150 -54 300 -8 q170 -50 340 -4
-             q150 -44 300 -2 q160 -40 320 -6 q150 -30 300 -2 q140 -26 280 -4 l0 350 L0 950 Z"
+    <path d="M0 620 q150 -54 300 -14 q170 -50 340 -10 q160 -44 320 -6 q180 -40 360 -4
+             q160 -34 320 -2 q170 -28 340 0 q150 -22 300 2 q140 -16 280 2 l0 340 L0 980 Z"
           fill="#0a1b22"/>`),
 
   mid: svg(4000, `
-    <!-- the President's House -->
+    <!-- =========================================================
+         THE AVENUE — unpaved, half-built, barely a capital yet
+    ========================================================== -->
+
+    <!-- the President's House. At this scale only the ground floor and
+         the foot of the portico fit the frame; the columns run off the
+         top, which is roughly what you would see standing across the
+         road from it. -->
     <g>
-      <rect x="1180" y="212" width="1680" height="410" fill="#0d2830"/>
-      <rect x="1180" y="212" width="1680" height="10" fill="#4fd3c4" opacity="0.35"/>
-      <rect x="1164" y="196" width="1712" height="20" fill="#113640"/>
-      <!-- portico -->
-      <path d="M1840 196 L2360 196 L2300 108 L1900 108 Z" fill="#0f2f38"/>
-      <path d="M1900 108 L2300 108 L2300 118 L1900 118 Z" fill="#4fd3c4" opacity="0.3"/>
-      <g>${[0,1,2,3,4,5].map(i=>{const x=1880+i*82;
-        return `<rect x="${x}" y="196" width="46" height="426" fill="#0b242c"/>
-                <rect x="${x}" y="196" width="7" height="426" fill="#4fd3c4" opacity="0.4"/>`}).join('')}</g>
-      <!-- lit windows: the warm interior we are about to walk into -->
-      <g>${[1250,1370,1490,1610,1730, 2420,2540,2660,2780].map((x,i)=>{
-        const lit = [1,4,6,8].indexOf(i) >= 0;
-        return `<rect x="${x}" y="286" width="62" height="104" fill="${lit?'#ffc270':'#081c23'}"/>
-                <rect x="${x}" y="436" width="62" height="104" fill="${lit?'#08202a':'#ffb45c'}" opacity="${lit?1:0.75}"/>`}).join('')}</g>
-      <g filter="url(#bl)" opacity="0.5">
-        <circle cx="1401" cy="338" r="70" fill="#ffb45c"/>
-        <circle cx="2691" cy="338" r="70" fill="#ffb45c"/>
-        <circle cx="2451" cy="488" r="66" fill="#ffb45c"/>
-      </g>
-      <!-- steps up to the door -->
+      <rect x="1420" y="0" width="2040" height="660" fill="#0d2830"/>
+      <rect x="1420" y="0" width="12" height="660" fill="#4fd3c4" opacity="0.25"/>
+      <!-- rusticated plinth -->
+      <rect x="1420" y="556" width="2040" height="104" fill="#0a2229"/>
+      ${Array.from({length:17},(_,i)=>`<rect x="${1420+i*120}" y="556" width="114" height="48" fill="none" stroke="#123840" stroke-width="3"/>`).join('')}
+      ${Array.from({length:17},(_,i)=>`<rect x="${1420+i*120}" y="608" width="114" height="46" fill="none" stroke="#123840" stroke-width="3"/>`).join('')}
+
+      <!-- tall ground-floor windows, 4ft x 8ft, lit from within -->
       <g>
-        <rect x="2010" y="600" width="180" height="16" fill="#123840"/>
-        <rect x="1990" y="616" width="220" height="16" fill="#0f2f38"/>
-        <rect x="1970" y="632" width="260" height="18" fill="#0c262e"/>
-        <rect x="2062" y="470" width="76" height="132" fill="#061820"/>
-        <rect x="2062" y="470" width="8" height="132" fill="#ffb45c" opacity="0.55"/>
+        ${[1520, 1880, 3020, 3300].map((x,i)=>{
+          const lit = i !== 1;
+          return `<rect x="${x-14}" y="62" width="320" height="480" fill="#061820"/>
+            <rect x="${x}" y="76" width="292" height="452" fill="${lit ? '#ffc270' : '#0a2029'}" opacity="${lit ? 0.92 : 1}"/>
+            <g stroke="#061820" stroke-width="11">
+              <line x1="${x+146}" y1="76" x2="${x+146}" y2="528"/>
+              <line x1="${x}" y1="226" x2="${x+292}" y2="226"/>
+              <line x1="${x}" y1="376" x2="${x+292}" y2="376"/>
+            </g>
+            <rect x="${x-24}" y="528" width="340" height="24" fill="#0b2a31"/>
+            ${lit ? `<circle cx="${x+146}" cy="300" r="250" fill="url(#bloomW)" opacity="0.5"/>` : ''}`;
+        }).join('')}
+      </g>
+
+      <!-- the portico: two columns, 3 feet across, running off the top -->
+      <g>
+        <rect x="2210" y="0" width="560" height="52" fill="#0f2f38"/>
+        ${[2250, 2620].map(x=>`
+          <rect x="${x}" y="0" width="150" height="556" fill="#0b242c"/>
+          <rect x="${x}" y="0" width="22" height="556" fill="#4fd3c4" opacity="0.32"/>
+          <rect x="${x+122}" y="0" width="28" height="556" fill="#04141a" opacity="0.7"/>
+          <rect x="${x-18}" y="536" width="186" height="26" fill="#123840"/>`).join('')}
+      </g>
+
+      <!-- the door, and the steps up to it -->
+      <g>
+        <rect x="2402" y="188" width="176" height="368" fill="#061820"/>
+        <rect x="2416" y="202" width="148" height="354" fill="#0c2c33"/>
+        <rect x="2416" y="202" width="10" height="354" fill="#ffb45c" opacity="0.5"/>
+        <path d="M2402 188 q88 -58 176 0 z" fill="#0a2229"/>
+        <circle cx="2552" cy="392" r="9" fill="#c98a3c"/>
+        <rect x="2318" y="556" width="344" height="30" fill="#123840"/>
+        <rect x="2288" y="586" width="404" height="30" fill="#0f2f38"/>
+        <rect x="2258" y="616" width="464" height="32" fill="#0c262e"/>
+        <rect x="2228" y="648" width="524" height="30" fill="#0a2229"/>
+        <!-- lanterns either side of the door -->
+        ${sconce(2350, 380)}
+        ${sconce(2600, 380)}
       </g>
     </g>
 
-    <!-- iron fence -->
+    <!-- gate piers and iron railing -->
     <g>
-      <rect x="0" y="600" width="4000" height="8" fill="#061820"/>
-      <g fill="#081f26">${Array.from({length:100},(_,i)=>`<rect x="${i*40}" y="604" width="7" height="52"/>`).join('')}</g>
-      <rect x="0" y="650" width="4000" height="9" fill="#061820"/>
+      <rect x="1300" y="380" width="74" height="280" fill="#0a2229"/>
+      <rect x="1292" y="356" width="90" height="28" fill="#123840"/>
+      <rect x="3480" y="380" width="74" height="280" fill="#0a2229"/>
+      <rect x="3472" y="356" width="90" height="28" fill="#123840"/>
+      <rect x="0" y="474" width="1300" height="9" fill="#061820"/>
+      <g fill="#081f26">${Array.from({length:33},(_,i)=>`<rect x="${i*40}" y="478" width="8" height="182"/>`).join('')}</g>
+      <rect x="3554" y="474" width="446" height="9" fill="#061820"/>
+      <g fill="#081f26">${Array.from({length:12},(_,i)=>`<rect x="${3560+i*40}" y="478" width="8" height="182"/>`).join('')}</g>
     </g>
 
-    <!-- road -->
+    <!-- the road: mud, ruts, puddles catching the last of the sun -->
     <rect x="0" y="659" width="4000" height="241" fill="url(#floorG)"/>
+    <g opacity="0.22" fill="#6d5a42">
+      ${Array.from({length:56},(_,i)=>`<ellipse cx="${(i*197)%4000}" cy="${688+((i*67)%190)}" rx="${34+(i%5)*20}" ry="${7+(i%3)*4}"/>`).join('')}
+    </g>
     <g opacity="0.3" fill="#ffb45c" filter="url(#bl)">
-      <ellipse cx="2100" cy="760" rx="420" ry="26"/>
-      <ellipse cx="2600" cy="850" rx="360" ry="22"/>
+      <ellipse cx="2280" cy="760" rx="440" ry="26"/>
+      <ellipse cx="1500" cy="846" rx="360" ry="22"/>
     </g>
-    <rect x="0" y="656" width="4000" height="4" fill="#2a6a6c" opacity="0.45"/>
+    <g opacity="0.4" stroke="#1b3b3a" stroke-width="7" fill="none">
+      <path d="M0 800 q1000 -40 2000 -6 q1000 34 2000 -10"/>
+      <path d="M0 856 q1000 -36 2000 -2 q1000 30 2000 -8"/>
+    </g>
 
-    <!-- lamppost -->
+    <!-- street lamp -->
     <g>
-      <rect x="720" y="366" width="14" height="300" fill="#061820"/>
-      <rect x="700" y="658" width="54" height="14" fill="#061820"/>
-      <rect x="704" y="318" width="46" height="52" fill="#0b242c"/>
-      <rect x="712" y="326" width="30" height="38" fill="#ffd48a"/>
-      <circle cx="727" cy="345" r="120" fill="url(#bloomCand)"/>
+      <rect x="514" y="286" width="17" height="384" fill="#061820"/>
+      <rect x="488" y="656" width="68" height="18" fill="#061820"/>
+      <rect x="494" y="216" width="58" height="72" fill="#0b242c"/>
+      <rect x="503" y="226" width="40" height="54" fill="#ffd48a"/>
+      <path d="M488 216 l34 -30 l34 30 z" fill="#0f333a"/>
+      <circle cx="523" cy="252" r="190" fill="url(#bloomCand)"/>
     </g>
 
-    <!-- newsboy -->
-    <g id="npc-newsboy">
-      <path d="M1418 560 l-10 100 l26 0 l8 -92 z" fill="#0a2229"/>
-      <path d="M1450 562 l14 98 l-26 0 l-6 -92 z" fill="#0d2b32"/>
+    <!-- the newsboy: a boy of about five feet, drawn at the same scale
+         as the player rather than as a doll -->
+    <g id="npc-newsboy" transform="translate(-1021 -176) scale(1.4)">
+      <path d="M1418 560 l-10 100 l26 0 l8 -92 z" fill="#123a42"/>
+      <path d="M1450 562 l14 98 l-26 0 l-6 -92 z" fill="#1b5058"/>
+      <path d="M1462 566 l12 94 l-8 0 l-10 -94 z" fill="#ffb45c" opacity="0.3"/>
+      <path d="M1404 656 l38 0 l0 15 l-42 0 z" fill="#0b2128"/>
+      <path d="M1404 656 l38 0 l0 3 l-38 0 z" fill="#7fe3d6" opacity="0.35"/>
+      <path d="M1436 656 l40 0 l0 15 l-44 0 z" fill="#0f2a31"/>
+      <path d="M1436 656 l40 0 l0 3 l-40 0 z" fill="#7fe3d6" opacity="0.4"/>
       <path d="M1412 448 q32 -16 60 0 l14 118 q-46 16 -88 0 z" fill="#14424a"/>
       <path d="M1472 448 l14 118 q-10 4 -18 5 l-12 -120 z" fill="#ffb45c" opacity="0.4"/>
       <path d="M1418 498 l60 0 l6 48 l-72 0 z" fill="#1b5a5f"/>
@@ -175,39 +295,57 @@ const street = {
       <path d="M1466 414 l10 6 l-10 6 z" fill="#e8b98c"/>
       <path d="M1419 412 q26 -28 52 -6 l0 -10 q-28 -22 -52 4 z" fill="#0d2b32"/>
       <ellipse cx="1452" cy="406" rx="30" ry="9" fill="#0d2b32"/>
-      <circle cx="1444" cy="422" r="25" fill="#ffb45c" opacity="0.18"/>
+      <circle cx="1444" cy="422" r="25" fill="#ffb45c" opacity="0.16"/>
     </g>
 
-    <!-- crate of newspapers -->
+    <!-- his crate of papers -->
     <g>
-      <rect x="1200" y="586" width="120" height="74" fill="#0a2229"/>
-      <rect x="1200" y="586" width="120" height="6" fill="#2a6a6c" opacity="0.6"/>
-      <rect x="1214" y="556" width="92" height="32" fill="#e9e0c8"/>
-      <rect x="1226" y="566" width="68" height="5" fill="#6e6a60"/>
+      <rect x="1180" y="576" width="156" height="98" fill="#0a2229"/>
+      <rect x="1180" y="576" width="156" height="7" fill="#2a6a6c" opacity="0.6"/>
+      <rect x="1196" y="600" width="124" height="6" fill="#123840"/>
+      <rect x="1200" y="536" width="118" height="42" fill="#e9e0c8"/>
+      <rect x="1208" y="524" width="118" height="38" fill="#f4ecd6"/>
+      <rect x="1222" y="538" width="88" height="7" fill="#6e6a60"/>
+      <rect x="1222" y="552" width="64" height="4" fill="#9a968c"/>
     </g>
 
-    <!-- reflections -->
-    <g mask="url(#reflM)" opacity="0.4">
+    <!-- a handcart, and the building rubble of an unfinished capital -->
+    <g>
+      <rect x="3640" y="576" width="250" height="26" fill="#123840"/>
+      <rect x="3656" y="602" width="218" height="56" fill="#0d2b32"/>
+      <circle cx="3700" cy="676" r="54" fill="none" stroke="#0a2229" stroke-width="15"/>
+      <circle cx="3840" cy="676" r="54" fill="none" stroke="#0a2229" stroke-width="15"/>
+      <path d="M3640 586 l-120 -44" stroke="#0a2229" stroke-width="13"/>
+    </g>
+    <g fill="#0c262e">
+      <rect x="700" y="596" width="150" height="34"/>
+      <rect x="714" y="562" width="120" height="34"/>
+      <rect x="740" y="630" width="150" height="30"/>
+      <path d="M950 660 l46 -56 l46 56 z"/>
+    </g>
+
+    <!-- reflections in the wet ruts -->
+    <g mask="url(#reflM)" opacity="0.35">
       <g transform="translate(0,1318) scale(1,-1)">
-        <rect x="1180" y="212" width="1680" height="410" fill="#0a2229"/>
-        <rect x="720" y="366" width="14" height="292" fill="#0a2229"/>
-        <path d="M1412 448 q32 -16 60 0 l14 118 q-46 16 -88 0 z" fill="#0d3339"/>
+        <rect x="1420" y="0" width="2040" height="660" fill="#0a2229"/>
+        <rect x="514" y="286" width="17" height="374" fill="#0a2229"/>
       </g>
-      <ellipse cx="727" cy="700" rx="90" ry="34" fill="#ffd48a" opacity="0.5" filter="url(#bl)"/>
-      <ellipse cx="2100" cy="700" rx="300" ry="40" fill="#ffb45c" opacity="0.35" filter="url(#bl)"/>
+      <ellipse cx="523" cy="706" rx="120" ry="40" fill="#ffd48a" opacity="0.5" filter="url(#bl)"/>
+      <ellipse cx="2280" cy="710" rx="380" ry="46" fill="#ffb45c" opacity="0.35" filter="url(#bl)"/>
     </g>`),
 
   fg: svg(4800, `
     <g fill="#02080a">
-      <rect x="0" y="0" width="150" height="900"/>
-      <rect x="4650" y="0" width="150" height="900"/>
-      <rect x="560" y="0" width="52" height="900"/>
-      <rect x="3180" y="0" width="64" height="900"/>
-      <path d="M0 862 L4800 862 L4800 900 L0 900 Z"/>
+      <rect x="0" y="0" width="176" height="900"/>
+      <rect x="4624" y="0" width="176" height="900"/>
+      <rect x="640" y="0" width="60" height="900"/>
+      <path d="M700 0 L700 170 q-44 -76 -130 -92 l0 -78 z"/>
+      <rect x="3760" y="0" width="72" height="900"/>
+      <path d="M0 876 L4800 876 L4800 900 L0 900 Z"/>
     </g>
     <g opacity="0.2">
-      <rect x="612" y="0" width="4" height="900" fill="#ffb45c"/>
-      <rect x="3176" y="0" width="4" height="900" fill="#4fd3c4"/>
+      <rect x="700" y="0" width="5" height="900" fill="#ffb45c"/>
+      <rect x="3756" y="0" width="5" height="900" fill="#4fd3c4"/>
     </g>`)
 };
 
@@ -218,190 +356,333 @@ const study = {
   back: svg(2880, `
     <rect width="2880" height="900" fill="#0d2230"/>
     <rect width="2880" height="900" fill="url(#moonSky)"/>
-    <circle cx="980" cy="210" r="46" fill="#dff8f2" opacity="0.9"/>
-    <circle cx="980" cy="210" r="140" fill="url(#bloomC)"/>
-    <g fill="#e8fbf6" opacity="0.5">
-      ${Array.from({length:40},(_,i)=>`<circle cx="${(i*263)%2880}" cy="${40+((i*97)%300)}" r="${1.5+(i%3)*0.8}"/>`).join('')}
+    <circle cx="820" cy="180" r="40" fill="#dff8f2" opacity="0.9"/>
+    <circle cx="820" cy="180" r="130" fill="url(#bloomC)"/>
+    <g fill="#e8fbf6" opacity="0.45">
+      ${Array.from({length:44},(_,i)=>`<circle cx="${(i*263)%2880}" cy="${30+((i*97)%290)}" r="${1.4+(i%3)*0.7}"/>`).join('')}
     </g>
-    <path d="M0 620 q180 -80 360 -20 q200 -70 400 -14 q210 -60 420 -10 q200 -52 400 -8
-             q190 -44 380 -6 q180 -36 360 -4 q140 -26 280 -2 l0 340 L0 960 Z" fill="#0a2029"/>`),
+    <path d="M0 600 q200 -70 400 -18 q220 -62 440 -12 q210 -52 420 -8 q200 -44 400 -6
+             q190 -36 380 -4 q160 -28 320 -2 q160 -22 320 0 l0 380 L0 980 Z" fill="#0a2029"/>`),
 
   mid: svg(4000, `
-    <!-- The wall is masked around the window, so the back layer's night
-         sky shows through and parallaxes as you walk. -->
     <mask id="wallCut">
       <rect width="4000" height="900" fill="#fff"/>
-      <rect x="576" y="148" width="268" height="308" fill="#000"/>
+      <rect x="236" y="112" width="300" height="365" fill="#000"/>
     </mask>
     <rect width="4000" height="900" fill="url(#wallG)" mask="url(#wallCut)"/>
 
-    <!-- ambient light, ON the wall: this is what keeps the room from
-         reading as a flat sheet of colour -->
-    <circle cx="710"  cy="330" r="460" fill="url(#bloomC)"/>
-    <circle cx="3090" cy="470" r="520" fill="url(#bloomW)"/>
+    <!-- ambient: window (cold), Argand lamp (warm), hearth (warm) -->
+    <circle cx="386"  cy="300" r="440" fill="url(#bloomC)"/>
+    <circle cx="3430" cy="430" r="520" fill="url(#bloomW)"/>
 
-    <!-- ===== cold source: the window ===== -->
+    <!-- =========================================================
+         THE PRESIDENT'S OFFICE  (x 0 - 1800)
+    ========================================================== -->
+
+    <!-- tall window, red silk velvet drapes -->
     <g>
-      <rect x="560" y="132" width="300" height="340" fill="none" stroke="#04141a" stroke-width="16"/>
-      <rect x="576" y="352" width="268" height="104" fill="#3fa79f" opacity="0.3"/>
-      <g stroke="#04141a" stroke-width="14">
-        <line x1="710" y1="148" x2="710" y2="456"/>
-        <line x1="576" y1="252" x2="844" y2="252"/>
-        <line x1="576" y1="356" x2="844" y2="356"/>
+      <rect x="220" y="96" width="332" height="397" fill="none" stroke="#04141a" stroke-width="18"/>
+      <g stroke="#04141a" stroke-width="12">
+        <line x1="386" y1="112" x2="386" y2="477"/>
+        <line x1="236" y1="234" x2="536" y2="234"/>
+        <line x1="236" y1="356" x2="536" y2="356"/>
       </g>
-      <rect x="544" y="460" width="332" height="18" fill="#04141a"/>
+      <rect x="196" y="477" width="380" height="22" fill="#04141a"/>
+      <rect x="214" y="499" width="344" height="12" fill="#0b2a31"/>
+      <!-- window seat -->
+      <rect x="230" y="560" width="312" height="24" fill="#123840"/>
+      <rect x="236" y="584" width="300" height="76" fill="#0c262e"/>
+      <rect x="242" y="548" width="288" height="18" rx="8" fill="#6d2622"/>
+      <!-- drapes and swag -->
+      <path d="M150 62 q34 220 14 438 l-74 0 l0 -438 z" fill="#7d2b26"/>
+      <path d="M622 62 q-34 220 -14 438 l74 0 l0 -438 z" fill="#7d2b26"/>
+      <path d="M150 62 q22 214 8 434" stroke="#5c1a17" stroke-width="11" fill="none" opacity="0.65"/>
+      <path d="M622 62 q-22 214 -8 434" stroke="#5c1a17" stroke-width="11" fill="none" opacity="0.65"/>
+      <path d="M90 62 L682 62 q-70 92 -156 74 q-70 68 -148 4 q-78 60 -140 -6 q-84 20 -148 -72 z" fill="#8e3129"/>
+      <path d="M90 52 L682 52 L682 76 L90 76 Z" fill="#a8762f"/>
+      <circle cx="238" cy="126" r="9" fill="#c98a3c"/>
+      <circle cx="534" cy="126" r="9" fill="#c98a3c"/>
     </g>
-    <path d="M576 478 L844 478 L1010 660 L410 660 Z" fill="#7fe3d6" opacity="0.12"/>
 
-    <!-- wainscot -->
-    <rect x="0" y="556" width="4000" height="104" fill="#0a1f26"/>
-    <rect x="0" y="552" width="4000" height="7" fill="#16414a"/>
-
-    <!-- ===== globe, rim-lit by the window ===== -->
+    <!-- looking glass and pier table -->
     <g>
-      <circle cx="1020" cy="512" r="62" fill="#0e2d34"/>
-      <path d="M1020 450 a62 62 0 0 0 0 124 z" fill="#14424a"/>
-      <circle cx="1020" cy="512" r="62" fill="none" stroke="#2f7d78" stroke-width="5"/>
-      <path d="M998 466 q26 16 50 4" stroke="#3f9b8f" stroke-width="7" fill="none"/>
-      <path d="M978 540 q44 20 84 -2" stroke="#3f9b8f" stroke-width="7" fill="none"/>
-      <path d="M980 574 l40 -8 l40 8 l0 86 l-80 0 z" fill="#061820"/>
-      <rect x="958" y="450" width="6" height="124" fill="#7fe3d6" opacity="0.3"/>
+      <rect x="712" y="188" width="196" height="268" fill="#a8762f"/>
+      <rect x="726" y="202" width="168" height="240" fill="#16414a"/>
+      <path d="M726 202 L894 442 L894 202 Z" fill="#1e5560" opacity="0.6"/>
+      <path d="M760 160 q50 -34 100 0 l-8 30 q-42 -26 -84 0 z" fill="#a8762f"/>
+      <rect x="700" y="546" width="220" height="16" fill="#123840"/>
+      <rect x="716" y="562" width="14" height="98" fill="#0a2229"/>
+      <rect x="890" y="562" width="14" height="98" fill="#0a2229"/>
+      <rect x="742" y="516" width="52" height="30" fill="#0f333a"/>
+      <rect x="826" y="508" width="36" height="38" rx="4" fill="#12444a"/>
     </g>
 
-    <!-- ===== ITEM 3: rolled dispatch leaning against the globe stand ===== -->
-    <g transform="rotate(-15 900 610)">
-      <rect x="886" y="552" width="30" height="106" rx="15" fill="#ece0c0"/>
-      <rect x="886" y="552" width="10" height="106" fill="#c4b795"/>
-      <rect x="913" y="552" width="4" height="106" fill="#bff3ea" opacity="0.7"/>
-      <ellipse cx="901" cy="554" rx="15" ry="6" fill="#f6ecd6"/>
-      <rect x="880" y="596" width="42" height="12" fill="#d94f3d"/>
-      <path d="M922 602 q18 9 14 27" stroke="#d94f3d" stroke-width="6" fill="none"/>
+    <!-- ITEM 2 pinned to the wall between window and desk -->
+    <g transform="rotate(1.6 1010 372)">
+      <rect x="952" y="286" width="118" height="152" fill="#efeadb"/>
+      <rect x="952" y="286" width="5" height="152" fill="#bff3ea"/>
+      <rect x="966" y="302" width="90" height="9" fill="#3f4a55"/>
+      <rect x="972" y="318" width="78" height="3" fill="#6d7581"/>
+      ${Array.from({length:8},(_,i)=>`<rect x="966" y="${332+i*11}" width="${90-(i%3)*22}" height="3.2" fill="#8b9199"/>`).join('')}
+      <circle cx="1040" cy="418" r="12" fill="#2c4670"/>
+      <path d="M1040 430 l-6 17 l13 0 z" fill="#2c4670"/>
+      <circle cx="1010" cy="283" r="6" fill="#1b5a5f"/>
     </g>
+    ${sconce(880, 340)}
 
-    <!-- ===== bookshelf ===== -->
+    <!-- the President's writing desk: 30 inches high, standing in the
+         room rather than against the wall -->
     <g>
-      <rect x="1240" y="180" width="300" height="380" fill="#061a20"/>
-      <rect x="1240" y="180" width="8" height="380" fill="#4fd3c4" opacity="0.5"/>
-      ${[0,1,2,3].map(r=>{const y=200+r*92;return books(1258,y,11,r)+`<rect x="1248" y="${y+74}" width="284" height="8" fill="#123840"/>`}).join('')}
+      ${klismos(1268, 748)}
+      <rect x="1006" y="560" width="460" height="24" fill="#123840"/>
+      <rect x="1006" y="560" width="460" height="7" fill="#8fe8dc" opacity="0.4"/>
+      <rect x="1440" y="560" width="26" height="200" fill="#0a2229"/>
+      <rect x="1006" y="584" width="460" height="92" fill="#0d2b32"/>
+      <rect x="1018" y="596" width="436" height="68" fill="#0a262d"/>
+      <rect x="1030" y="676" width="24" height="84" fill="#081f26"/>
+      <rect x="1418" y="676" width="24" height="84" fill="#081f26"/>
+      <!-- green baize writing surface -->
+      <rect x="1062" y="548" width="256" height="14" fill="#1d4a3c"/>
+      <rect x="1062" y="548" width="256" height="4" fill="#3c7a5e" opacity="0.6"/>
+      <!-- inkstand, sand shaker, quill -->
+      <g>
+        <rect x="1346" y="530" width="72" height="18" rx="3" fill="#8a6a2c"/>
+        <ellipse cx="1364" cy="528" rx="13" ry="6" fill="#0a1418"/>
+        <ellipse cx="1398" cy="528" rx="11" ry="5" fill="#123840"/>
+        <path d="M1364 524 q30 -58 74 -84 q-20 46 -60 90 z" fill="#f4ead2"/>
+      </g>
+      <!-- a stack of despatches, weighted -->
+      <g>
+        <rect x="1078" y="534" width="64" height="14" fill="#e6dcc0"/>
+        <rect x="1084" y="526" width="64" height="12" fill="#f0e7ce"/>
+        <circle cx="1116" cy="522" r="9" fill="#2a3a42"/>
+      </g>
+      ${argand(1216, 548)}
     </g>
 
-    <!-- ===== ITEM 2: the Orders in Council, pinned to the wall ===== -->
-    <g transform="rotate(2 1640 344)">
-      <rect x="1560" y="240" width="160" height="212" fill="#eae6d3"/>
-      <rect x="1560" y="240" width="6" height="212" fill="#bff3ea"/>
-      <rect x="1576" y="262" width="128" height="11" fill="#3f4a55"/>
-      ${Array.from({length:9},(_,i)=>`<rect x="1576" y="${290+i*15}" width="${128-(i%3)*30}" height="4" fill="#8b9199"/>`).join('')}
-      <circle cx="1682" cy="422" r="17" fill="#2f5f8f"/>
-      <path d="M1682 439 l-9 24 l18 0 z" fill="#2f5f8f"/>
-      <circle cx="1640" cy="236" r="7" fill="#1b5a5f"/>
+    <!-- ITEM 1: the sailor's letter, open on the baize -->
+    <g transform="rotate(-5 1120 542)">
+      <path d="M1078 522 L1164 522 L1168 548 L1074 548 Z" fill="#f6ecd6"/>
+      <path d="M1078 522 L1121 538 L1164 522" fill="none" stroke="#c9bb9a" stroke-width="2.5"/>
+      <circle cx="1154" cy="543" r="8" fill="#a8362c"/>
     </g>
 
-    <!-- ===== the desk ===== -->
+    <!-- ITEM 4: the locked drawer -->
     <g>
-      <!-- chair -->
-      <rect x="2260" y="430" width="16" height="230" fill="#061820"/>
-      <rect x="2200" y="430" width="120" height="16" fill="#0a2229"/>
-      <!-- candle, the warm pool that lights the letter -->
-      <circle cx="2062" cy="556" r="150" fill="url(#bloomCand)"/>
-      <rect x="2054" y="520" width="18" height="52" fill="#f6ecd6"/>
-      <path d="M2063 492 q15 17 0 30 q-15 -13 0 -30 z" fill="#ffd48a"/>
-      <ellipse cx="2063" cy="586" rx="30" ry="9" fill="#123840"/>
-      <!-- desk body -->
-      <rect x="1980" y="590" width="620" height="20" fill="#0d2b32"/>
-      <rect x="1980" y="590" width="620" height="6" fill="#8fe8dc" opacity="0.45"/>
-      <rect x="2594" y="590" width="6" height="130" fill="#ffb45c" opacity="0.4"/>
-      <rect x="2010" y="610" width="28" height="112" fill="#061a20"/>
-      <rect x="2560" y="610" width="28" height="112" fill="#061a20"/>
-      <rect x="2120" y="580" width="260" height="12" fill="#14403a"/>
+      <rect x="1180" y="592" width="212" height="70" fill="#0e2f36"/>
+      <rect x="1180" y="592" width="212" height="4" fill="#2a6a6c" opacity="0.8"/>
+      <rect x="1192" y="604" width="188" height="46" fill="#0a262d"/>
+      <circle cx="1286" cy="627" r="11" fill="#c98a3c"/>
+      <circle cx="1286" cy="627" r="5" fill="#081f26"/>
+      <rect x="1280" y="627" width="12" height="15" fill="#c98a3c"/>
     </g>
 
-    <!-- ===== ITEM 1: the sailor's letter, on the blotter ===== -->
-    <g transform="rotate(-6 2250 574)">
-      <path d="M2176 550 L2324 550 L2330 586 L2170 586 Z" fill="#f6ecd6"/>
-      <path d="M2176 550 L2250 574 L2324 550" fill="none" stroke="#c9bb9a" stroke-width="3"/>
-      <circle cx="2298" cy="578" r="11" fill="#d94f3d"/>
-    </g>
-
-    <!-- ===== ITEM 4 container: the locked drawer ===== -->
-    <g id="drawer">
-      <rect x="2380" y="614" width="190" height="96" fill="#0a2229"/>
-      <rect x="2380" y="614" width="190" height="5" fill="#2a6a6c" opacity="0.7"/>
-      <rect x="2394" y="628" width="162" height="68" fill="#071e24"/>
-      <circle cx="2475" cy="662" r="13" fill="#0d2b32"/>
-      <circle cx="2475" cy="662" r="13" fill="none" stroke="#ffb45c" stroke-width="3" opacity="0.65"/>
-      <rect x="2468" y="662" width="14" height="18" fill="#ffb45c" opacity="0.5"/>
-    </g>
-
-    <!-- ===== warm source: the fireplace ===== -->
+    <!-- bookshelf -->
     <g>
-      <rect x="2900" y="240" width="380" height="320" fill="#0a2229"/>
-      <rect x="2882" y="224" width="416" height="26" fill="#12343c"/>
-      <rect x="2900" y="240" width="380" height="6" fill="#ffb45c" opacity="0.45"/>
-      <rect x="2960" y="330" width="260" height="230" fill="#030c10"/>
-      <path d="M3090 420 q38 54 20 112 q-26 30 -62 4 q-28 -52 12 -80 q18 -14 30 -36 z" fill="#ff9e42"/>
-      <path d="M3092 462 q22 36 10 68 q-16 18 -36 2 q-15 -32 10 -48 z" fill="#ffd88a"/>
-      <path d="M2976 552 l228 0 l0 12 l-228 0 z" fill="#1b2026"/>
-      <!-- portrait over the mantel -->
-      <rect x="3010" y="76" width="176" height="130" fill="#0f2f38"/>
-      <rect x="3024" y="90" width="148" height="102" fill="#061a20"/>
-      <circle cx="3098" cy="132" r="26" fill="#1b4a52"/>
-      <path d="M3066 186 q32 -40 66 0 z" fill="#164048"/>
-      <rect x="3186" y="76" width="5" height="130" fill="#ffb45c" opacity="0.5"/>
+      <rect x="1540" y="214" width="252" height="446" fill="#061a20"/>
+      <rect x="1540" y="214" width="7" height="446" fill="#4fd3c4" opacity="0.4"/>
+      <rect x="1534" y="200" width="264" height="18" fill="#0f333a"/>
+      ${[0,1,2,3,4].map(r=>{const y=232+r*86;return books(1556,y,10,r)+`<rect x="1548" y="${y+72}" width="236" height="8" fill="#123840"/>`}).join('')}
     </g>
 
-    <!-- lectern, scenery -->
+    <!-- coat and hat on a peg, far left -->
     <g>
-      <path d="M2770 720 l22 -112 l54 0 l22 112 z" fill="#061a20"/>
-      <path d="M2846 608 l22 112 l-13 0 l-22 -112 z" fill="#ffb45c" opacity="0.35"/>
-      <path d="M2782 608 L2856 608 L2868 578 L2770 578 Z" fill="#0d2b32"/>
-      <path d="M2856 608 L2868 578 L2860 578 L2848 608 Z" fill="#ffb45c" opacity="0.45"/>
+      <rect x="92" y="300" width="46" height="10" rx="4" fill="#0f333a"/>
+      <path d="M100 310 q-22 70 -10 150 q26 16 52 0 q10 -84 -12 -150 z" fill="#123f47"/>
+      <path d="M138 310 q22 66 12 146 l-14 6 q10 -76 -12 -146 z" fill="#0a2229"/>
+      <ellipse cx="116" cy="292" rx="34" ry="10" fill="#0a2229"/>
+      <path d="M96 292 q20 -34 40 0 z" fill="#0c262e"/>
     </g>
 
-    <!-- doorway, far right -->
+    <!-- =========================================================
+         THE ARCH  (x 1830 - 2110)
+    ========================================================== -->
     <g>
-      <rect x="3540" y="210" width="240" height="450" fill="#04121a"/>
-      <path d="M3540 260 q120 -90 240 0 l0 -50 l-240 0 z" fill="#0a1f26"/>
-      <rect x="3540" y="210" width="7" height="450" fill="#4fd3c4" opacity="0.28"/>
-      <rect x="3773" y="210" width="7" height="450" fill="#ffb45c" opacity="0.28"/>
+      <rect x="1830" y="60" width="54" height="600" fill="#0a262d"/>
+      <rect x="2056" y="60" width="54" height="600" fill="#0a262d"/>
+      <rect x="1824" y="40" width="66" height="26" fill="#12444a"/>
+      <rect x="2050" y="40" width="66" height="26" fill="#12444a"/>
+      <path d="M1884 120 q86 -84 172 0 l0 -60 l-172 0 z" fill="#0a262d"/>
+      <rect x="1884" y="60" width="172" height="26" fill="#0c2c33"/>
+      <rect x="1884" y="120" width="172" height="540" fill="#061a20" opacity="0.5"/>
+      <rect x="1878" y="60" width="5" height="600" fill="#4fd3c4" opacity="0.2"/>
+      <rect x="2057" y="60" width="5" height="600" fill="#ffb45c" opacity="0.22"/>
     </g>
 
-    <!-- floor -->
+    <!-- =========================================================
+         THE CABINET ROOM  (x 2110 - 4000)
+         "a large table in the center, and maps, globes, charts, &c."
+    ========================================================== -->
+
+    <!-- charts and maps covering the wall -->
+    ${chart(2190, 176, 196, 148, 1)}
+    ${chart(2416, 196, 150, 122, 2)}
+    ${chart(2600, 168, 228, 166, 3)}
+    ${chart(2860, 206, 142, 116, 0)}
+    ${sconce(2400, 396)}
+    ${sconce(2960, 396)}
+
+    <!-- a rolled chart leaning in the corner -->
+    <g transform="rotate(7 2160 560)">
+      <rect x="2146" y="404" width="30" height="256" rx="15" fill="#c9bfa0"/>
+      <rect x="2146" y="404" width="9" height="256" fill="#a9a084"/>
+    </g>
+
+    <!-- the long cabinet table -->
+    <g>
+      ${klismos(2330, 752, -1)}
+      ${klismos(2880, 752)}
+      <rect x="2260" y="556" width="880" height="26" fill="#123840"/>
+      <rect x="2260" y="556" width="880" height="7" fill="#8fe8dc" opacity="0.35"/>
+      <rect x="2272" y="582" width="856" height="42" fill="#0d2b32"/>
+      <rect x="2272" y="582" width="856" height="5" fill="#2a6a6c" opacity="0.5"/>
+      <rect x="2296" y="624" width="34" height="136" fill="#0a2229"/>
+      <rect x="3070" y="624" width="34" height="136" fill="#0a2229"/>
+      <rect x="2660" y="624" width="30" height="136" fill="#081f26"/>
+      <rect x="2296" y="700" width="808" height="14" fill="#0a2229"/>
+      <rect x="2290" y="750" width="46" height="12" rx="4" fill="#081f26"/>
+      <rect x="3064" y="750" width="46" height="12" rx="4" fill="#081f26"/>
+      <!-- green baize, papers, a wine glass and a decanter -->
+      <rect x="2380" y="546" width="620" height="12" fill="#1d4a3c"/>
+      <g>
+        <rect x="2680" y="532" width="86" height="15" fill="#e6dcc0"/>
+        <rect x="2690" y="524" width="80" height="12" fill="#f0e7ce"/>
+      </g>
+      <g>
+        <path d="M2940 546 l6 -34 l26 0 l6 34 z" fill="#7fe3d6" opacity="0.35"/>
+        <ellipse cx="2959" cy="546" rx="16" ry="5" fill="#2a6a6c" opacity="0.6"/>
+        <path d="M3000 546 q-10 -40 4 -58 q14 18 4 58 z" fill="#8e3129" opacity="0.7"/>
+      </g>
+      ${sconce(2560, 520)}
+    </g>
+
+    <!-- ITEM 3: the frontier dispatch, on the cabinet table -->
+    <g transform="rotate(-8 2496 540)">
+      <rect x="2472" y="506" width="26" height="72" rx="13" fill="#ece0c0"/>
+      <rect x="2472" y="506" width="8" height="72" fill="#c4b795"/>
+      <ellipse cx="2485" cy="508" rx="13" ry="5" fill="#f6ecd6"/>
+      <rect x="2466" y="534" width="38" height="10" fill="#a8362c"/>
+      <path d="M2504 539 q14 8 11 21" stroke="#a8362c" stroke-width="5" fill="none"/>
+    </g>
+
+    <!-- the globe, 18 inches across -->
+    <g>
+      <circle cx="3212" cy="512" r="55" fill="#0e2d34"/>
+      <path d="M3212 457 a55 55 0 0 0 0 110 z" fill="#14424a"/>
+      <circle cx="3212" cy="512" r="55" fill="none" stroke="#c98a3c" stroke-width="5"/>
+      <ellipse cx="3212" cy="512" rx="62" ry="15" fill="none" stroke="#c98a3c" stroke-width="5"/>
+      <path d="M3192 476 q22 12 42 2" stroke="#3f9b8f" stroke-width="6" fill="none"/>
+      <path d="M3178 534 q36 18 70 -2" stroke="#3f9b8f" stroke-width="6" fill="none"/>
+      <path d="M3186 572 l26 -6 l26 6 l0 96 l-52 0 z" fill="#0a2229"/>
+      <path d="M3176 668 l72 0 l10 24 l-92 0 z" fill="#081f26"/>
+    </g>
+
+    <!-- the hearth: mantel at 4 feet 6 -->
+    <g>
+      <rect x="3330" y="331" width="404" height="329" fill="#0e2f36"/>
+      <rect x="3308" y="308" width="448" height="26" fill="#14444c"/>
+      <rect x="3330" y="331" width="404" height="6" fill="#ffb45c" opacity="0.45"/>
+      <rect x="3404" y="404" width="256" height="256" fill="#030c10"/>
+      <rect x="3392" y="392" width="280" height="14" fill="#123840"/>
+      <path d="M3532 500 q42 60 22 124 q-30 34 -70 4 q-32 -58 14 -90 q20 -16 34 -38 z" fill="#ff9e42"/>
+      <path d="M3534 548 q24 40 10 76 q-18 20 -40 2 q-16 -36 12 -54 z" fill="#ffd88a"/>
+      <path d="M3424 648 l216 0 l0 12 l-216 0 z" fill="#1b2026"/>
+      <path d="M3440 640 l88 -14 l6 14 l-94 12 z" fill="#2b1c10"/>
+      <!-- fire irons and a coal scuttle -->
+      <g>
+        <path d="M3760 660 l0 -128" stroke="#0a2229" stroke-width="7"/>
+        <path d="M3784 660 l0 -120" stroke="#0a2229" stroke-width="7"/>
+        <path d="M3752 532 l40 0" stroke="#0a2229" stroke-width="6"/>
+        <path d="M3818 660 q-8 -54 26 -58 q34 4 26 58 z" fill="#0c262e"/>
+        <path d="M3826 606 q26 -10 44 0" stroke="#123840" stroke-width="6" fill="none"/>
+      </g>
+      <!-- the Washington portrait over the mantel -->
+      <g>
+        <rect x="3402" y="66" width="262" height="228" fill="#a8762f"/>
+        <rect x="3416" y="80" width="234" height="200" fill="#0a1f26"/>
+        <rect x="3428" y="92" width="210" height="176" fill="#12333a"/>
+        <ellipse cx="3533" cy="252" rx="86" ry="26" fill="#1a2a36"/>
+        <path d="M3496 268 q8 -78 37 -84 q29 6 37 84 z" fill="#101c26"/>
+        <path d="M3520 190 q13 9 26 0 l9 22 q-22 12 -44 0 z" fill="#e8e2d4"/>
+        <path d="M3533 186 q-20 6 -26 24 l-12 -8 q8 -22 30 -28 z" fill="#161f2a"/>
+        <path d="M3533 186 q20 6 26 24 l12 -8 q-8 -22 -30 -28 z" fill="#161f2a"/>
+        <circle cx="3533" cy="162" r="25" fill="#c9a98a"/>
+        <path d="M3509 156 q24 -30 48 -4 q-2 -26 -24 -26 q-23 0 -24 30 z" fill="#ddd8cc"/>
+        <path d="M3506 168 q-9 4 -7 16 q6 6 12 0 z" fill="#ddd8cc"/>
+        <path d="M3560 168 q9 4 7 16 q-6 6 -12 0 z" fill="#ddd8cc"/>
+        <path d="M3556 230 q22 8 30 30" stroke="#c9a98a" stroke-width="7" fill="none"/>
+        <rect x="3402" y="66" width="262" height="7" fill="#e0b56a"/>
+      </g>
+    </g>
+
+    <!-- tall case clock, far right -->
+    <g>
+      <rect x="3862" y="256" width="106" height="404" fill="#0a2229"/>
+      <rect x="3874" y="286" width="82" height="152" fill="#061a20"/>
+      <rect x="3856" y="230" width="118" height="30" fill="#0f333a"/>
+      <path d="M3862 230 q53 -46 106 0 z" fill="#0c2c33"/>
+      <circle cx="3915" cy="204" r="42" fill="#d9cfae"/>
+      <circle cx="3915" cy="204" r="42" fill="none" stroke="#a8762f" stroke-width="5"/>
+      <path d="M3915 204 L3915 180 M3915 204 L3932 214" stroke="#2b2620" stroke-width="3"/>
+      <ellipse cx="3915" cy="400" rx="22" ry="22" fill="#c98a3c" opacity="0.8"/>
+    </g>
+
+    <!-- =========================================================
+         FLOOR
+    ========================================================== -->
     <rect x="0" y="659" width="4000" height="241" fill="url(#floorG)"/>
-    <g>
-      <ellipse cx="2200" cy="790" rx="820" ry="104" fill="#13333a"/>
-      <ellipse cx="2200" cy="790" rx="740" ry="86" fill="none" stroke="#c98a3c" stroke-width="6" opacity="0.5"/>
-      <ellipse cx="2200" cy="790" rx="520" ry="60" fill="#173d42"/>
-      <ellipse cx="2200" cy="790" rx="430" ry="46" fill="none" stroke="#c98a3c" stroke-width="4" opacity="0.4"/>
+    <g opacity="0.5" stroke="#1b4a52" stroke-width="2">
+      ${Array.from({length:26},(_,i)=>`<line x1="${i*160}" y1="660" x2="${i*160-70}" y2="900"/>`).join('')}
     </g>
-    <g mask="url(#reflM)" opacity="0.48">
+    <g>
+      <rect x="640" y="736" width="1120" height="128" rx="6" fill="#13333a"/>
+      <rect x="690" y="754" width="1020" height="92" rx="4" fill="none" stroke="#c98a3c" stroke-width="5" opacity="0.4"/>
+      <rect x="760" y="778" width="880" height="44" rx="4" fill="#173d42"/>
+    </g>
+    <!-- a dropped despatch and a footstool, because people worked here -->
+    <g transform="rotate(-9 900 792)">
+      <rect x="866" y="778" width="70" height="26" fill="#d9cfae" opacity="0.85"/>
+      <rect x="874" y="786" width="50" height="3" fill="#8b9199"/>
+    </g>
+    <g>
+      <rect x="1640" y="716" width="98" height="14" rx="5" fill="#6d2622"/>
+      <rect x="1650" y="730" width="16" height="30" fill="#0a2229"/>
+      <rect x="1712" y="730" width="16" height="30" fill="#0a2229"/>
+    </g>
+    <g>
+      <ellipse cx="2700" cy="800" rx="900" ry="108" fill="#13333a"/>
+      <ellipse cx="2700" cy="800" rx="810" ry="90" fill="none" stroke="#c98a3c" stroke-width="6" opacity="0.45"/>
+      <ellipse cx="2700" cy="800" rx="560" ry="62" fill="#173d42"/>
+      <ellipse cx="2700" cy="800" rx="460" ry="48" fill="none" stroke="#c98a3c" stroke-width="4" opacity="0.35"/>
+    </g>
+    <g mask="url(#reflM)" opacity="0.45">
       <g transform="translate(0,1318) scale(1,-1)">
-        <rect x="1980" y="590" width="620" height="20" fill="#0d2b32"/>
-        <rect x="2010" y="610" width="28" height="112" fill="#0a2229"/>
-        <rect x="2560" y="610" width="28" height="112" fill="#0a2229"/>
-        <rect x="2960" y="330" width="260" height="230" fill="#2e1608"/>
-        <path d="M2770 720 l22 -112 l54 0 l22 112 z" fill="#0a2229"/>
-        <rect x="1240" y="180" width="300" height="380" fill="#081f26"/>
+        <rect x="1006" y="560" width="460" height="116" fill="#0d2b32"/>
+        <rect x="2260" y="556" width="880" height="44" fill="#123840"/>
+        <rect x="3404" y="404" width="256" height="256" fill="#2e1608"/>
+        <rect x="1540" y="214" width="252" height="446" fill="#081f26"/>
+        <rect x="3862" y="256" width="106" height="404" fill="#081f26"/>
       </g>
-      <ellipse cx="3090" cy="700" rx="200" ry="56" fill="#ff9e42" opacity="0.55" filter="url(#bl)"/>
-      <ellipse cx="710"  cy="700" rx="190" ry="52" fill="#7fe3d6" opacity="0.45" filter="url(#bl)"/>
-      <ellipse cx="2063" cy="694" rx="96"  ry="38" fill="#ffd48a" opacity="0.6"  filter="url(#bl)"/>
+      <ellipse cx="3530" cy="704" rx="230" ry="60" fill="#ff9e42" opacity="0.55" filter="url(#bl)"/>
+      <ellipse cx="386"  cy="704" rx="210" ry="56" fill="#7fe3d6" opacity="0.4"  filter="url(#bl)"/>
+      <ellipse cx="1216" cy="700" rx="170" ry="48" fill="#ffd88a" opacity="0.6"  filter="url(#bl)"/>
     </g>
     <rect x="0" y="656" width="4000" height="4" fill="#2a6a6c" opacity="0.5"/>`),
 
   fg: svg(4800, `
     <g fill="#02080a">
-      <rect x="0" y="0" width="160" height="900"/>
-      <path d="M160 0 L160 900 L196 900 L196 250 q54 -104 170 -112 l0 -138 z"/>
-      <rect x="4640" y="0" width="160" height="900"/>
-      <path d="M4640 0 L4640 900 L4604 900 L4604 280 q-50 -92 -160 -104 l0 -176 z"/>
-      <rect x="2260" y="0" width="60" height="900"/>
-      <path d="M2320 0 L2320 210 q-40 -70 -120 -84 l0 -126 z"/>
-      <path d="M0 864 L4800 864 L4800 900 L0 900 Z"/>
+      <rect x="0" y="0" width="188" height="900"/>
+      <path d="M188 0 L188 900 L228 900 L228 214 q62 -120 196 -128 l0 -86 z"/>
+      <rect x="4612" y="0" width="188" height="900"/>
+      <path d="M4612 0 L4612 900 L4572 900 L4572 250 q-58 -106 -184 -118 l0 -132 z"/>
+      <rect x="2576" y="0" width="74" height="900"/>
+      <path d="M2650 0 L2650 188 q-46 -80 -138 -96 l0 -92 z"/>
+      <path d="M0 872 L4800 872 L4800 900 L0 900 Z"/>
     </g>
-    <g opacity="0.22">
-      <rect x="196" y="0" width="4" height="900" fill="#4fd3c4"/>
-      <rect x="2320" y="0" width="4" height="900" fill="#ffb45c"/>
-      <rect x="4600" y="0" width="4" height="900" fill="#ffb45c"/>
+    <g opacity="0.2">
+      <rect x="228" y="0" width="5" height="900" fill="#4fd3c4"/>
+      <rect x="2650" y="0" width="5" height="900" fill="#ffb45c"/>
+      <rect x="4567" y="0" width="5" height="900" fill="#ffb45c"/>
     </g>`)
 };
 

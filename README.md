@@ -27,6 +27,8 @@ Students open the link on a Chromebook. Nothing to install, no login.
 | `assets/css/game.css` | All styling. System fonts only, so it works offline |
 | `assets/js/content.js` | **Every word of the lesson, every hotspot, the puzzle** |
 | `assets/js/scenes.js` | The artwork, as inline SVG |
+| `assets/js/documents.js` | Evidence rendered as paper props |
+| `assets/css/documents.css` | Paper grain, folds, foxing, letterpress |
 | `assets/js/game.js` | Camera, walking, hotspots, puzzle, notebook |
 
 ### The camera
@@ -71,6 +73,24 @@ Two rules keep a puzzle classroom-safe, and both are enforced in the design:
 No inventory, and nothing combines with anything. That is where adventure
 games become unteachable.
 
+### Evidence is paper, not a dialog box
+
+Each document is a physical object: a letter folded in four with a broken wax
+seal and foxing stains, a stiff letterpress proclamation with a drop cap and a
+Board of Trade stamp, a dispatch written in the field and mud-marked, a speech
+still being argued with in red ink. They lie at an angle on a desk with the
+historical reading pinned beside them. Paper grain, fold creases, torn edges and
+age spots are all generated in CSS and SVG &mdash; there are no image files.
+
+### Ambient objects
+
+Eleven objects in the two scenes do nothing except reward looking: the Argand
+lamp, the broken Grecian chairs, the looking glasses, the charts, the globe, the
+hearth, the Washington portrait, the clock, the coat on the peg. They are always
+clickable, never required, and never advance the chain. Each answers with a slip
+of paper rather than a dialog. This is where the room pays back curiosity
+without costing the lesson its spine.
+
 ### Changing the lesson
 
 Everything a teacher would reword lives in `content.js`: dialogue, each item's
@@ -86,6 +106,49 @@ everything holds at any screen size.
 
 Load `index.html?edit`. Every hotspot is drawn in red at once, and clicking
 prints world coordinates to the console.
+
+## Historical detail
+
+The room is built from the documented record, not from invention:
+
+- **There was no Oval Office in 1811** &mdash; that room dates from 1909. Madison
+  worked in the President's House proper, and the game is set in his office and
+  the cabinet room beyond it.
+- A contemporary described the President's office as having **"a large table in
+  the center, and maps, globes, charts, &c."** around the walls. That is the
+  cabinet room in this build, more or less literally.
+- The desk is lit by an **Argand lamp**, not a candle. Jefferson and Madison both
+  used them, and they burned roughly **six times brighter than a candle** &mdash;
+  which is why reading after dark stopped being a hardship around 1800.
+- The **klismos chairs** with sabre legs were designed by Benjamin Latrobe and
+  made in Baltimore by the Finlay brothers. **Three were broken inside four
+  months** because men leaned back in them. That anecdote is an ambient hotspot.
+- **Red silk velvet** hangings and **large looking glasses set to face the
+  lamps** are from the Madisons' 1809 refurbishment.
+- The **Washington portrait** over the mantel is the one Dolley Madison refused
+  to leave without in 1814 &mdash; foreshadowed in an ambient caption, and the
+  payoff belongs to Act Two.
+- The British really did burn the **National Intelligencer**, the paper the
+  player works for. That is why the framing was chosen.
+
+Sources: the White House Historical Association on
+[Madison-era decorative arts](https://www.whitehousehistory.org/white-house-decorative-arts-in-the-1810s),
+[lighting](https://www.whitehousehistory.org/lighting-the-white-house) and
+[the 1814 fire](https://www.whitehousehistory.org/reminders-of-1814); and
+[Latrobe and the Finlay brothers](https://www.themagazineantiques.com/article/benjamin-henry-latrobe-and-the-furniture-of-john-and-hugh-finlay/).
+
+## Scale
+
+One foot is 73 world units. A 5'8" person is 414 units and stands on y=760, so
+the camera sees about 22 feet of room at a time and the character is a little
+under half the frame height &mdash; roughly where adventure games put them.
+Every piece of furniture is built from a real dimension: a desk is 30 inches
+high, a mantel is 4'6", a door is 7 feet. The first pass ignored this and the
+room read as a giant empty hall with doll-sized props.
+
+At this scale the President's House does not fit the frame, which is correct:
+standing across the avenue you see the ground floor and the foot of the portico,
+and the columns run off the top.
 
 ## Art
 
