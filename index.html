@@ -9,80 +9,117 @@
 <link rel="stylesheet" href="assets/css/game.css">
 </head>
 <body>
-
 <main id="app">
 
-  <!-- ============ TITLE ============ -->
+  <!-- ===================== TITLE ===================== -->
   <section id="screen-title" class="screen is-active">
-    <div class="title-art" aria-hidden="true"></div>
     <div class="title-inner">
       <p class="title-kicker">Washington City &middot; 1811</p>
       <h1 class="title-name">The War of 1812<br><span>Investigation</span></h1>
       <p class="title-blurb">
         You are a printer's apprentice at the <em>National Intelligencer</em>.
         Your editor wants the real story behind the war talk &mdash; not the headlines.
-        Find the evidence. Fill your notebook.
+        Walk the room. Find the evidence. Fill your notebook.
       </p>
-      <button class="btn btn-primary" id="btn-start">Begin the assignment</button>
-      <p class="title-foot">Have your worksheet ready. There is no timer and no wrong answer.</p>
+      <button class="btn btn-primary" id="btn-start">Begin Act One</button>
+      <p class="title-foot">Click where you want to walk. Click an object to examine it. Nothing here can be failed.</p>
     </div>
   </section>
 
-  <!-- ============ GAME ============ -->
+  <!-- ===================== GAME ===================== -->
   <section id="screen-game" class="screen">
-
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <div class="stage-art" id="stage-art"></div>
-        <div class="hotspots" id="hotspots"></div>
+
+        <!-- three parallax layers -->
+        <div class="layer layer-back" id="layer-back"></div>
+        <div class="layer layer-mid"  id="layer-mid">
+          <div class="hotspots" id="hotspots"></div>
+          <div class="actor" id="actor"></div>
+        </div>
+        <div class="layer layer-fg"   id="layer-fg"></div>
+
         <div class="stage-vignette" aria-hidden="true"></div>
+
+        <!-- edge arrows hinting there is more room off-screen -->
+        <div class="edge edge-l" id="edge-l" aria-hidden="true">&lsaquo;</div>
+        <div class="edge edge-r" id="edge-r" aria-hidden="true">&rsaquo;</div>
+
         <p class="nudge" id="nudge" role="status" aria-live="polite"></p>
+
+        <!-- NPC dialogue -->
+        <div class="dialogue" id="dialogue" hidden>
+          <div class="dialogue-box">
+            <p class="dialogue-who" id="dialogue-who"></p>
+            <p class="dialogue-line" id="dialogue-line"></p>
+            <button class="dialogue-next" id="dialogue-next">Continue &rsaquo;</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- dialogue overlay for the street beats -->
-    <div class="dialogue" id="dialogue" hidden>
-      <div class="dialogue-box">
-        <p class="dialogue-who" id="dialogue-who"></p>
-        <p class="dialogue-line" id="dialogue-line"></p>
-        <button class="dialogue-next" id="dialogue-next">Continue &rsaquo;</button>
-      </div>
-    </div>
-
-    <!-- notebook rail: objective + progress -->
+    <!-- objective rail -->
     <div class="rail">
       <div class="rail-left">
-        <span class="rail-label">Your notebook</span>
+        <span class="rail-label">Your assignment</span>
         <p class="rail-objective" id="objective" aria-live="polite">&nbsp;</p>
       </div>
       <div class="rail-right">
         <div class="pips" id="pips" aria-label="Evidence collected"></div>
-        <button class="btn btn-ghost" id="btn-help" hidden>Where do I look?</button>
+        <button class="btn btn-ghost" id="btn-notebook">Notebook</button>
+        <button class="btn btn-ghost" id="btn-help">Where do I look?</button>
       </div>
     </div>
   </section>
 
-  <!-- ============ EVIDENCE MODAL ============ -->
-  <div class="modal-scrim" id="scrim" hidden>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <!-- ===================== EVIDENCE ===================== -->
+  <div class="scrim" id="scrim" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
       <p class="modal-tag" id="modal-tag"></p>
-      <h2 class="modal-title" id="modal-title"></h2>
+      <h2 class="modal-heading" id="modal-heading"></h2>
       <blockquote class="modal-quote" id="modal-quote"></blockquote>
       <div class="modal-body" id="modal-body"></div>
-      <div class="modal-record">
-        <p class="modal-record-label">Write this in your notebook</p>
-        <p class="modal-record-text" id="modal-record"></p>
+      <div class="record">
+        <p class="record-label">Write this in your notebook</p>
+        <p class="record-text" id="modal-record"></p>
       </div>
-      <button class="btn btn-primary" id="modal-close">Got it &mdash; keep looking</button>
+      <button class="btn btn-primary" id="modal-close">Got it</button>
     </div>
   </div>
 
-  <!-- ============ INTERSTITIAL / END ============ -->
+  <!-- ===================== PUZZLE ===================== -->
+  <div class="scrim" id="puzzle-scrim" hidden>
+    <div class="modal modal-puzzle" role="dialog" aria-modal="true" aria-labelledby="puzzle-heading">
+      <p class="modal-tag">The locked drawer</p>
+      <h2 class="modal-heading" id="puzzle-heading">Three Brass Dials</h2>
+      <p class="puzzle-prompt" id="puzzle-prompt"></p>
+      <blockquote class="modal-quote" id="puzzle-riddle"></blockquote>
+      <div class="dials" id="dials"></div>
+      <p class="puzzle-msg" id="puzzle-msg" role="status" aria-live="polite">&nbsp;</p>
+      <div class="puzzle-actions">
+        <button class="btn btn-primary" id="puzzle-try">Turn the dials</button>
+        <button class="btn btn-ghost" id="puzzle-notebook">Check my notebook</button>
+        <button class="btn btn-ghost" id="puzzle-skip"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== NOTEBOOK ===================== -->
+  <div class="scrim" id="notebook-scrim" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="notebook-heading">
+      <p class="modal-tag">Carried in your coat</p>
+      <h2 class="modal-heading" id="notebook-heading">Your Notebook</h2>
+      <div class="notebook" id="notebook-body"></div>
+      <button class="btn btn-primary" id="notebook-close">Close</button>
+    </div>
+  </div>
+
+  <!-- ===================== ACT CARD ===================== -->
   <section id="screen-card" class="screen">
     <div class="card-inner">
       <p class="card-kicker" id="card-kicker"></p>
-      <h2 class="card-title" id="card-title"></h2>
-      <p class="card-text" id="card-text"></p>
+      <h2 class="card-heading" id="card-heading"></h2>
+      <div class="card-text" id="card-text"></div>
       <button class="btn btn-primary" id="card-next"></button>
     </div>
   </section>

@@ -1,442 +1,408 @@
 /* ------------------------------------------------------------------
-   scenes.js — all artwork, drawn as inline SVG. No image files.
-   Every scene uses a 1600x900 viewBox; the stage scales it to fit.
-   Hotspot coordinates in content.js are percentages of that box,
-   so art and hotspots stay locked together at any screen size.
+   scenes.js — artwork, drawn as flat inline SVG.
+
+   Every scene is THREE layers that pan at different rates:
+
+     back  (2880x900, depth 0.5)  distant glow and sky. Nothing with a
+                                  recognisable position, so it can slide
+                                  freely without detaching from anything.
+     mid   (4000x900, depth 1.0)  the room itself. All furniture, all
+                                  clickable items, and the character live
+                                  here, so they never drift apart.
+     fg    (4800x900, depth 1.25) near-black silhouettes that sweep past
+                                  the camera. This is most of why a
+                                  panning room feels expensive.
+
+   Layer widths are sized so that no layer ever runs out of art at full
+   camera travel. See CAMERA in game.js for the arithmetic.
+
+   Style rules, applied throughout:
+     - two colour temperatures only: cold teal, warm amber, nothing between
+     - light sources are visible objects (window, fire, candle)
+     - objects are rim-lit on the side facing a source
+     - clickable items are cream paper, the brightest thing in the room
+     - the floor reflects
 -------------------------------------------------------------------*/
-const SCENES = {};
 
-/* =================================================================
-   SHARED DEFS — gradients, filters, textures reused across scenes
-==================================================================*/
-const DEFS = `
+const PALETTE = {
+  cold:    '#4fd3c4',
+  coldLo:  '#0b2129',
+  warm:    '#ffb45c',
+  paper:   '#f6ecd6',
+  black:   '#02080a'
+};
+
+/* shared gradient defs, injected into each layer that needs them */
+const D = `
 <defs>
-  <linearGradient id="skyDusk" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0"    stop-color="#26354f"/>
-    <stop offset="0.38" stop-color="#5b5470"/>
-    <stop offset="0.66" stop-color="#b87c5e"/>
-    <stop offset="0.88" stop-color="#e2a15f"/>
-    <stop offset="1"    stop-color="#f2c07a"/>
+  <linearGradient id="wallG" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#12313a"/><stop offset="1" stop-color="#0a1f26"/>
   </linearGradient>
-  <radialGradient id="sunGlow" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0"   stop-color="#ffe7b0" stop-opacity="0.95"/>
-    <stop offset="0.45" stop-color="#f7b96a" stop-opacity="0.45"/>
-    <stop offset="1"   stop-color="#e79a52" stop-opacity="0"/>
+  <linearGradient id="moonSky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#091a28"/><stop offset="0.6" stop-color="#14323d"/>
+    <stop offset="1" stop-color="#2d5b5c"/>
+  </linearGradient>
+  <linearGradient id="moonG" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#cdf6ee"/><stop offset="1" stop-color="#4fbdb5"/>
+  </linearGradient>
+  <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#0d2230"/><stop offset="0.55" stop-color="#2b4a58"/>
+    <stop offset="0.8" stop-color="#7c6a62"/><stop offset="1" stop-color="#d79a5c"/>
+  </linearGradient>
+  <radialGradient id="bloomC" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#7fe3d6" stop-opacity="0.5"/>
+    <stop offset="1" stop-color="#7fe3d6" stop-opacity="0"/>
   </radialGradient>
-  <linearGradient id="stoneFace" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#f4e6cd"/>
-    <stop offset="1" stop-color="#d8c2a1"/>
-  </linearGradient>
-  <linearGradient id="stoneShade" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#d3bb98"/>
-    <stop offset="1" stop-color="#b59c7b"/>
-  </linearGradient>
-  <linearGradient id="roadGrad" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#6d5b46"/>
-    <stop offset="1" stop-color="#3b3026"/>
-  </linearGradient>
-
-  <linearGradient id="wallPaper" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0"   stop-color="#6d4b31"/>
-    <stop offset="0.5" stop-color="#8a6140"/>
-    <stop offset="1"   stop-color="#5d4029"/>
-  </linearGradient>
-  <linearGradient id="woodDark" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#5a3a22"/>
-    <stop offset="1" stop-color="#361f10"/>
-  </linearGradient>
-  <linearGradient id="woodDesk" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0"   stop-color="#7d4f2c"/>
-    <stop offset="0.5" stop-color="#96613a"/>
-    <stop offset="1"   stop-color="#6a4124"/>
-  </linearGradient>
-  <linearGradient id="paperGrad" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#fdf3dc"/>
-    <stop offset="1" stop-color="#e2cfa6"/>
-  </linearGradient>
-  <linearGradient id="paperCool" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#f0ecdd"/>
-    <stop offset="1" stop-color="#cfc6ad"/>
-  </linearGradient>
-  <radialGradient id="candleGlow" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0"   stop-color="#ffdfa0" stop-opacity="0.85"/>
-    <stop offset="0.5" stop-color="#f2ae5c" stop-opacity="0.28"/>
-    <stop offset="1"   stop-color="#e08a3c" stop-opacity="0"/>
+  <radialGradient id="bloomW" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#ffb45c" stop-opacity="0.72"/>
+    <stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/>
   </radialGradient>
-  <radialGradient id="fireGlow" cx="0.5" cy="0.6" r="0.5">
-    <stop offset="0"   stop-color="#ffc061" stop-opacity="0.9"/>
-    <stop offset="0.55" stop-color="#e8762f" stop-opacity="0.35"/>
-    <stop offset="1"   stop-color="#b8431c" stop-opacity="0"/>
+  <radialGradient id="bloomCand" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#ffd48a" stop-opacity="0.85"/>
+    <stop offset="1" stop-color="#ffb45c" stop-opacity="0"/>
   </radialGradient>
-  <linearGradient id="windowLight" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#9fb6cf"/>
-    <stop offset="1" stop-color="#d9c08c"/>
+  <linearGradient id="floorG" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#0e2a31"/><stop offset="1" stop-color="#040d10"/>
   </linearGradient>
-
-  <filter id="soften" x="-20%" y="-20%" width="140%" height="140%">
-    <feGaussianBlur stdDeviation="9"/>
-  </filter>
-  <filter id="softenLight" x="-20%" y="-20%" width="140%" height="140%">
-    <feGaussianBlur stdDeviation="3"/>
-  </filter>
-  <filter id="grain">
-    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" result="n"/>
-    <feColorMatrix type="saturate" values="0"/>
-    <feComponentTransfer><feFuncA type="linear" slope="0.12"/></feComponentTransfer>
-  </filter>
+  <linearGradient id="reflFade" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff" stop-opacity="0.34"/>
+    <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+  </linearGradient>
+  <mask id="reflM"><rect x="0" y="660" width="4000" height="240" fill="url(#reflFade)"/></mask>
+  <filter id="bl" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="16"/></filter>
 </defs>`;
 
-const GRAIN = `<rect width="1600" height="900" filter="url(#grain)" opacity="0.5" style="mix-blend-mode:overlay" pointer-events="none"/>`;
+/* small helpers ---------------------------------------------------*/
+const svg = (w, body) =>
+  `<svg viewBox="0 0 ${w} 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">${D}${body}</svg>`;
 
-/* =================================================================
-   SCENE: street — Pennsylvania Avenue outside the President's House
+/* a run of books for a shelf */
+const books = (x, y, n, seed) =>
+  Array.from({ length: n }, (_, i) => {
+    const h = 52 + ((i * 7 + seed * 5) % 18);
+    return `<rect x="${x + i * 23}" y="${y + (72 - h)}" width="17" height="${h}" fill="#0e2d34"/>`;
+  }).join('');
+
+/* ==================================================================
+   ACT 1, SCENE 1 — the street outside the President's House, dusk 1811
 ==================================================================*/
-SCENES.street = `
-<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-${DEFS}
-  <!-- sky -->
-  <rect width="1600" height="900" fill="url(#skyDusk)"/>
-  <circle cx="1180" cy="520" r="420" fill="url(#sunGlow)"/>
-  <circle cx="1180" cy="512" r="46" fill="#ffeec2" opacity="0.9" filter="url(#softenLight)"/>
-
-  <!-- soft clouds -->
-  <g opacity="0.5" filter="url(#soften)">
-    <ellipse cx="380" cy="190" rx="250" ry="42" fill="#c8a9a0"/>
-    <ellipse cx="620" cy="250" rx="300" ry="34" fill="#e0b394"/>
-    <ellipse cx="1280" cy="180" rx="270" ry="38" fill="#b59aa4"/>
-  </g>
-
-  <!-- distant treeline -->
-  <g opacity="0.75">
-    <path d="M0 560 q60 -40 120 -8 q70 -52 150 -10 q60 -44 130 -6 q40 -30 90 -4 l0 70 L0 612 Z" fill="#3c4438"/>
-    <path d="M1600 566 q-70 -44 -140 -6 q-64 -46 -140 -6 q-58 -36 -120 -2 l0 74 l400 0 Z" fill="#3c4438"/>
-  </g>
-
-  <!-- ===== the President's House ===== -->
-  <g>
-    <!-- main block -->
-    <rect x="430" y="330" width="740" height="250" fill="url(#stoneFace)"/>
-    <rect x="430" y="330" width="740" height="18" fill="#efe0c6"/>
-    <!-- roof balustrade -->
-    <rect x="418" y="312" width="764" height="22" fill="#e9d8ba"/>
-    <g fill="#dcc9a6">
-      ${Array.from({length: 24}, (_, i) => `<rect x="${430 + i*31}" y="288" width="11" height="26" rx="4"/>`).join('')}
+const street = {
+  back: svg(2880, `
+    <rect width="2880" height="900" fill="url(#skyG)"/>
+    <circle cx="2100" cy="640" r="520" fill="url(#bloomW)"/>
+    <circle cx="2100" cy="628" r="52" fill="#ffd9a0"/>
+    <g opacity="0.5" fill="#1b3340">
+      <ellipse cx="700" cy="250" rx="360" ry="40"/>
+      <ellipse cx="1500" cy="180" rx="300" ry="32"/>
+      <ellipse cx="2400" cy="290" rx="380" ry="36"/>
     </g>
-    <!-- north portico -->
-    <rect x="640" y="300" width="320" height="26" fill="#f3e5cc"/>
-    <path d="M636 300 L964 300 L940 262 L660 262 Z" fill="#efe0c4"/>
-    <path d="M660 262 L940 262 L940 300 L660 300 Z" fill="none"/>
+    <path d="M0 600 q140 -60 280 -16 q160 -66 330 -12 q150 -54 300 -8 q170 -50 340 -4
+             q150 -44 300 -2 q160 -40 320 -6 q150 -30 300 -2 q140 -26 280 -4 l0 350 L0 950 Z"
+          fill="#0a1b22"/>`),
+
+  mid: svg(4000, `
+    <!-- the President's House -->
     <g>
-      ${[0,1,2,3,4,5].map(i => {
-        const x = 668 + i*50;
-        return `<rect x="${x}" y="326" width="30" height="254" fill="url(#stoneFace)"/>
-                <rect x="${x+22}" y="326" width="8" height="254" fill="url(#stoneShade)" opacity="0.8"/>
-                <rect x="${x-5}" y="318" width="40" height="12" fill="#f5e8d0"/>
-                <rect x="${x-5}" y="572" width="40" height="12" fill="#e6d4b4"/>`;
-      }).join('')}
-    </g>
-    <!-- lit windows -->
-    <g>
-      ${[450,494,538,582, 992,1036,1080,1124].map((x,i) =>
-        `<rect x="${x}" y="376" width="30" height="58" rx="3" fill="${i===2||i===5?'#ffd98f':'#5d5a5e'}"/>
-         <rect x="${x-4}" y="370" width="38" height="8" fill="#e8d8b8"/>
-         <rect x="${x}" y="476" width="30" height="58" rx="3" fill="${i===1?'#ffcf7d':'#4f4c50'}"/>
-         <rect x="${x-4}" y="470" width="38" height="8" fill="#e8d8b8"/>`).join('')}
-    </g>
-    <!-- window warmth -->
-    <g filter="url(#soften)" opacity="0.55">
-      <circle cx="553" cy="405" r="40" fill="#ffca7a"/>
-      <circle cx="1051" cy="405" r="40" fill="#ffca7a"/>
-      <circle cx="509" cy="505" r="38" fill="#ffb964"/>
-    </g>
-    <!-- ground shadow -->
-    <rect x="430" y="574" width="740" height="16" fill="#8a7357" opacity="0.6"/>
-  </g>
-
-  <!-- iron fence -->
-  <g>
-    <rect x="0" y="596" width="1600" height="10" fill="#2b2a2c"/>
-    <g fill="#333134">
-      ${Array.from({length: 54}, (_, i) => `<rect x="${i*30}" y="600" width="6" height="52"/>`).join('')}
-    </g>
-    <rect x="0" y="646" width="1600" height="10" fill="#2b2a2c"/>
-  </g>
-
-  <!-- road -->
-  <rect x="0" y="652" width="1600" height="248" fill="url(#roadGrad)"/>
-  <g opacity="0.35" fill="#8f795d">
-    ${Array.from({length: 70}, (_, i) => {
-      const y = 672 + (i % 7) * 32;
-      const x = ((i * 137) % 1600);
-      const w = 30 + (i % 4) * 14;
-      return `<ellipse cx="${x}" cy="${y}" rx="${w/2}" ry="${5 + (i%3)*2}"/>`;
-    }).join('')}
-  </g>
-  <!-- wet ruts catching the light -->
-  <g opacity="0.3" fill="#e0ab6e" filter="url(#softenLight)">
-    <ellipse cx="1120" cy="740" rx="230" ry="16"/>
-    <ellipse cx="900" cy="830" rx="300" ry="20"/>
-  </g>
-
-  <!-- lamppost, left -->
-  <g>
-    <rect x="176" y="430" width="12" height="300" fill="#26262a"/>
-    <rect x="160" y="722" width="44" height="14" rx="4" fill="#26262a"/>
-    <path d="M160 432 l22 -26 l22 26 z" fill="#2e2d31"/>
-    <rect x="164" y="386" width="36" height="48" rx="4" fill="#3a3237"/>
-    <rect x="170" y="392" width="24" height="36" fill="#ffd489"/>
-    <circle cx="182" cy="410" r="66" fill="url(#candleGlow)"/>
-  </g>
-
-  <!-- newsboy, foreground right -->
-  <g id="newsboy">
-    <ellipse cx="1128" cy="846" rx="92" ry="16" fill="#241c14" opacity="0.5"/>
-    <!-- legs -->
-    <path d="M1100 760 l-14 84 l30 0 l10 -76 z" fill="#3f3629"/>
-    <path d="M1138 762 l16 82 l-30 0 l-6 -76 z" fill="#4a4030"/>
-    <rect x="1078" y="838" width="44" height="14" rx="5" fill="#241a12"/>
-    <rect x="1120" y="838" width="44" height="14" rx="5" fill="#241a12"/>
-    <!-- coat -->
-    <path d="M1090 648 q34 -18 66 0 l16 118 q-50 18 -98 0 z" fill="#6b5232"/>
-    <path d="M1122 640 l0 126" stroke="#4e3b23" stroke-width="4"/>
-    <!-- satchel -->
-    <path d="M1096 700 l68 0 l6 52 l-80 0 z" fill="#8a6136"/>
-    <path d="M1096 700 q26 -40 60 -44" stroke="#5e4224" stroke-width="7" fill="none"/>
-    <rect x="1104" y="712" width="54" height="12" fill="#f2e3c0"/>
-    <!-- arms: one raised with a paper -->
-    <path d="M1096 658 q-30 34 -34 74" stroke="#6b5232" stroke-width="18" stroke-linecap="round" fill="none"/>
-    <path d="M1152 654 q38 -22 48 -62" stroke="#6b5232" stroke-width="18" stroke-linecap="round" fill="none"/>
-    <g transform="rotate(-14 1204 588)">
-      <rect x="1170" y="556" width="72" height="56" fill="url(#paperGrad)"/>
-      <g fill="#7d6b4c">
-        <rect x="1178" y="566" width="56" height="7"/>
-        <rect x="1178" y="580" width="56" height="3"/>
-        <rect x="1178" y="588" width="56" height="3"/>
-        <rect x="1178" y="596" width="40" height="3"/>
+      <rect x="1180" y="212" width="1680" height="410" fill="#0d2830"/>
+      <rect x="1180" y="212" width="1680" height="10" fill="#4fd3c4" opacity="0.35"/>
+      <rect x="1164" y="196" width="1712" height="20" fill="#113640"/>
+      <!-- portico -->
+      <path d="M1840 196 L2360 196 L2300 108 L1900 108 Z" fill="#0f2f38"/>
+      <path d="M1900 108 L2300 108 L2300 118 L1900 118 Z" fill="#4fd3c4" opacity="0.3"/>
+      <g>${[0,1,2,3,4,5].map(i=>{const x=1880+i*82;
+        return `<rect x="${x}" y="196" width="46" height="426" fill="#0b242c"/>
+                <rect x="${x}" y="196" width="7" height="426" fill="#4fd3c4" opacity="0.4"/>`}).join('')}</g>
+      <!-- lit windows: the warm interior we are about to walk into -->
+      <g>${[1250,1370,1490,1610,1730, 2420,2540,2660,2780].map((x,i)=>{
+        const lit = [1,4,6,8].indexOf(i) >= 0;
+        return `<rect x="${x}" y="286" width="62" height="104" fill="${lit?'#ffc270':'#081c23'}"/>
+                <rect x="${x}" y="436" width="62" height="104" fill="${lit?'#08202a':'#ffb45c'}" opacity="${lit?1:0.75}"/>`}).join('')}</g>
+      <g filter="url(#bl)" opacity="0.5">
+        <circle cx="1401" cy="338" r="70" fill="#ffb45c"/>
+        <circle cx="2691" cy="338" r="70" fill="#ffb45c"/>
+        <circle cx="2451" cy="488" r="66" fill="#ffb45c"/>
+      </g>
+      <!-- steps up to the door -->
+      <g>
+        <rect x="2010" y="600" width="180" height="16" fill="#123840"/>
+        <rect x="1990" y="616" width="220" height="16" fill="#0f2f38"/>
+        <rect x="1970" y="632" width="260" height="18" fill="#0c262e"/>
+        <rect x="2062" y="470" width="76" height="132" fill="#061820"/>
+        <rect x="2062" y="470" width="8" height="132" fill="#ffb45c" opacity="0.55"/>
       </g>
     </g>
-    <!-- head -->
-    <circle cx="1124" cy="620" r="26" fill="#e0b184"/>
-    <path d="M1098 614 q26 -26 54 -6 l4 -8 q-30 -26 -62 2 z" fill="#3f3122"/>
-    <path d="M1094 606 q30 -30 62 -6 l10 6 q-8 -36 -42 -34 q-30 2 -34 30 z" fill="#4a3a26"/>
-    <ellipse cx="1150" cy="608" rx="20" ry="7" fill="#4a3a26"/>
-  </g>
 
-  <!-- stack of papers on a crate -->
-  <g>
-    <rect x="322" y="742" width="120" height="76" fill="#5b4227"/>
-    <rect x="322" y="742" width="120" height="10" fill="#6f5331"/>
+    <!-- iron fence -->
     <g>
-      <rect x="336" y="712" width="92" height="34" fill="url(#paperGrad)"/>
-      <rect x="342" y="704" width="92" height="34" fill="#f7ebd0"/>
-      <rect x="350" y="722" width="70" height="5" fill="#8a7757"/>
-      <rect x="350" y="732" width="52" height="3" fill="#8a7757"/>
+      <rect x="0" y="600" width="4000" height="8" fill="#061820"/>
+      <g fill="#081f26">${Array.from({length:100},(_,i)=>`<rect x="${i*40}" y="604" width="7" height="52"/>`).join('')}</g>
+      <rect x="0" y="650" width="4000" height="9" fill="#061820"/>
     </g>
-  </g>
 
-  <!-- foreground darkness -->
-  <path d="M0 900 L0 800 q400 70 800 44 q400 -26 800 -74 l0 130 Z" fill="#241a12" opacity="0.55" filter="url(#soften)"/>
-  ${GRAIN}
-</svg>`;
+    <!-- road -->
+    <rect x="0" y="659" width="4000" height="241" fill="url(#floorG)"/>
+    <g opacity="0.3" fill="#ffb45c" filter="url(#bl)">
+      <ellipse cx="2100" cy="760" rx="420" ry="26"/>
+      <ellipse cx="2600" cy="850" rx="360" ry="22"/>
+    </g>
+    <rect x="0" y="656" width="4000" height="4" fill="#2a6a6c" opacity="0.45"/>
 
-/* =================================================================
-   SCENE: study — the President's study, intact, autumn 1811
+    <!-- lamppost -->
+    <g>
+      <rect x="720" y="366" width="14" height="300" fill="#061820"/>
+      <rect x="700" y="658" width="54" height="14" fill="#061820"/>
+      <rect x="704" y="318" width="46" height="52" fill="#0b242c"/>
+      <rect x="712" y="326" width="30" height="38" fill="#ffd48a"/>
+      <circle cx="727" cy="345" r="120" fill="url(#bloomCand)"/>
+    </g>
+
+    <!-- newsboy -->
+    <g id="npc-newsboy">
+      <path d="M1418 560 l-10 100 l26 0 l8 -92 z" fill="#0a2229"/>
+      <path d="M1450 562 l14 98 l-26 0 l-6 -92 z" fill="#0d2b32"/>
+      <path d="M1412 448 q32 -16 60 0 l14 118 q-46 16 -88 0 z" fill="#14424a"/>
+      <path d="M1472 448 l14 118 q-10 4 -18 5 l-12 -120 z" fill="#ffb45c" opacity="0.4"/>
+      <path d="M1418 498 l60 0 l6 48 l-72 0 z" fill="#1b5a5f"/>
+      <path d="M1414 456 q-28 32 -30 70" stroke="#14424a" stroke-width="17" stroke-linecap="round" fill="none"/>
+      <path d="M1474 452 q34 -20 42 -56" stroke="#14424a" stroke-width="17" stroke-linecap="round" fill="none"/>
+      <g transform="rotate(-14 1524 386)">
+        <rect x="1492" y="356" width="66" height="52" fill="#f6ecd6"/>
+        <rect x="1498" y="366" width="52" height="7" fill="#5c5a52"/>
+        <rect x="1498" y="380" width="52" height="4" fill="#95928a"/>
+        <rect x="1498" y="390" width="36" height="4" fill="#95928a"/>
+      </g>
+      <circle cx="1444" cy="422" r="25" fill="#e8b98c"/>
+      <path d="M1466 414 l10 6 l-10 6 z" fill="#e8b98c"/>
+      <path d="M1419 412 q26 -28 52 -6 l0 -10 q-28 -22 -52 4 z" fill="#0d2b32"/>
+      <ellipse cx="1452" cy="406" rx="30" ry="9" fill="#0d2b32"/>
+      <circle cx="1444" cy="422" r="25" fill="#ffb45c" opacity="0.18"/>
+    </g>
+
+    <!-- crate of newspapers -->
+    <g>
+      <rect x="1200" y="586" width="120" height="74" fill="#0a2229"/>
+      <rect x="1200" y="586" width="120" height="6" fill="#2a6a6c" opacity="0.6"/>
+      <rect x="1214" y="556" width="92" height="32" fill="#e9e0c8"/>
+      <rect x="1226" y="566" width="68" height="5" fill="#6e6a60"/>
+    </g>
+
+    <!-- reflections -->
+    <g mask="url(#reflM)" opacity="0.4">
+      <g transform="translate(0,1318) scale(1,-1)">
+        <rect x="1180" y="212" width="1680" height="410" fill="#0a2229"/>
+        <rect x="720" y="366" width="14" height="292" fill="#0a2229"/>
+        <path d="M1412 448 q32 -16 60 0 l14 118 q-46 16 -88 0 z" fill="#0d3339"/>
+      </g>
+      <ellipse cx="727" cy="700" rx="90" ry="34" fill="#ffd48a" opacity="0.5" filter="url(#bl)"/>
+      <ellipse cx="2100" cy="700" rx="300" ry="40" fill="#ffb45c" opacity="0.35" filter="url(#bl)"/>
+    </g>`),
+
+  fg: svg(4800, `
+    <g fill="#02080a">
+      <rect x="0" y="0" width="150" height="900"/>
+      <rect x="4650" y="0" width="150" height="900"/>
+      <rect x="560" y="0" width="52" height="900"/>
+      <rect x="3180" y="0" width="64" height="900"/>
+      <path d="M0 862 L4800 862 L4800 900 L0 900 Z"/>
+    </g>
+    <g opacity="0.2">
+      <rect x="612" y="0" width="4" height="900" fill="#ffb45c"/>
+      <rect x="3176" y="0" width="4" height="900" fill="#4fd3c4"/>
+    </g>`)
+};
+
+/* ==================================================================
+   ACT 1, SCENE 2 — the President's study, intact, by candlelight
 ==================================================================*/
-SCENES.study = `
-<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-${DEFS}
-  <rect width="1600" height="900" fill="url(#wallPaper)"/>
-
-  <!-- wall panel moulding -->
-  <g fill="none" stroke="#54381f" stroke-width="5" opacity="0.7">
-    <rect x="70" y="120" width="300" height="330" rx="4"/>
-    <rect x="1230" y="120" width="300" height="330" rx="4"/>
-  </g>
-  <!-- chair rail + wainscot -->
-  <rect x="0" y="560" width="1600" height="20" fill="#4a3018"/>
-  <rect x="0" y="580" width="1600" height="120" fill="#5d3c20"/>
-  <g fill="none" stroke="#41290f" stroke-width="4" opacity="0.6">
-    ${Array.from({length: 13}, (_, i) => `<rect x="${20 + i*122}" y="596" width="96" height="86" rx="3"/>`).join('')}
-  </g>
-
-  <!-- ===== window, left ===== -->
-  <g>
-    <rect x="96" y="128" width="256" height="316" fill="#2b1c0e"/>
-    <rect x="110" y="142" width="228" height="288" fill="url(#windowLight)"/>
-    <g opacity="0.45" fill="#6b7f92">
-      <ellipse cx="180" cy="380" rx="110" ry="40"/>
-      <ellipse cx="300" cy="396" rx="90" ry="30"/>
+const study = {
+  back: svg(2880, `
+    <rect width="2880" height="900" fill="#0d2230"/>
+    <rect width="2880" height="900" fill="url(#moonSky)"/>
+    <circle cx="980" cy="210" r="46" fill="#dff8f2" opacity="0.9"/>
+    <circle cx="980" cy="210" r="140" fill="url(#bloomC)"/>
+    <g fill="#e8fbf6" opacity="0.5">
+      ${Array.from({length:40},(_,i)=>`<circle cx="${(i*263)%2880}" cy="${40+((i*97)%300)}" r="${1.5+(i%3)*0.8}"/>`).join('')}
     </g>
-    <g stroke="#2b1c0e" stroke-width="10">
-      <line x1="224" y1="142" x2="224" y2="430"/>
-      <line x1="110" y1="238" x2="338" y2="238"/>
-      <line x1="110" y1="334" x2="338" y2="334"/>
-    </g>
-    <rect x="86" y="436" width="276" height="18" fill="#3b2612"/>
-    <!-- drapes -->
-    <path d="M60 110 q40 180 14 350 l-52 0 l0 -350 z" fill="#7d2f2c"/>
-    <path d="M388 110 q-40 180 -14 350 l52 0 l0 -350 z" fill="#7d2f2c"/>
-    <path d="M60 110 q22 180 8 350" stroke="#5e1f1e" stroke-width="10" fill="none" opacity="0.7"/>
-    <path d="M388 110 q-22 180 -8 350" stroke="#5e1f1e" stroke-width="10" fill="none" opacity="0.7"/>
-    <rect x="16" y="96" width="412" height="24" rx="6" fill="#4a2f16"/>
-  </g>
-  <!-- light shaft from the window -->
-  <path d="M120 150 L360 150 L720 700 L300 700 Z" fill="#ffd9a0" opacity="0.1" filter="url(#soften)"/>
+    <path d="M0 620 q180 -80 360 -20 q200 -70 400 -14 q210 -60 420 -10 q200 -52 400 -8
+             q190 -44 380 -6 q180 -36 360 -4 q140 -26 280 -2 l0 340 L0 960 Z" fill="#0a2029"/>`),
 
-  <!-- ===== bookshelf, back centre-left ===== -->
-  <g>
-    <rect x="440" y="150" width="270" height="410" fill="url(#woodDark)"/>
-    <rect x="452" y="162" width="246" height="386" fill="#2a1a0c"/>
-    ${[0,1,2,3].map(r => {
-      const y = 178 + r*96;
-      const books = Array.from({length: 11}, (_, i) => {
-        const cols = ['#7b3b2c','#4c5a3a','#8a6a2c','#3d4a63','#6a2f3e','#57432a'];
-        const h = 62 + ((i*7 + r*5) % 18);
-        return `<rect x="${462 + i*21}" y="${y + (80-h)}" width="16" height="${h}" rx="2" fill="${cols[(i+r)%6]}"/>`;
-      }).join('');
-      return `${books}<rect x="452" y="${y+82}" width="246" height="10" fill="#4a2e16"/>`;
-    }).join('')}
-  </g>
+  mid: svg(4000, `
+    <!-- The wall is masked around the window, so the back layer's night
+         sky shows through and parallaxes as you walk. -->
+    <mask id="wallCut">
+      <rect width="4000" height="900" fill="#fff"/>
+      <rect x="576" y="148" width="268" height="308" fill="#000"/>
+    </mask>
+    <rect width="4000" height="900" fill="url(#wallG)" mask="url(#wallCut)"/>
 
-  <!-- ===== fireplace, right ===== -->
-  <g>
-    <rect x="1180" y="250" width="330" height="330" fill="#6f5b45"/>
-    <rect x="1164" y="234" width="362" height="30" rx="4" fill="#85705a"/>
-    <rect x="1230" y="330" width="230" height="250" rx="6" fill="#1b120a"/>
-    <!-- fire -->
+    <!-- ambient light, ON the wall: this is what keeps the room from
+         reading as a flat sheet of colour -->
+    <circle cx="710"  cy="330" r="460" fill="url(#bloomC)"/>
+    <circle cx="3090" cy="470" r="520" fill="url(#bloomW)"/>
+
+    <!-- ===== cold source: the window ===== -->
     <g>
-      <rect x="1262" y="520" width="166" height="20" rx="6" fill="#3a2a1c"/>
-      <path d="M1300 530 l100 -16 l6 14 l-108 12 z" fill="#4a3421"/>
-      <path d="M1345 430 q34 46 20 96 q-22 26 -56 4 q-24 -44 10 -70 q16 -12 26 -30 z" fill="#f08a34" opacity="0.92"/>
-      <path d="M1348 464 q20 32 10 62 q-14 16 -34 2 q-14 -28 8 -44 z" fill="#ffd067"/>
-      <circle cx="1345" cy="500" r="150" fill="url(#fireGlow)"/>
-    </g>
-    <!-- portrait above the mantel -->
-    <rect x="1256" y="90" width="180" height="128" rx="4" fill="#8a6a34"/>
-    <rect x="1268" y="102" width="156" height="104" fill="#3a3a44"/>
-    <circle cx="1346" cy="150" r="30" fill="#7a6a5c"/>
-    <path d="M1310 206 q36 -44 74 0 z" fill="#4a4450"/>
-  </g>
-
-  <!-- ===== rug ===== -->
-  <ellipse cx="800" cy="790" rx="560" ry="120" fill="#6d2f2f"/>
-  <ellipse cx="800" cy="790" rx="500" ry="98" fill="none" stroke="#a8763c" stroke-width="8" opacity="0.8"/>
-  <ellipse cx="800" cy="790" rx="380" ry="70" fill="#7d3a34"/>
-  <ellipse cx="800" cy="790" rx="300" ry="52" fill="none" stroke="#a8763c" stroke-width="5" opacity="0.6"/>
-
-  <!-- ===== globe, left of desk ===== -->
-  <g>
-    <path d="M330 790 l40 -96 l88 0 l40 96 z" fill="#4a2e16" opacity="0.9"/>
-    <rect x="388" y="676" width="52" height="30" fill="#4a2e16"/>
-    <circle cx="414" cy="606" r="76" fill="#5e7f86"/>
-    <path d="M356 572 q40 24 84 8 q34 -12 56 6 l-4 -22 q-40 -20 -76 -4 q-30 14 -56 -4 z" fill="#7d8f5c"/>
-    <path d="M362 646 q54 26 104 -2 q22 -12 40 -6 l-6 22 q-34 -6 -60 8 q-48 24 -86 0 z" fill="#7d8f5c"/>
-    <ellipse cx="392" cy="588" rx="24" ry="16" fill="#8d9a68"/>
-    <circle cx="414" cy="606" r="76" fill="none" stroke="#c8a35c" stroke-width="7"/>
-    <ellipse cx="414" cy="606" rx="86" ry="20" fill="none" stroke="#c8a35c" stroke-width="7"/>
-    <circle cx="390" cy="584" r="28" fill="#fff0c8" opacity="0.16"/>
-  </g>
-
-  <!-- ===== the desk ===== -->
-  <g>
-    <!-- chair behind -->
-    <g>
-      <rect x="752" y="470" width="110" height="130" rx="14" fill="#4a2e18"/>
-      <rect x="766" y="486" width="82" height="100" rx="10" fill="#6d3a32"/>
-    </g>
-    <!-- desk top -->
-    <path d="M520 636 L1104 636 L1140 700 L484 700 Z" fill="url(#woodDesk)"/>
-    <path d="M520 636 L1104 636 L1104 648 L520 648 Z" fill="#a8703f" opacity="0.7"/>
-    <rect x="512" y="700" width="600" height="18" fill="#5a3620"/>
-    <!-- legs -->
-    <path d="M530 718 l0 132 l30 0 l0 -132 z" fill="#4a2c16"/>
-    <path d="M1064 718 l0 132 l30 0 l0 -132 z" fill="#4a2c16"/>
-    <!-- blotter -->
-    <path d="M700 640 L1000 640 L1022 690 L680 690 Z" fill="#2f4a38"/>
-    <path d="M700 640 L1000 640 L1022 690 L680 690 Z" fill="none" stroke="#8a6a34" stroke-width="4"/>
-    <!-- inkwell + quill -->
-    <g>
-      <ellipse cx="1042" cy="646" rx="26" ry="10" fill="#2b2b33"/>
-      <path d="M1018 646 l8 -26 l32 0 l8 26 z" fill="#3c3c46"/>
-      <ellipse cx="1042" cy="620" rx="16" ry="6" fill="#15151b"/>
-      <path d="M1040 618 q26 -56 66 -84 q-16 44 -54 88 z" fill="#f4ead2"/>
-      <path d="M1046 604 q28 -38 52 -56" stroke="#c9b892" stroke-width="3" fill="none"/>
-    </g>
-    <!-- candlestick -->
-    <g>
-      <ellipse cx="596" cy="640" rx="28" ry="9" fill="#c8a35c"/>
-      <path d="M586 640 l4 -40 l12 0 l4 40 z" fill="#d8b368"/>
-      <rect x="588" y="566" width="16" height="38" rx="3" fill="#f4e9cd"/>
-      <path d="M596 540 q14 16 0 28 q-14 -12 0 -28 z" fill="#ffd66e"/>
-      <circle cx="596" cy="556" r="90" fill="url(#candleGlow)"/>
-    </g>
-  </g>
-
-  <!-- ============ HOTSPOT ITEM 1: sailor's letter, on the blotter ============ -->
-  <g id="item-letter">
-    <g transform="rotate(-7 790 662)">
-      <path d="M716 634 L868 634 L876 686 L708 686 Z" fill="url(#paperGrad)"/>
-      <path d="M716 634 L792 664 L868 634" fill="none" stroke="#bda878" stroke-width="3"/>
-      <g fill="#9a8760">
-        <rect x="726" y="670" width="70" height="4"/>
-        <rect x="726" y="678" width="46" height="3"/>
+      <rect x="560" y="132" width="300" height="340" fill="none" stroke="#04141a" stroke-width="16"/>
+      <rect x="576" y="352" width="268" height="104" fill="#3fa79f" opacity="0.3"/>
+      <g stroke="#04141a" stroke-width="14">
+        <line x1="710" y1="148" x2="710" y2="456"/>
+        <line x1="576" y1="252" x2="844" y2="252"/>
+        <line x1="576" y1="356" x2="844" y2="356"/>
       </g>
-      <circle cx="838" cy="676" r="13" fill="#9c2f2c"/>
-      <circle cx="838" cy="676" r="7" fill="#7d211f" opacity="0.7"/>
+      <rect x="544" y="460" width="332" height="18" fill="#04141a"/>
     </g>
-  </g>
+    <path d="M576 478 L844 478 L1010 660 L410 660 Z" fill="#7fe3d6" opacity="0.12"/>
 
-  <!-- ============ HOTSPOT ITEM 2: British trade notice, posted on the wall ============ -->
-  <g id="item-notice">
-    <g transform="rotate(2 880 330)">
-      <rect x="790" y="212" width="180" height="236" fill="url(#paperCool)"/>
-      <rect x="790" y="212" width="180" height="236" fill="none" stroke="#b3a78c" stroke-width="3"/>
-      <rect x="806" y="234" width="148" height="12" fill="#6b6352"/>
-      <g fill="#8f866f">
-        ${Array.from({length: 9}, (_, i) => `<rect x="806" y="${266 + i*16}" width="${148 - (i%3)*34}" height="5"/>`).join('')}
-      </g>
-      <circle cx="930" cy="414" r="20" fill="#2f3f6b"/>
-      <path d="M930 434 l-10 26 l20 0 z" fill="#2f3f6b"/>
-      <circle cx="880" cy="206" r="8" fill="#6b5a3a"/>
-    </g>
-  </g>
+    <!-- wainscot -->
+    <rect x="0" y="556" width="4000" height="104" fill="#0a1f26"/>
+    <rect x="0" y="552" width="4000" height="7" fill="#16414a"/>
 
-  <!-- ============ HOTSPOT ITEM 3: frontier dispatch, rolled, leaning by the globe ============ -->
-  <g id="item-dispatch">
-    <g transform="rotate(-16 520 700)">
-      <rect x="486" y="628" width="44" height="150" rx="21" fill="#e6d2a6"/>
-      <rect x="486" y="628" width="16" height="150" fill="#cdb684" opacity="0.8"/>
-      <ellipse cx="508" cy="630" rx="22" ry="8" fill="#f6ecd2"/>
-      <ellipse cx="508" cy="630" rx="11" ry="4" fill="#c4ab78"/>
-      <rect x="480" y="690" width="56" height="16" rx="4" fill="#8a2f2c"/>
-      <path d="M534 700 q26 14 18 40" stroke="#8a2f2c" stroke-width="7" fill="none"/>
-    </g>
-  </g>
-
-  <!-- ============ HOTSPOT ITEM 4: War Hawk speech notes, on the lectern ============ -->
-  <g id="item-speech">
+    <!-- ===== globe, rim-lit by the window ===== -->
     <g>
-      <!-- lectern -->
-      <path d="M1064 780 l28 -140 l64 0 l28 140 z" fill="#4a2c16"/>
-      <path d="M1076 640 L1172 640 L1186 604 L1062 604 Z" fill="#6a4124"/>
-      <!-- the notes -->
-      <g transform="rotate(-4 1124 600)">
-        <path d="M1074 578 L1178 570 L1184 612 L1078 620 Z" fill="#fdf4dd"/>
-        <path d="M1068 586 L1172 578 L1178 620 L1072 628 Z" fill="url(#paperGrad)"/>
-        <g fill="#8a7551">
-          <rect x="1082" y="592" width="76" height="6"/>
-          <rect x="1082" y="604" width="60" height="4"/>
-          <rect x="1082" y="612" width="70" height="4"/>
-        </g>
-        <path d="M1150 588 q18 -6 22 8" stroke="#9c2f2c" stroke-width="4" fill="none"/>
-      </g>
+      <circle cx="1020" cy="512" r="62" fill="#0e2d34"/>
+      <path d="M1020 450 a62 62 0 0 0 0 124 z" fill="#14424a"/>
+      <circle cx="1020" cy="512" r="62" fill="none" stroke="#2f7d78" stroke-width="5"/>
+      <path d="M998 466 q26 16 50 4" stroke="#3f9b8f" stroke-width="7" fill="none"/>
+      <path d="M978 540 q44 20 84 -2" stroke="#3f9b8f" stroke-width="7" fill="none"/>
+      <path d="M980 574 l40 -8 l40 8 l0 86 l-80 0 z" fill="#061820"/>
+      <rect x="958" y="450" width="6" height="124" fill="#7fe3d6" opacity="0.3"/>
     </g>
-  </g>
 
-  <!-- warm pools of light on top of everything -->
-  <g filter="url(#soften)" opacity="0.35" style="mix-blend-mode:screen">
-    <ellipse cx="596" cy="620" rx="190" ry="130" fill="#ffb861"/>
-    <ellipse cx="1340" cy="500" rx="200" ry="170" fill="#ff8f42"/>
-  </g>
-  ${GRAIN}
-</svg>`;
+    <!-- ===== ITEM 3: rolled dispatch leaning against the globe stand ===== -->
+    <g transform="rotate(-15 900 610)">
+      <rect x="886" y="552" width="30" height="106" rx="15" fill="#ece0c0"/>
+      <rect x="886" y="552" width="10" height="106" fill="#c4b795"/>
+      <rect x="913" y="552" width="4" height="106" fill="#bff3ea" opacity="0.7"/>
+      <ellipse cx="901" cy="554" rx="15" ry="6" fill="#f6ecd6"/>
+      <rect x="880" y="596" width="42" height="12" fill="#d94f3d"/>
+      <path d="M922 602 q18 9 14 27" stroke="#d94f3d" stroke-width="6" fill="none"/>
+    </g>
+
+    <!-- ===== bookshelf ===== -->
+    <g>
+      <rect x="1240" y="180" width="300" height="380" fill="#061a20"/>
+      <rect x="1240" y="180" width="8" height="380" fill="#4fd3c4" opacity="0.5"/>
+      ${[0,1,2,3].map(r=>{const y=200+r*92;return books(1258,y,11,r)+`<rect x="1248" y="${y+74}" width="284" height="8" fill="#123840"/>`}).join('')}
+    </g>
+
+    <!-- ===== ITEM 2: the Orders in Council, pinned to the wall ===== -->
+    <g transform="rotate(2 1640 344)">
+      <rect x="1560" y="240" width="160" height="212" fill="#eae6d3"/>
+      <rect x="1560" y="240" width="6" height="212" fill="#bff3ea"/>
+      <rect x="1576" y="262" width="128" height="11" fill="#3f4a55"/>
+      ${Array.from({length:9},(_,i)=>`<rect x="1576" y="${290+i*15}" width="${128-(i%3)*30}" height="4" fill="#8b9199"/>`).join('')}
+      <circle cx="1682" cy="422" r="17" fill="#2f5f8f"/>
+      <path d="M1682 439 l-9 24 l18 0 z" fill="#2f5f8f"/>
+      <circle cx="1640" cy="236" r="7" fill="#1b5a5f"/>
+    </g>
+
+    <!-- ===== the desk ===== -->
+    <g>
+      <!-- chair -->
+      <rect x="2260" y="430" width="16" height="230" fill="#061820"/>
+      <rect x="2200" y="430" width="120" height="16" fill="#0a2229"/>
+      <!-- candle, the warm pool that lights the letter -->
+      <circle cx="2062" cy="556" r="150" fill="url(#bloomCand)"/>
+      <rect x="2054" y="520" width="18" height="52" fill="#f6ecd6"/>
+      <path d="M2063 492 q15 17 0 30 q-15 -13 0 -30 z" fill="#ffd48a"/>
+      <ellipse cx="2063" cy="586" rx="30" ry="9" fill="#123840"/>
+      <!-- desk body -->
+      <rect x="1980" y="590" width="620" height="20" fill="#0d2b32"/>
+      <rect x="1980" y="590" width="620" height="6" fill="#8fe8dc" opacity="0.45"/>
+      <rect x="2594" y="590" width="6" height="130" fill="#ffb45c" opacity="0.4"/>
+      <rect x="2010" y="610" width="28" height="112" fill="#061a20"/>
+      <rect x="2560" y="610" width="28" height="112" fill="#061a20"/>
+      <rect x="2120" y="580" width="260" height="12" fill="#14403a"/>
+    </g>
+
+    <!-- ===== ITEM 1: the sailor's letter, on the blotter ===== -->
+    <g transform="rotate(-6 2250 574)">
+      <path d="M2176 550 L2324 550 L2330 586 L2170 586 Z" fill="#f6ecd6"/>
+      <path d="M2176 550 L2250 574 L2324 550" fill="none" stroke="#c9bb9a" stroke-width="3"/>
+      <circle cx="2298" cy="578" r="11" fill="#d94f3d"/>
+    </g>
+
+    <!-- ===== ITEM 4 container: the locked drawer ===== -->
+    <g id="drawer">
+      <rect x="2380" y="614" width="190" height="96" fill="#0a2229"/>
+      <rect x="2380" y="614" width="190" height="5" fill="#2a6a6c" opacity="0.7"/>
+      <rect x="2394" y="628" width="162" height="68" fill="#071e24"/>
+      <circle cx="2475" cy="662" r="13" fill="#0d2b32"/>
+      <circle cx="2475" cy="662" r="13" fill="none" stroke="#ffb45c" stroke-width="3" opacity="0.65"/>
+      <rect x="2468" y="662" width="14" height="18" fill="#ffb45c" opacity="0.5"/>
+    </g>
+
+    <!-- ===== warm source: the fireplace ===== -->
+    <g>
+      <rect x="2900" y="240" width="380" height="320" fill="#0a2229"/>
+      <rect x="2882" y="224" width="416" height="26" fill="#12343c"/>
+      <rect x="2900" y="240" width="380" height="6" fill="#ffb45c" opacity="0.45"/>
+      <rect x="2960" y="330" width="260" height="230" fill="#030c10"/>
+      <path d="M3090 420 q38 54 20 112 q-26 30 -62 4 q-28 -52 12 -80 q18 -14 30 -36 z" fill="#ff9e42"/>
+      <path d="M3092 462 q22 36 10 68 q-16 18 -36 2 q-15 -32 10 -48 z" fill="#ffd88a"/>
+      <path d="M2976 552 l228 0 l0 12 l-228 0 z" fill="#1b2026"/>
+      <!-- portrait over the mantel -->
+      <rect x="3010" y="76" width="176" height="130" fill="#0f2f38"/>
+      <rect x="3024" y="90" width="148" height="102" fill="#061a20"/>
+      <circle cx="3098" cy="132" r="26" fill="#1b4a52"/>
+      <path d="M3066 186 q32 -40 66 0 z" fill="#164048"/>
+      <rect x="3186" y="76" width="5" height="130" fill="#ffb45c" opacity="0.5"/>
+    </g>
+
+    <!-- lectern, scenery -->
+    <g>
+      <path d="M2770 720 l22 -112 l54 0 l22 112 z" fill="#061a20"/>
+      <path d="M2846 608 l22 112 l-13 0 l-22 -112 z" fill="#ffb45c" opacity="0.35"/>
+      <path d="M2782 608 L2856 608 L2868 578 L2770 578 Z" fill="#0d2b32"/>
+      <path d="M2856 608 L2868 578 L2860 578 L2848 608 Z" fill="#ffb45c" opacity="0.45"/>
+    </g>
+
+    <!-- doorway, far right -->
+    <g>
+      <rect x="3540" y="210" width="240" height="450" fill="#04121a"/>
+      <path d="M3540 260 q120 -90 240 0 l0 -50 l-240 0 z" fill="#0a1f26"/>
+      <rect x="3540" y="210" width="7" height="450" fill="#4fd3c4" opacity="0.28"/>
+      <rect x="3773" y="210" width="7" height="450" fill="#ffb45c" opacity="0.28"/>
+    </g>
+
+    <!-- floor -->
+    <rect x="0" y="659" width="4000" height="241" fill="url(#floorG)"/>
+    <g>
+      <ellipse cx="2200" cy="790" rx="820" ry="104" fill="#13333a"/>
+      <ellipse cx="2200" cy="790" rx="740" ry="86" fill="none" stroke="#c98a3c" stroke-width="6" opacity="0.5"/>
+      <ellipse cx="2200" cy="790" rx="520" ry="60" fill="#173d42"/>
+      <ellipse cx="2200" cy="790" rx="430" ry="46" fill="none" stroke="#c98a3c" stroke-width="4" opacity="0.4"/>
+    </g>
+    <g mask="url(#reflM)" opacity="0.48">
+      <g transform="translate(0,1318) scale(1,-1)">
+        <rect x="1980" y="590" width="620" height="20" fill="#0d2b32"/>
+        <rect x="2010" y="610" width="28" height="112" fill="#0a2229"/>
+        <rect x="2560" y="610" width="28" height="112" fill="#0a2229"/>
+        <rect x="2960" y="330" width="260" height="230" fill="#2e1608"/>
+        <path d="M2770 720 l22 -112 l54 0 l22 112 z" fill="#0a2229"/>
+        <rect x="1240" y="180" width="300" height="380" fill="#081f26"/>
+      </g>
+      <ellipse cx="3090" cy="700" rx="200" ry="56" fill="#ff9e42" opacity="0.55" filter="url(#bl)"/>
+      <ellipse cx="710"  cy="700" rx="190" ry="52" fill="#7fe3d6" opacity="0.45" filter="url(#bl)"/>
+      <ellipse cx="2063" cy="694" rx="96"  ry="38" fill="#ffd48a" opacity="0.6"  filter="url(#bl)"/>
+    </g>
+    <rect x="0" y="656" width="4000" height="4" fill="#2a6a6c" opacity="0.5"/>`),
+
+  fg: svg(4800, `
+    <g fill="#02080a">
+      <rect x="0" y="0" width="160" height="900"/>
+      <path d="M160 0 L160 900 L196 900 L196 250 q54 -104 170 -112 l0 -138 z"/>
+      <rect x="4640" y="0" width="160" height="900"/>
+      <path d="M4640 0 L4640 900 L4604 900 L4604 280 q-50 -92 -160 -104 l0 -176 z"/>
+      <rect x="2260" y="0" width="60" height="900"/>
+      <path d="M2320 0 L2320 210 q-40 -70 -120 -84 l0 -126 z"/>
+      <path d="M0 864 L4800 864 L4800 900 L0 900 Z"/>
+    </g>
+    <g opacity="0.22">
+      <rect x="196" y="0" width="4" height="900" fill="#4fd3c4"/>
+      <rect x="2320" y="0" width="4" height="900" fill="#ffb45c"/>
+      <rect x="4600" y="0" width="4" height="900" fill="#ffb45c"/>
+    </g>`)
+};
+
+const SCENES = { street, study };
