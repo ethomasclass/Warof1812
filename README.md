@@ -4,10 +4,26 @@ A walkable point-and-click lesson for 9th grade US History. Students play a
 printer's apprentice at the *National Intelligencer*, sent to find the real
 causes of the war. No timer, no score, no fail states.
 
-**Status: Act One vertical slice.** The street and the two rooms are complete
-and playable, with all four reasons and the drawer puzzle. Act Two (the same
-street in ruins and these rooms burned out, covering the impacts) is not built
-yet.
+**Status: both acts playable end to end.** Act One (June 18, 1812, the night war
+was declared) and Act Two (spring 1815, the same places burned out) run in one
+sitting, with eight pieces of evidence, two puzzles and twenty ambient objects.
+
+### Structure
+
+| | Act One | Act Two |
+|---|---|---|
+| When | night of June 18, 1812 | spring 1815 |
+| Light | dark, warm lamplight | grey morning, cold |
+| Question | *Why did we do this?* | *The treaty changed nothing. So what actually changed?* |
+| Outside | the avenue, bonfires, a newsboy | the same avenue, scaffolding, a stonemason |
+| Inside | the office and cabinet room | the same rooms, gutted |
+| Puzzle | a three-dial drawer lock | reassembling the torn treaty |
+
+Every fixture in Act Two sits at the same world x as its Act One counterpart, so
+walking through the ruin is a comparison rather than a new room. The Argand lamp
+is a puddle of brass at the same spot on the desk. The charts left clean
+rectangles on a scorched wall. Where the Washington portrait hung there is a
+bare iron hook, which pays off an Act One caption.
 
 ### When it is set
 
@@ -27,6 +43,29 @@ answer. It also lets the opening establish the stakes honestly:
 Sources: the [US House history office](https://history.house.gov/Records-and-Research/Listing/lfp_012/)
 and the [National Park Service](https://www.nps.gov/articles/mr-madison-s-war.htm)
 on the declaration and the debates.
+
+## Act Two's history
+
+Two facts here are almost always told wrong, so both are stated carefully:
+
+- **The Battle of New Orleans.** British losses were 291 killed, 1,262 wounded
+  and 484 missing (about 2,000); American losses were 13 killed, 39 wounded and
+  19 missing (about 70). It was fought on January 8, 1815 &mdash; two weeks
+  *after* the treaty was signed, but before the news crossed the Atlantic.
+- **Article 9 of the Treaty of Ghent.** The treaty did not ignore Native
+  nations. It promised the United States would restore "all the possessions,
+  rights, and privileges which they may have enjoyed&hellip; in 1811". That
+  promise was simply never kept, and there was no way to enforce it. This is a
+  sharper lesson than "the treaty said nothing", because it is about what a
+  treaty is worth without power behind it.
+
+The closing argument the room builds toward: every reason America went to war in
+1812 either fixed itself for unrelated reasons (impressment and trade ended
+because Britain's war with France ended) or was never fixed at all. On paper the
+war moved nothing &mdash; which is what makes the real question worth asking.
+
+Sources: [Britannica](https://www.britannica.com/event/Battle-of-New-Orleans-United-States-United-Kingdom-1815)
+on New Orleans; the [Senate's transcript of the Treaty of Ghent](https://www.senate.gov/about/powers-procedures/treaties/treaty-of-ghent/transcript-treaty-of-ghent.htm).
 
 ## Reading level
 
@@ -94,9 +133,9 @@ swing.
 opens it in the same click. Nobody has to walk somewhere before they are
 allowed to look at something. Arrow keys also walk, for keyboard users.
 
-### The puzzle
+### The puzzles
 
-Two rules keep a puzzle classroom-safe, and both are enforced in the design:
+Two rules keep a puzzle classroom-safe, and both are enforced in both puzzles:
 
 1. **The answer is always in the room.** The drawer's three digits come from
    three documents the student has already read (six sailors, Article 3,
@@ -107,6 +146,12 @@ Two rules keep a puzzle classroom-safe, and both are enforced in the design:
 2. **It is always skippable, visibly and without penalty.** "Ask the editor"
    just solves it. The handful of students who would burn eight minutes get
    moved along; everyone else never touches it.
+
+Act Two's puzzle is a **sequence**: the treaty comes out of the fire in four
+torn pieces and you rebuild the sentence by reading it. Each piece is checked as
+it is clicked, so nobody can get stuck holding a wrong whole answer, and the
+reassembled sentence *is* the thesis &mdash; everything goes back exactly where
+it was before the war.
 
 No inventory, and nothing combines with anything. That is where adventure
 games become unteachable.

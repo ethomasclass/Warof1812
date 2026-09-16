@@ -35,7 +35,8 @@
     btnStart: $('btn-start'), btnHelp: $('btn-help'), btnNotebook: $('btn-notebook'),
     scrim: $('scrim'), evMount: $('evidence-mount'), mClose: $('modal-close'),
     caption: $('caption'), captionText: $('caption-text'),
-    pScrim: $('puzzle-scrim'), pNotebook: $('puzzle-notebook'), pPrompt: $('puzzle-prompt'), pRiddle: $('puzzle-riddle'),
+    pScrim: $('puzzle-scrim'), pNotebook: $('puzzle-notebook'),
+    pTag: $('puzzle-tag'), pHeading: $('puzzle-heading'), pPrompt: $('puzzle-prompt'), pRiddle: $('puzzle-riddle'),
     dials: $('dials'), pMsg: $('puzzle-msg'), pTry: $('puzzle-try'), pSkip: $('puzzle-skip'),
     nScrim: $('notebook-scrim'), nBody: $('notebook-body'), nClose: $('notebook-close'),
     cKicker: $('card-kicker'), cHeading: $('card-heading'), cText: $('card-text'), cNext: $('card-next')
@@ -52,6 +53,7 @@
     found: [],             // ids of evidence collected, in order
     notebook: [],          // { tag, heading, record }
     chainIndex: 0,
+    seqIndex: 0,
     dialogueIdx: 0,
     activeSpot: null,
     cardNext: null,
@@ -326,16 +328,70 @@
 
   function openPuzzle(spot) {
     const p = spot.puzzle;
-    dialValues = p.slots.map(() => 0);
+    el.pTag.innerHTML = p.tag;
+    el.pHeading.innerHTML = p.title;
     el.pPrompt.innerHTML = p.prompt;
     el.pRiddle.innerHTML = p.riddle;
     el.pSkip.textContent = p.skip;
     el.pMsg.innerHTML = '&nbsp;';
-    renderDials(p);
+    if (p.kind === 'sequence') {
+      el.pTry.hidden = true;
+      renderSequence(p);
+    } else {
+      el.pTry.hidden = false;
+      dialValues = p.slots.map(() => 0);
+      renderDials(p);
+    }
     el.pScrim.hidden = false;
   }
 
+  /* ----------------------------------------------------------------
+     Sequence puzzle: rebuild a torn document by reading it. Each piece
+     is checked as it is clicked, so there is no submit step and no way
+     to be stuck holding a wrong whole answer. Still skippable.
+  -----------------------------------------------------------------*/
+  function renderSequence(p) {
+    state.seqIndex = 0;
+    // a fixed shuffle, so the puzzle is the same for every student
+    const order = [2, 0, 3, 1];
+    el.dials.className = 'seq-wrap';
+    el.dials.innerHTML =
+      '<div class="seq-target" id="seq-target"><span class="seq-lead">' + p.blank + '</span></div>' +
+      '<div class="seq-pieces" id="seq-pieces">' +
+        order.map(i => '<button class="seq-piece" type="button" data-i="' + i + '">' +
+                       p.pieces[i] + '</button>').join('') +
+      '</div>';
+
+    el.dials.querySelectorAll('.seq-piece').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const i = Number(btn.dataset.i);
+        if (i !== state.seqIndex) {
+          el.pMsg.innerHTML = p.wrong + ' <span class="puzzle-help">' + p.help + '</span>';
+          btn.classList.remove('is-wrong');
+          void btn.offsetWidth;
+          btn.classList.add('is-wrong');
+          return;
+        }
+        const target = document.getElementById('seq-target');
+        const lead = target.querySelector('.seq-lead');
+        if (lead) lead.remove();
+        const span = document.createElement('span');
+        span.className = 'seq-placed';
+        span.textContent = (state.seqIndex ? ' ' : '') + p.pieces[i];
+        target.appendChild(span);
+        btn.disabled = true;
+        state.seqIndex++;
+        el.pMsg.innerHTML = '&nbsp;';
+        if (state.seqIndex >= p.pieces.length) {
+          el.pMsg.innerHTML = '<span class="puzzle-done">' + p.done + '</span>';
+          setTimeout(() => solvePuzzle(state.activeSpot), 2600);
+        }
+      });
+    });
+  }
+
   function renderDials(p) {
+    el.dials.className = 'dials';
     el.dials.innerHTML = '';
     p.slots.forEach((slot, i) => {
       const wrap = document.createElement('div');
@@ -428,15 +484,23 @@
     el.cNext.focus({ preventScroll: true });
   }
 
+  function firstSceneOf(act) { return Object.keys(act.scenes)[0]; }
+
   function endAct() {
+    showCard(CONTENT[ACT_ORDER[state.act]].exit, nextAct);
+  }
+
+  function nextAct() {
+    state.act++;
     const act = CONTENT[ACT_ORDER[state.act]];
-    showCard(act.exit, showRecap);
+    if (!act) { showRecap(); return; }
+    showCard(act.intro, () => gotoScene(firstSceneOf(act)));
   }
 
   function showRecap() {
     showCard({
       kicker: 'For your worksheet',
-      heading: 'Four Reasons, One Night',
+      heading: 'Everything You Wrote Down',
       text: '<ol class="recap">' +
         state.notebook.map(n => '<li>' + n.record + '</li>').join('') + '</ol>',
       button: 'Play again'
@@ -458,7 +522,8 @@
     state.act = 0;
     state.notebook = [];
     el.actor.innerHTML = ACTOR_SVG;
-    showCard(CONTENT[ACT_ORDER[0]].intro, () => gotoScene('street'));
+    const act = CONTENT[ACT_ORDER[0]];
+    showCard(act.intro, () => gotoScene(firstSceneOf(act)));
   });
 
   // click the floor to walk there

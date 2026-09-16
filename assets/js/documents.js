@@ -15,6 +15,7 @@
    handled. Each polygon is hand-jittered rather than random, so the
    same document tears the same way every time. */
 const TORN = {
+  treaty:   'polygon(1% 1%, 99% 0.6%, 98.6% 26%, 99.4% 54%, 97% 78%, 99% 99%, 62% 97.6%, 28% 99.4%, 2% 98%, 0.6% 70%, 2% 44%, 0.4% 20%)',
   letter:   'polygon(0.6% 1%, 99% 0%, 99.4% 12%, 98.2% 30%, 99.5% 52%, 98% 74%, 99.2% 99%, 60% 98.4%, 32% 99.6%, 1% 98.8%, 0.2% 66%, 1.4% 40%, 0% 18%)',
   dispatch: 'polygon(2% 0.6%, 97% 1.4%, 99% 20%, 97.6% 44%, 99.4% 68%, 97.2% 88%, 98% 99%, 44% 98%, 3% 99.2%, 1% 74%, 2.4% 50%, 0.8% 26%)',
   notes:    'polygon(1% 2%, 46% 0.4%, 99% 1.6%, 98% 34%, 99.4% 62%, 97.8% 98%, 52% 99.4%, 2% 98%, 0.6% 60%, 1.8% 28%)'
@@ -93,6 +94,36 @@ const PAPERS = {
         <p class="hand hand-place">${d.place}</p>
         ${d.lines.map(l => `<p class="hand hand-fast">${l}</p>`).join('')}
         <p class="hand hand-sign">${d.sign}</p>
+      </div>`;
+  },
+
+  /* a merchant's ledger: ruled columns, two years side by side */
+  ledger(d) {
+    return `
+      ${foxing([[10,14,22,0.4],[80,64,20,0.35]])}
+      <div class="paper-inner">
+        <p class="ledger-head">${d.head}</p>
+        <table class="ledger-table">
+          <tr><th></th><th>${d.colA}</th><th>${d.colB}</th></tr>
+          ${d.rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}
+        </table>
+        <p class="ledger-note">${d.note}</p>
+      </div>`;
+  },
+
+  /* the treaty: singed at one edge, formal, and much shorter than
+     anyone expects it to be */
+  treaty(d) {
+    return `
+      <span class="char-edge"></span>
+      ${foxing([[14,12,26,0.4],[72,80,24,0.3]])}
+      <div class="paper-inner">
+        <p class="bs-kicker">${d.kicker}</p>
+        <h3 class="bs-title">${d.title}</h3>
+        <span class="bs-rule"></span>
+        <p class="treaty-article">${d.article}</p>
+        ${d.lines.map(l => `<p class="bs-body treaty-body">${l}</p>`).join('')}
+        <p class="bs-foot">${d.foot}</p>
       </div>`;
   },
 

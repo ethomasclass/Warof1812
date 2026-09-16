@@ -38,6 +38,25 @@ const D = `
   <linearGradient id="wallG" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#12313a"/><stop offset="1" stop-color="#0a1f26"/>
   </linearGradient>
+  <linearGradient id="daySky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#8ca4b2"/><stop offset="0.5" stop-color="#b9c4c4"/>
+    <stop offset="1" stop-color="#dcd9cc"/>
+  </linearGradient>
+  <linearGradient id="ashWall" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#2a2b2c"/><stop offset="0.55" stop-color="#3b3a36"/>
+    <stop offset="1" stop-color="#232322"/>
+  </linearGradient>
+  <linearGradient id="sootStone" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#1a1817"/><stop offset="0.45" stop-color="#4a4640"/>
+    <stop offset="1" stop-color="#6b6559"/>
+  </linearGradient>
+  <linearGradient id="ashFloor" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3a3834"/><stop offset="1" stop-color="#181817"/>
+  </linearGradient>
+  <radialGradient id="bloomDay" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#e8ecec" stop-opacity="0.5"/>
+    <stop offset="1" stop-color="#e8ecec" stop-opacity="0"/>
+  </radialGradient>
   <linearGradient id="moonSky" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#091a28"/><stop offset="0.6" stop-color="#14323d"/>
     <stop offset="1" stop-color="#2d5b5c"/>
@@ -129,6 +148,29 @@ const klismos = (x, base, flip) => `
     <path d="M56 -86 q-14 -52 -6 -90" stroke="#0a2229" stroke-width="10" fill="none"/>
     <path d="M-12 -178 q34 -16 66 -2 l-3 16 q-30 -12 -60 2 z" fill="#1b5a5f"/>
   </g>`;
+
+/* The fire came out of every window and ran up the stone above it.
+   That black tongue over each opening is the single most recognisable
+   thing about the ruin, so it gets its own helper. */
+const scorch = (x, y, w, h) => `
+  <path d="M${x} ${y} q${w * 0.18} -${h * 0.74} ${w * 0.34} -${h * 0.3}
+           q${w * 0.1} -${h * 0.5} ${w * 0.22} -${h * 0.1}
+           q${w * 0.16} -${h * 0.62} ${w * 0.3} ${h * 0.06}
+           q${w * 0.1} -${h * 0.3} ${w * 0.14} ${h * 0.34}
+           l0 ${h * 0.5} l-${w} 0 z"
+        fill="#131211" opacity="0.88"/>`;
+
+/* a scaffolding bay: poles, ledgers, a plank */
+const scaffold = (x, base, h) => `
+  <g stroke="#6b5a3e" stroke-width="11" fill="none" opacity="0.95">
+    <line x1="${x}" y1="${base}" x2="${x}" y2="${base - h}"/>
+    <line x1="${x + 210}" y1="${base}" x2="${x + 210}" y2="${base - h}"/>
+    <line x1="${x - 14}" y1="${base - h * 0.38}" x2="${x + 224}" y2="${base - h * 0.38}"/>
+    <line x1="${x - 14}" y1="${base - h * 0.74}" x2="${x + 224}" y2="${base - h * 0.74}"/>
+    <line x1="${x}" y1="${base - h * 0.38}" x2="${x + 210}" y2="${base - h * 0.74}"/>
+  </g>
+  <rect x="${x - 22}" y="${base - h * 0.4}" width="254" height="14" fill="#8a7448"/>
+  <rect x="${x - 22}" y="${base - h * 0.76}" width="254" height="14" fill="#7d6840"/>`;
 
 /* wall sconce, two candles, feeble next to an Argand lamp */
 const sconce = (x, y) => `
@@ -710,4 +752,419 @@ const study = {
     </g>`)
 };
 
-const SCENES = { street, study };
+
+/* ==================================================================
+   ACT 2, SCENE 1 — the same street, spring 1815. Same camera as the
+   night scene, so the ruin lands by comparison rather than by caption.
+==================================================================*/
+const ruins = {
+  back: svg(2880, `
+    <rect width="2880" height="900" fill="url(#daySky)"/>
+    <circle cx="2100" cy="300" r="520" fill="url(#bloomDay)"/>
+    <g opacity="0.5" fill="#a9b3b6">
+      <ellipse cx="620"  cy="190" rx="420" ry="44"/>
+      <ellipse cx="1620" cy="140" rx="360" ry="34"/>
+      <ellipse cx="2500" cy="236" rx="420" ry="40"/>
+    </g>
+    <path d="M0 628 q170 -46 340 -12 q180 -44 360 -8 q170 -38 340 -6 q190 -34 380 -2
+             q170 -30 340 0 q180 -24 360 2 q160 -16 320 4 q140 -12 280 4 l0 330 L0 980 Z"
+          fill="#6f7a73"/>`),
+
+  mid: svg(4000, `
+    <!-- =========================================================
+         THE RUIN. The walls stood; everything inside did not.
+    ========================================================== -->
+    <g>
+      <rect x="1420" y="0" width="2040" height="660" fill="url(#sootStone)"/>
+      <rect x="1420" y="556" width="2040" height="104" fill="#3d3a34"/>
+      ${Array.from({length:17},(_,i)=>`<rect x="${1420+i*120}" y="556" width="114" height="48" fill="none" stroke="#2a2724" stroke-width="3"/>`).join('')}
+      ${Array.from({length:17},(_,i)=>`<rect x="${1420+i*120}" y="608" width="114" height="46" fill="none" stroke="#2a2724" stroke-width="3"/>`).join('')}
+
+      <!-- the windows are holes now, and the fire ran up the stone -->
+      <g>
+        ${[1520, 1880, 3020, 3300].map(x=>`
+          <rect x="${x-14}" y="62" width="320" height="480" fill="#26251f"/>
+          <rect x="${x}" y="76" width="292" height="452" fill="#0e0e0d"/>
+          <rect x="${x+8}" y="84" width="276" height="180" fill="#4e5a5e" opacity="0.35"/>
+          <rect x="${x-24}" y="528" width="340" height="24" fill="#33302b"/>
+          ${scorch(x-10, 66, 312, 150)}`).join('')}
+      </g>
+
+      <!-- the portico: the columns cracked and were re-dressed later,
+           but in 1815 two of them are down and propped -->
+      <g>
+        ${[2250, 2620].map((x,i)=>`
+          <rect x="${x}" y="${i===1?120:0}" width="150" height="${i===1?436:556}" fill="#3f3b35"/>
+          <rect x="${x}" y="${i===1?120:0}" width="20" height="${i===1?436:556}" fill="#7d7566" opacity="0.5"/>
+          <rect x="${x-18}" y="536" width="186" height="26" fill="#302d29"/>
+          ${i===1 ? `<path d="M${x} 120 l150 0 l-16 -34 l-118 0 z" fill="#4a463e"/>
+                      <path d="M${x+170} 560 l120 -190 l34 20 l-118 186 z" fill="#6b5a3e"/>` : ''}`).join('')}
+        <rect x="2210" y="0" width="560" height="52" fill="#35322d"/>
+        ${scorch(2210, 56, 560, 120)}
+      </g>
+
+      <!-- the doorway: no door, just the opening and a plank ramp -->
+      <g>
+        <rect x="2402" y="188" width="176" height="368" fill="#0c0c0b"/>
+        <path d="M2402 188 q88 -58 176 0 z" fill="#1a1917"/>
+        ${scorch(2398, 190, 184, 112)}
+        <rect x="2318" y="556" width="344" height="30" fill="#3d3a34"/>
+        <rect x="2288" y="586" width="404" height="30" fill="#36332e"/>
+        <rect x="2258" y="616" width="464" height="32" fill="#302d29"/>
+        <path d="M2228 660 l300 -30 l14 24 l-300 32 z" fill="#7d6840"/>
+      </g>
+
+      <!-- scaffolding: three years of work starts here -->
+      ${scaffold(1480, 660, 600)}
+      ${scaffold(2960, 660, 600)}
+      <g stroke="#6b5a3e" stroke-width="10">
+        <line x1="1700" y1="660" x2="1760" y2="300"/>
+        <line x1="3200" y1="660" x2="3150" y2="320"/>
+      </g>
+    </g>
+
+    <!-- gate piers, one of them knocked about -->
+    <g>
+      <rect x="1300" y="380" width="74" height="280" fill="#3a3732"/>
+      <rect x="1292" y="356" width="90" height="28" fill="#474339"/>
+      <rect x="3480" y="392" width="74" height="268" fill="#3a3732" transform="rotate(3 3517 526)"/>
+      <rect x="0" y="474" width="1300" height="9" fill="#2d2b27"/>
+      <g fill="#332f2b">${Array.from({length:33},(_,i)=>`<rect x="${i*40}" y="478" width="8" height="${i%7===3?120:182}"/>`).join('')}</g>
+      <rect x="3554" y="474" width="446" height="9" fill="#2d2b27"/>
+      <g fill="#332f2b">${Array.from({length:12},(_,i)=>`<rect x="${3560+i*40}" y="478" width="8" height="182"/>`).join('')}</g>
+    </g>
+
+    <!-- the road, dried out and rutted -->
+    <rect x="0" y="659" width="4000" height="241" fill="url(#ashFloor)"/>
+    <g opacity="0.2" fill="#9a8f78">
+      ${Array.from({length:56},(_,i)=>`<ellipse cx="${(i*197)%4000}" cy="${688+((i*67)%190)}" rx="${34+(i%5)*20}" ry="${7+(i%3)*4}"/>`).join('')}
+    </g>
+    <g opacity="0.35" stroke="#57534a" stroke-width="7" fill="none">
+      <path d="M0 800 q1000 -40 2000 -6 q1000 34 2000 -10"/>
+      <path d="M0 856 q1000 -36 2000 -2 q1000 30 2000 -8"/>
+    </g>
+
+    <!-- the stonemason, and his work -->
+    <g id="npc-mason" transform="translate(-772 -176) scale(1.4)">
+      <path d="M1418 560 l-10 100 l26 0 l8 -92 z" fill="#4a4740"/>
+      <path d="M1450 562 l14 98 l-26 0 l-6 -92 z" fill="#5c584e"/>
+      <path d="M1404 656 l38 0 l0 15 l-42 0 z" fill="#2b2926"/>
+      <path d="M1436 656 l40 0 l0 15 l-44 0 z" fill="#332f2b"/>
+      <path d="M1412 448 q32 -16 60 0 l14 118 q-46 16 -88 0 z" fill="#8a7a5e"/>
+      <path d="M1472 448 l14 118 q-10 4 -18 5 l-12 -120 z" fill="#c3bba4" opacity="0.5"/>
+      <path d="M1410 494 l64 0 l4 22 l-72 0 z" fill="#5f5647"/>
+      <path d="M1414 456 q-30 34 -26 76" stroke="#8a7a5e" stroke-width="17" stroke-linecap="round" fill="none"/>
+      <path d="M1474 452 q36 -14 44 -46" stroke="#8a7a5e" stroke-width="17" stroke-linecap="round" fill="none"/>
+      <rect x="1504" y="392" width="56" height="18" rx="4" fill="#4a4740" transform="rotate(-18 1532 401)"/>
+      <circle cx="1444" cy="422" r="25" fill="#d8a97e"/>
+      <path d="M1466 414 l10 6 l-10 6 z" fill="#d8a97e"/>
+      <path d="M1418 410 q28 -26 54 -4 l2 -10 q-30 -22 -56 4 z" fill="#5c584e"/>
+      <ellipse cx="1450" cy="404" rx="32" ry="9" fill="#5c584e"/>
+    </g>
+
+    <!-- dressed stone, a lime tub, a barrow -->
+    <g fill="#8a8172">
+      <rect x="600" y="572" width="176" height="46"/>
+      <rect x="612" y="618" width="176" height="46"/>
+      <rect x="580" y="526" width="146" height="44"/>
+      <rect x="596" y="482" width="112" height="42"/>
+    </g>
+    <g fill="#6f675b">
+      <path d="M600 572 l176 0 l0 5 l-176 0 z"/>
+      <path d="M580 526 l146 0 l0 5 l-146 0 z"/>
+    </g>
+    <g>
+      <path d="M980 660 q-10 -66 44 -70 l48 0 q54 4 44 70 z" fill="#5c584e"/>
+      <ellipse cx="1046" cy="592" rx="50" ry="12" fill="#c9c6b6"/>
+      <path d="M900 640 l0 -140" stroke="#5c584e" stroke-width="10"/>
+      <path d="M872 496 l58 0 l0 24 l-58 0 z" fill="#4a4740"/>
+      <path d="M860 660 l120 0 l0 12 l-120 0 z" fill="#3a3732"/>
+    </g>
+    <!-- a pile of burnt timber pulled out of the building -->
+    <g fill="#1d1c1a">
+      <path d="M1180 660 l210 -26 l6 18 l-212 28 z"/>
+      <path d="M1186 636 l196 -30 l6 16 l-198 32 z"/>
+      <path d="M1210 614 l160 -22 l4 14 l-162 24 z"/>
+    </g>
+    <g>
+      <rect x="3640" y="576" width="250" height="26" fill="#57534a"/>
+      <rect x="3656" y="602" width="218" height="56" fill="#443f39"/>
+      <circle cx="3700" cy="676" r="54" fill="none" stroke="#332f2b" stroke-width="15"/>
+      <circle cx="3840" cy="676" r="54" fill="none" stroke="#332f2b" stroke-width="15"/>
+      <path d="M3640 586 l-120 -44" stroke="#332f2b" stroke-width="13"/>
+    </g>`),
+
+  fg: svg(4800, `
+    <g fill="#121311">
+      <rect x="0" y="0" width="176" height="900"/>
+      <rect x="4624" y="0" width="176" height="900"/>
+      <rect x="330" y="0" width="56" height="900"/>
+      <path d="M386 0 L386 170 q-44 -76 -130 -92 l0 -78 z"/>
+      <rect x="3960" y="0" width="72" height="900"/>
+      <path d="M0 876 L4800 876 L4800 900 L0 900 Z"/>
+    </g>
+    <g opacity="0.16">
+      <rect x="386" y="0" width="5" height="900" fill="#e8ecec"/>
+      <rect x="3956" y="0" width="5" height="900" fill="#e8ecec"/>
+    </g>`)
+};
+
+
+/* ==================================================================
+   ACT 2, SCENE 2 — the same two rooms, gutted. Every fixture sits at
+   the same world x as its Act One counterpart, so walking through is
+   a comparison rather than a new room.
+==================================================================*/
+const burned = {
+  back: svg(2880, `
+    <rect width="2880" height="900" fill="url(#daySky)"/>
+    <circle cx="700"  cy="240" r="420" fill="url(#bloomDay)"/>
+    <circle cx="2000" cy="200" r="380" fill="url(#bloomDay)"/>
+    <g opacity="0.45" fill="#aab3b4">
+      <ellipse cx="900" cy="200" rx="420" ry="40"/>
+      <ellipse cx="2100" cy="150" rx="380" ry="34"/>
+    </g>`),
+
+  mid: svg(4000, `
+    <mask id="burnCut">
+      <rect width="4000" height="900" fill="#fff"/>
+      <rect x="236" y="112" width="300" height="365" fill="#000"/>
+      <path d="M1180 0 L2060 0 L1960 190 q-160 66 -330 22 q-180 -40 -290 -38 z" fill="#000"/>
+      <path d="M3020 0 L3560 0 L3500 128 q-200 52 -390 -30 z" fill="#000"/>
+    </mask>
+    <rect width="4000" height="900" fill="url(#ashWall)" mask="url(#burnCut)"/>
+
+    <!-- daylight coming in where the roof used to be -->
+    <path d="M1240 60 L1980 60 L2260 660 L860 660 Z" fill="#dfe6e6" opacity="0.14"/>
+    <path d="M3060 40 L3500 40 L3620 660 L2960 660 Z" fill="#dfe6e6" opacity="0.1"/>
+    <circle cx="640" cy="300" r="420" fill="url(#bloomDay)" opacity="0.7"/>
+
+    <!-- =========================================================
+         THE OFFICE, burned out
+    ========================================================== -->
+
+    <!-- the window: frame gone, drapes gone, daylight straight through -->
+    <g>
+      <rect x="220" y="96" width="332" height="397" fill="none" stroke="#1d1c1a" stroke-width="18"/>
+      <rect x="196" y="477" width="380" height="22" fill="#23211e"/>
+      ${scorch(212, 100, 348, 128)}
+      <path d="M232 108 l30 -10 l4 26 z" fill="#2b2926"/>
+      <path d="M520 112 l-28 -8 l-2 24 z" fill="#2b2926"/>
+      <!-- the window seat, burned down to its frame -->
+      <path d="M236 584 l300 0 l-8 76 l-284 0 z" fill="#2a2724"/>
+      <path d="M244 560 l284 0 l6 22 l-296 0 z" fill="#1d1c1a"/>
+    </g>
+
+    <!-- the looking glass: frame burned away, glass gone, hooks left -->
+    <g>
+      <rect x="712" y="188" width="196" height="268" fill="none" stroke="#242320" stroke-width="10"/>
+      <path d="M726 202 l40 0 l-40 56 z" fill="#38413f" opacity="0.5"/>
+      <circle cx="810" cy="178" r="7" fill="#5c584e"/>
+      ${scorch(704, 192, 212, 96)}
+      <!-- the pier table, collapsed -->
+      <path d="M686 556 l248 0 l-14 22 l-222 0 z" fill="#2a2724"/>
+      <path d="M700 578 l14 82 l-30 0 z" fill="#242320"/>
+      <path d="M902 578 l-20 82 l34 0 z" fill="#242320"/>
+      <g fill="#4a4740">
+        <path d="M742 640 l64 -8 l6 28 l-70 6 z"/>
+        <ellipse cx="866" cy="652" rx="34" ry="9"/>
+      </g>
+    </g>
+
+    <!-- ITEM 2: the New Orleans report, nailed to the scorched wall -->
+    <g transform="rotate(-2.4 1010 372)">
+      <rect x="952" y="286" width="118" height="152" fill="#e3dcc6"/>
+      <rect x="952" y="286" width="5" height="152" fill="#ffffff" opacity="0.5"/>
+      <rect x="966" y="302" width="90" height="9" fill="#3a3630"/>
+      ${Array.from({length:8},(_,i)=>`<rect x="966" y="${322+i*12}" width="${90-(i%3)*24}" height="3.4" fill="#8b8778"/>`).join('')}
+      <rect x="966" y="418" width="46" height="7" fill="#8e2b22"/>
+      <circle cx="1010" cy="283" r="6" fill="#5c584e"/>
+    </g>
+
+    <!-- the desk: a charred carcass, with a scaffold plank laid across
+         it to make a working surface again -->
+    <g>
+      <path d="M1006 592 l460 0 l-12 84 l-436 0 z" fill="#232220"/>
+      <path d="M1030 676 l24 84 l-40 0 z" fill="#1d1c1a"/>
+      <path d="M1442 676 l-20 84 l36 0 z" fill="#1d1c1a"/>
+      <path d="M1006 592 l460 0 l0 10 l-460 0 z" fill="#5c584e"/>
+      <rect x="980" y="556" width="520" height="22" fill="#8a7448"/>
+      <rect x="980" y="556" width="520" height="5" fill="#b59a63"/>
+      <!-- the drawer, forced open and empty -->
+      <g>
+        <path d="M1180 606 l212 0 l6 62 l-224 0 z" fill="#1a1918"/>
+        <path d="M1174 668 l236 0 l10 28 l-256 0 z" fill="#2a2724"/>
+        <path d="M1188 618 l188 0 l4 42 l-196 0 z" fill="#0d0d0c"/>
+      </g>
+      <!-- the Argand lamp, melted where it stood -->
+      <g>
+        <ellipse cx="1216" cy="556" rx="34" ry="9" fill="#5c5140"/>
+        <path d="M1194 556 q8 -26 22 -28 q14 2 22 28 z" fill="#6b5f46"/>
+        <path d="M1206 528 q10 -20 20 -2 q-4 14 -20 2 z" fill="#4a4235"/>
+      </g>
+    </g>
+
+    <!-- ITEM 1: the ledger, open on the plank -->
+    <g transform="rotate(-4 1116 542)">
+      <path d="M1058 518 L1174 518 L1178 552 L1054 552 Z" fill="#e8e2ce"/>
+      <path d="M1116 518 L1116 552" stroke="#b5ae98" stroke-width="2"/>
+      ${Array.from({length:4},(_,i)=>`<rect x="1066" y="${526+i*7}" width="40" height="2" fill="#8b8778"/><rect x="1126" y="${526+i*7}" width="40" height="2" fill="#8b8778"/>`).join('')}
+    </g>
+
+    <!-- the bookshelf: shelves gone, uprights standing, ash beneath -->
+    <g>
+      <rect x="1540" y="214" width="252" height="446" fill="#1a1918"/>
+      <rect x="1540" y="214" width="9" height="446" fill="#4a4740"/>
+      <rect x="1783" y="214" width="9" height="446" fill="#4a4740"/>
+      ${[0,2,4].map(r=>`<rect x="1548" y="${232+r*86+72}" width="${r===2?150:236}" height="9" fill="#2f2c28"/>`).join('')}
+      <path d="M1548 660 q120 -34 244 0 z" fill="#3a3630"/>
+      ${scorch(1536, 220, 260, 120)}
+    </g>
+
+    <!-- the arch, cracked -->
+    <g>
+      <rect x="1830" y="60" width="54" height="600" fill="#2a2724"/>
+      <rect x="2056" y="60" width="54" height="600" fill="#2a2724"/>
+      <path d="M1884 120 q86 -84 172 0 l0 -60 l-172 0 z" fill="#242320"/>
+      <path d="M1884 120 q86 -84 172 0" stroke="#5c584e" stroke-width="5" fill="none"/>
+      <path d="M1920 60 l14 60 l-8 0 l-14 -60 z" fill="#0d0d0c"/>
+      <path d="M2030 120 l-16 62 l10 0 l14 -60 z" fill="#0d0d0c"/>
+      <rect x="1884" y="120" width="172" height="540" fill="#111110" opacity="0.6"/>
+    </g>
+
+    <!-- =========================================================
+         THE CABINET ROOM, burned out
+    ========================================================== -->
+
+    <!-- soot running up the wall where the heat pooled -->
+    <g fill="#191817" opacity="0.55">
+      <path d="M2140 0 q40 200 10 400 l-70 0 q26 -210 -6 -400 z"/>
+      <path d="M3060 0 q54 170 22 330 l-84 0 q28 -170 -10 -330 z"/>
+      <path d="M2700 0 q30 120 8 230 l-54 0 q18 -120 -6 -230 z"/>
+    </g>
+
+    <!-- the ghosts of the charts: the fire left their outlines -->
+    ${[[2190,176,196,148],[2416,196,150,122],[2600,168,228,166],[2860,206,142,116]].map(c=>`
+      <g>
+        <rect x="${c[0]}" y="${c[1]}" width="${c[2]}" height="${c[3]}" fill="#2f2d29"/>
+        <rect x="${c[0]}" y="${c[1]}" width="${c[2]}" height="${c[3]}" fill="none" stroke="#4e4a42" stroke-width="3"/>
+        <circle cx="${c[0]+c[2]/2}" cy="${c[1]-10}" r="5" fill="#5c584e"/>
+      </g>`).join('')}
+
+    <!-- the long table, collapsed in the middle -->
+    <g>
+      <path d="M2260 568 L2700 592 L3140 568 L3140 600 L2700 626 L2260 600 Z" fill="#242320"/>
+      <path d="M2260 568 L2700 592 L3140 568 L3140 576 L2700 600 L2260 576 Z" fill="#5c584e"/>
+      <path d="M2296 604 l34 150 l-56 0 z" fill="#1d1c1a"/>
+      <path d="M3104 604 l-34 150 l56 0 z" fill="#1d1c1a"/>
+      <path d="M2640 620 l40 0 l18 132 l-70 0 z" fill="#1a1918"/>
+      <!-- burnt chair frames -->
+      <path d="M2380 760 q-8 -60 10 -92 l52 0 q18 32 10 92 z" fill="#1d1c1a"/>
+      <path d="M2900 752 l-6 -86 l14 0 l10 86 z" fill="#1d1c1a"/>
+      <path d="M2880 666 l56 0 l0 12 l-56 0 z" fill="#242320"/>
+    </g>
+
+    <!-- ITEM 3: a letter on the collapsed table -->
+    <g transform="rotate(5 2500 584)">
+      <path d="M2452 562 L2548 562 L2552 596 L2448 596 Z" fill="#ece5d0"/>
+      <path d="M2452 562 L2500 578 L2548 562" fill="none" stroke="#b5ae98" stroke-width="2.5"/>
+      <path d="M2528 590 l22 0 l0 -4 l-22 0 z" fill="#8b8778"/>
+    </g>
+
+    <!-- the globe: burnt through, the stand still upright -->
+    <g>
+      <circle cx="3212" cy="512" r="55" fill="#26241f"/>
+      <path d="M3212 457 a55 55 0 0 1 0 110 q-40 -30 0 -110 z" fill="#3a3630"/>
+      <path d="M3170 490 q40 -22 84 10 q-30 40 -84 -10 z" fill="#0d0d0c"/>
+      <circle cx="3212" cy="512" r="55" fill="none" stroke="#5c5140" stroke-width="5"/>
+      <path d="M3186 572 l26 -6 l26 6 l0 96 l-52 0 z" fill="#1d1c1a"/>
+      <path d="M3176 668 l72 0 l10 24 l-92 0 z" fill="#1a1918"/>
+    </g>
+
+    <!-- the hearth: stone, so it survived. A workman's fire in it now -->
+    <g>
+      <rect x="3330" y="331" width="404" height="329" fill="#3d3a34"/>
+      <rect x="3308" y="308" width="448" height="26" fill="#4a4740"/>
+      <rect x="3404" y="404" width="256" height="256" fill="#100f0e"/>
+      ${scorch(3396, 408, 272, 110)}
+      <path d="M3532 560 q26 34 14 70 q-18 20 -42 2 q-20 -34 8 -52 z" fill="#e07a32" opacity="0.9"/>
+      <path d="M3534 588 q14 22 6 42 q-10 12 -24 2 q-10 -20 8 -32 z" fill="#ffd88a"/>
+      <circle cx="3530" cy="600" r="210" fill="url(#bloomW)" opacity="0.55"/>
+      <path d="M3440 648 l88 -14 l6 14 l-94 12 z" fill="#2b1c10"/>
+      <!-- ITEM 4: the treaty, pulled out of the fire and torn getting
+           it loose, laid out on a board -->
+      <g>
+        <rect x="3548" y="604" width="176" height="16" fill="#8a7448"/>
+        <g transform="rotate(-4 3612 586)">
+          <path d="M3566 562 L3626 560 L3630 602 L3568 604 Z" fill="#f0e8d0"/>
+          <path d="M3612 560 L3630 561 L3632 602 L3610 603 Z" fill="#2a1c10" opacity="0.75"/>
+          <rect x="3574" y="572" width="34" height="3" fill="#6b6455"/>
+          <rect x="3574" y="580" width="28" height="2.6" fill="#8b8778"/>
+          <rect x="3574" y="587" width="32" height="2.6" fill="#8b8778"/>
+        </g>
+        <g transform="rotate(7 3672 588)">
+          <path d="M3648 566 L3700 568 L3698 604 L3646 602 Z" fill="#eae1c6"/>
+          <path d="M3646 566 L3660 566 L3658 603 L3645 602 Z" fill="#2a1c10" opacity="0.6"/>
+          <rect x="3664" y="578" width="28" height="2.6" fill="#8b8778"/>
+          <rect x="3664" y="586" width="22" height="2.6" fill="#8b8778"/>
+        </g>
+      </g>
+      <!-- the bare wall where Washington hung: an iron hook, nothing else -->
+      <g>
+        <rect x="3402" y="66" width="262" height="228" fill="#2c2a26"/>
+        <path d="M3402 66 l262 0 l0 6 l-262 0 z" fill="#4a4740"/>
+        <path d="M3528 120 q10 -14 22 -2 l-6 8 q-8 -8 -12 2 z" fill="#5c584e"/>
+        <path d="M3533 128 l0 26" stroke="#5c584e" stroke-width="5"/>
+        ${scorch(3396, 70, 274, 96)}
+      </g>
+    </g>
+
+    <!-- the clock, come down flat on the floor, clear of the hearth -->
+    <g>
+      <path d="M3772 742 L3986 716 L3992 776 L3778 802 Z" fill="#242320"/>
+      <path d="M3772 742 L3986 716 L3988 730 L3774 756 Z" fill="#4a4740"/>
+      <path d="M3800 750 L3930 734 L3934 774 L3804 790 Z" fill="#141312"/>
+      <ellipse cx="3800" cy="726" rx="42" ry="30" fill="#b5ae98"/>
+      <ellipse cx="3800" cy="726" rx="42" ry="30" fill="none" stroke="#5c5140" stroke-width="5"/>
+      <path d="M3800 726 L3792 706 M3800 726 L3820 732" stroke="#2b2620" stroke-width="3"/>
+      <path d="M3846 742 l30 -4 l4 12 l-32 4 z" fill="#5c5140"/>
+    </g>
+
+    <!-- =========================================================
+         FLOOR: ash, fallen plaster, puddles from the rain
+    ========================================================== -->
+    <rect x="0" y="659" width="4000" height="241" fill="url(#ashFloor)"/>
+    <g opacity="0.5" fill="#4a4740">
+      ${Array.from({length:44},(_,i)=>`<ellipse cx="${(i*181)%4000}" cy="${690+((i*73)%180)}" rx="${26+(i%5)*18}" ry="${6+(i%3)*4}"/>`).join('')}
+    </g>
+    <g fill="#5c584e" opacity="0.8">
+      <path d="M760 742 l90 -14 l16 26 l-96 18 z"/>
+      <path d="M1880 780 l120 -18 l20 30 l-128 22 z"/>
+      <path d="M2960 726 l80 -10 l12 22 l-86 12 z"/>
+      <path d="M3380 812 l140 -20 l18 30 l-146 24 z"/>
+    </g>
+    <g opacity="0.3" fill="#cfd8d6" filter="url(#bl)">
+      <ellipse cx="1560" cy="760" rx="300" ry="30"/>
+      <ellipse cx="800"  cy="820" rx="240" ry="26"/>
+    </g>
+    <rect x="0" y="656" width="4000" height="4" fill="#5c584e" opacity="0.5"/>`),
+
+  fg: svg(4800, `
+    <g fill="#121311">
+      <rect x="0" y="0" width="160" height="900"/>
+      <path d="M160 0 L160 900 L196 900 L196 250 q62 -116 196 -124 l0 -126 z"/>
+      <rect x="4640" y="0" width="160" height="900"/>
+      <path d="M4640 0 L4640 900 L4604 900 L4604 280 q-58 -100 -184 -112 l0 -168 z"/>
+      <rect x="2576" y="0" width="74" height="900"/>
+      <path d="M2650 0 L2650 188 q-46 -80 -138 -96 l0 -92 z"/>
+      <!-- a fallen beam across the top of frame -->
+      <path d="M980 0 L1240 0 L2180 150 L2120 196 Z"/>
+      <path d="M0 872 L4800 872 L4800 900 L0 900 Z"/>
+    </g>
+    <g opacity="0.18">
+      <rect x="196" y="0" width="5" height="900" fill="#e8ecec"/>
+      <rect x="2650" y="0" width="5" height="900" fill="#e8ecec"/>
+    </g>`)
+};
+
+const SCENES = { street, study, ruins, burned };

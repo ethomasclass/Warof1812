@@ -290,3 +290,92 @@
 .plain-toggle:focus-visible{ outline: 3px solid var(--warm-hi); outline-offset: 2px; }
 
 .ev-prop{ padding-bottom: 62px; }
+
+
+/* ==================================================================
+   LEDGER — a merchant's book, two years side by side
+==================================================================*/
+.paper-ledger{ max-width: 430px; transform: rotate(-1.6deg); }
+.ledger-head{
+  font-family: var(--press); font-size: 0.7rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--ink-2);
+  border-bottom: 2px solid rgba(43,38,32,0.5); padding-bottom: 8px; margin: 0 0 14px;
+}
+.ledger-table{
+  width: 100%; border-collapse: collapse;
+  font-family: var(--press); font-size: clamp(0.8rem, 1.4vw, 0.92rem); color: var(--ink);
+}
+.ledger-table th{
+  font-weight: 700; text-align: right; padding: 0 0 8px;
+  font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2);
+  border-bottom: 1px solid rgba(43,38,32,0.45);
+}
+.ledger-table th:first-child{ text-align: left; }
+.ledger-table td{
+  padding: 9px 0; text-align: right;
+  border-bottom: 1px solid rgba(43,38,32,0.16);
+}
+.ledger-table td:first-child{ text-align: left; font-style: italic; }
+.ledger-table td:last-child{ color: var(--rubric); font-weight: 700; }
+.ledger-note{
+  font-family: var(--hand); font-size: 0.95rem; line-height: 1.55;
+  margin: 16px 0 0; color: #33281c; transform: rotate(-0.8deg);
+}
+
+/* ==================================================================
+   THE TREATY — singed down one edge, and shorter than anyone expects
+==================================================================*/
+.paper-treaty{
+  max-width: 430px; transform: rotate(0.9deg); text-align: center;
+  background: linear-gradient(168deg, #f4efdc 0%, #e8dfc4 52%, #d8ccab 100%);
+}
+.char-edge{
+  position: absolute; right: -2%; top: -2%; width: 26%; height: 104%;
+  z-index: 1; pointer-events: none;
+  background: linear-gradient(100deg, rgba(40,26,14,0) 0%, rgba(60,38,18,0.35) 58%,
+              rgba(26,16,8,0.85) 88%, rgba(14,9,5,0.95) 100%);
+}
+.treaty-article{
+  font-family: var(--press); font-size: 0.74rem; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--rubric); margin: 0 0 12px;
+}
+.treaty-body{ text-align: left; }
+.treaty-body:first-letter{ font-size: 1em; float: none; padding: 0; }
+
+/* ==================================================================
+   SEQUENCE PUZZLE — rebuilding a torn document by reading it
+==================================================================*/
+.seq-target{
+  min-height: 132px; margin: 20px 0 22px; padding: 18px 20px;
+  background: linear-gradient(#f2ead2, #e2d6b4);
+  color: #2b2620; text-align: left;
+  font-family: var(--press); font-size: clamp(0.92rem, 1.6vw, 1.02rem); line-height: 1.7;
+  clip-path: polygon(0 2%, 99% 0, 100% 94%, 54% 100%, 1% 97%);
+}
+.seq-target .seq-placed{ animation: seatIn 0.35s ease both; }
+@keyframes seatIn{
+  from{ opacity: 0; transform: translateY(-6px) rotate(-1.4deg); }
+  to  { opacity: 1; transform: none; }
+}
+.seq-blank{ color: rgba(43,38,32,0.34); letter-spacing: 0.1em; }
+
+.seq-pieces{ display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+.seq-piece{
+  flex: 1 1 210px;
+  background: linear-gradient(#efe7cd, #ded2ae);
+  color: #2b2620; border: none; cursor: pointer;
+  font-family: var(--press); font-size: 0.9rem; line-height: 1.5;
+  padding: 13px 15px; text-align: left;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.45);
+  clip-path: polygon(1% 4%, 99% 0, 100% 92%, 48% 100%, 0 96%);
+  transition: transform 0.14s ease, filter 0.14s ease;
+}
+.seq-piece:nth-child(2n){ transform: rotate(-1.1deg); }
+.seq-piece:nth-child(3n){ transform: rotate(0.9deg); }
+.seq-piece:hover{ filter: brightness(1.07); transform: translateY(-3px); }
+.seq-piece:focus-visible{ outline: 3px solid var(--warm-hi); outline-offset: 3px; }
+.seq-piece[disabled]{ opacity: 0.25; cursor: default; pointer-events: none; }
+.seq-piece.is-wrong{ animation: shake 0.4s ease; }
+
+.puzzle-done{ color: var(--warm-hi); display: block; line-height: 1.6; }
+.seq-lead{ color: rgba(43,38,32,0.5); }
