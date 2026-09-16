@@ -62,41 +62,40 @@
   };
 
   /* =================================================================
-     THE CHARACTER — profile view, so movement is one-dimensional
+     THE CHARACTER
+
+     The figure is a drawn sprite, cut in two at the coat hem. The body
+     piece never moves; the leg piece is drawn twice and the two copies
+     swing in opposite directions about the hip, which is the top-centre
+     of the leg image. That keeps the original CSS walk cycle working
+     with painted art, which a single flat sprite could not do — it would
+     just slide along the floor.
+
+     The back leg is the same image darkened, so one drawing covers both.
+     Set ACTOR.svg instead of ACTOR.body to go back to vector shapes.
   ==================================================================*/
-  const ACTOR_SVG = `
-  <svg viewBox="0 0 120 260" xmlns="http://www.w3.org/2000/svg">
-    <g class="a-legs">
-      <g class="a-leg a-leg-b">
-        <path d="M52 150 l-6 84 l22 0 l2 -80 z" fill="#123a42"/>
-        <path d="M52 150 l-3 84 l5 0 l2 -82 z" fill="#4fd3c4" opacity="0.3"/>
-        <path d="M44 232 l30 0 l0 15 l-34 0 z" fill="#0b2128"/>
-        <path d="M44 232 l30 0 l0 3 l-30 0 z" fill="#7fe3d6" opacity="0.35"/>
-      </g>
-      <g class="a-leg a-leg-a">
-        <path d="M64 150 l10 84 l-22 0 l-4 -80 z" fill="#1b5058"/>
-        <path d="M70 150 l10 84 l-6 0 l-8 -84 z" fill="#ffb45c" opacity="0.3"/>
-        <path d="M50 232 l32 0 l0 15 l-36 0 z" fill="#0f2a31"/>
-        <path d="M50 232 l32 0 l0 3 l-32 0 z" fill="#7fe3d6" opacity="0.4"/>
-      </g>
-    </g>
-    <!-- coat -->
-    <path d="M44 74 q26 -14 50 0 l10 84 q-36 14 -70 0 z" fill="#1b5a5f"/>
-    <path d="M94 74 l10 84 q-7 3 -13 4 l-9 -86 z" fill="#ffb45c" opacity="0.45"/>
-    <path d="M44 74 l2 0 l-3 88 l-5 -4 z" fill="#7fe3d6" opacity="0.5"/>
-    <!-- satchel -->
-    <path d="M40 116 l44 0 l5 38 l-54 0 z" fill="#0f3a40"/>
-    <path d="M40 116 q18 -30 44 -34" stroke="#0f3a40" stroke-width="6" fill="none"/>
-    <!-- arm -->
-    <path class="a-arm" d="M88 84 q16 26 10 58" stroke="#1b5a5f" stroke-width="15" stroke-linecap="round" fill="none"/>
-    <!-- head, in profile, facing right -->
-    <circle cx="74" cy="48" r="23" fill="#e8b98c"/>
-    <path d="M95 42 l9 6 l-9 6 z" fill="#e8b98c"/>
-    <path d="M51 42 q22 -26 46 -6 l0 -9 q-25 -21 -46 3 z" fill="#123840"/>
-    <ellipse cx="80" cy="34" rx="28" ry="9" fill="#123840"/>
-    <circle cx="84" cy="44" r="2.6" fill="#0a2229"/>
-    <circle cx="74" cy="48" r="23" fill="#ffb45c" opacity="0.14"/>
-  </svg>`;
+  const ACTOR = {
+    body:   'assets/img/player-body.png',
+    leg:    'assets/img/player-leg.png',
+    aspect: 0.2311,      // width / height of the whole figure
+    legTop: 66.56,       // % down the figure where the hip pivot sits
+    legH:   33.44,       // % of the figure's height taken by the leg piece
+    bodyH:  69.67
+  };
+
+  function buildActor() {
+    return '' +
+      '<img class="a-leg a-leg-b" src="' + ACTOR.leg + '" alt="">' +
+      '<img class="a-leg a-leg-a" src="' + ACTOR.leg + '" alt="">' +
+      '<img class="a-body" src="' + ACTOR.body + '" alt="">';
+  }
+
+  function styleActor() {
+    el.actor.style.aspectRatio = ACTOR.aspect;
+    el.actor.style.setProperty('--leg-top', ACTOR.legTop + '%');
+    el.actor.style.setProperty('--leg-h', ACTOR.legH + '%');
+    el.actor.style.setProperty('--body-h', ACTOR.bodyH + '%');
+  }
 
   /* =================================================================
      LAYOUT
@@ -521,7 +520,8 @@
   el.btnStart.addEventListener('click', () => {
     state.act = 0;
     state.notebook = [];
-    el.actor.innerHTML = ACTOR_SVG;
+    el.actor.innerHTML = buildActor();
+    styleActor();
     const act = CONTENT[ACT_ORDER[0]];
     showCard(act.intro, () => gotoScene(firstSceneOf(act)));
   });

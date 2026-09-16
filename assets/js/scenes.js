@@ -312,33 +312,10 @@ const street = {
       <circle cx="523" cy="252" r="190" fill="url(#bloomCand)"/>
     </g>
 
-    <!-- the newsboy: a boy of about five feet, drawn at the same scale
-         as the player rather than as a doll -->
-    <g id="npc-newsboy" transform="translate(-1021 -176) scale(1.4)">
-      <path d="M1418 560 l-10 100 l26 0 l8 -92 z" fill="#123a42"/>
-      <path d="M1450 562 l14 98 l-26 0 l-6 -92 z" fill="#1b5058"/>
-      <path d="M1462 566 l12 94 l-8 0 l-10 -94 z" fill="#ffb45c" opacity="0.3"/>
-      <path d="M1404 656 l38 0 l0 15 l-42 0 z" fill="#0b2128"/>
-      <path d="M1404 656 l38 0 l0 3 l-38 0 z" fill="#7fe3d6" opacity="0.35"/>
-      <path d="M1436 656 l40 0 l0 15 l-44 0 z" fill="#0f2a31"/>
-      <path d="M1436 656 l40 0 l0 3 l-40 0 z" fill="#7fe3d6" opacity="0.4"/>
-      <path d="M1412 448 q32 -16 60 0 l14 118 q-46 16 -88 0 z" fill="#14424a"/>
-      <path d="M1472 448 l14 118 q-10 4 -18 5 l-12 -120 z" fill="#ffb45c" opacity="0.4"/>
-      <path d="M1418 498 l60 0 l6 48 l-72 0 z" fill="#1b5a5f"/>
-      <path d="M1414 456 q-28 32 -30 70" stroke="#14424a" stroke-width="17" stroke-linecap="round" fill="none"/>
-      <path d="M1474 452 q34 -20 42 -56" stroke="#14424a" stroke-width="17" stroke-linecap="round" fill="none"/>
-      <g transform="rotate(-14 1524 386)">
-        <rect x="1492" y="356" width="66" height="52" fill="#f6ecd6"/>
-        <rect x="1498" y="366" width="52" height="7" fill="#5c5a52"/>
-        <rect x="1498" y="380" width="52" height="4" fill="#95928a"/>
-        <rect x="1498" y="390" width="36" height="4" fill="#95928a"/>
-      </g>
-      <circle cx="1444" cy="422" r="25" fill="#e8b98c"/>
-      <path d="M1466 414 l10 6 l-10 6 z" fill="#e8b98c"/>
-      <path d="M1419 412 q26 -28 52 -6 l0 -10 q-28 -22 -52 4 z" fill="#0d2b32"/>
-      <ellipse cx="1452" cy="406" rx="30" ry="9" fill="#0d2b32"/>
-      <circle cx="1444" cy="422" r="25" fill="#ffb45c" opacity="0.16"/>
-    </g>
+    <!-- the newsboy. 430 units from the top of his raised newspaper to
+         his boots, which puts him around five foot two. -->
+    <image href="assets/img/newsboy.png" x="926" y="320" width="148" height="430"
+           preserveAspectRatio="xMidYMax meet"/>
 
     <!-- his crate of papers -->
     <g>
@@ -844,23 +821,9 @@ const ruins = {
       <path d="M0 856 q1000 -36 2000 -2 q1000 30 2000 -8"/>
     </g>
 
-    <!-- the stonemason, and his work -->
-    <g id="npc-mason" transform="translate(-772 -176) scale(1.4)">
-      <path d="M1418 560 l-10 100 l26 0 l8 -92 z" fill="#4a4740"/>
-      <path d="M1450 562 l14 98 l-26 0 l-6 -92 z" fill="#5c584e"/>
-      <path d="M1404 656 l38 0 l0 15 l-42 0 z" fill="#2b2926"/>
-      <path d="M1436 656 l40 0 l0 15 l-44 0 z" fill="#332f2b"/>
-      <path d="M1412 448 q32 -16 60 0 l14 118 q-46 16 -88 0 z" fill="#8a7a5e"/>
-      <path d="M1472 448 l14 118 q-10 4 -18 5 l-12 -120 z" fill="#c3bba4" opacity="0.5"/>
-      <path d="M1410 494 l64 0 l4 22 l-72 0 z" fill="#5f5647"/>
-      <path d="M1414 456 q-30 34 -26 76" stroke="#8a7a5e" stroke-width="17" stroke-linecap="round" fill="none"/>
-      <path d="M1474 452 q36 -14 44 -46" stroke="#8a7a5e" stroke-width="17" stroke-linecap="round" fill="none"/>
-      <rect x="1504" y="392" width="56" height="18" rx="4" fill="#4a4740" transform="rotate(-18 1532 401)"/>
-      <circle cx="1444" cy="422" r="25" fill="#d8a97e"/>
-      <path d="M1466 414 l10 6 l-10 6 z" fill="#d8a97e"/>
-      <path d="M1418 410 q28 -26 54 -4 l2 -10 q-30 -22 -56 4 z" fill="#5c584e"/>
-      <ellipse cx="1450" cy="404" rx="32" ry="9" fill="#5c584e"/>
-    </g>
+    <!-- the stonemason, and his work. 420 units, about five foot nine. -->
+    <image href="assets/img/mason.png" x="1176" y="330" width="148" height="420"
+           preserveAspectRatio="xMidYMax meet"/>
 
     <!-- dressed stone, a lime tub, a barrow -->
     <g fill="#8a8172">
@@ -882,9 +845,9 @@ const ruins = {
     </g>
     <!-- a pile of burnt timber pulled out of the building -->
     <g fill="#1d1c1a">
-      <path d="M1180 660 l210 -26 l6 18 l-212 28 z"/>
-      <path d="M1186 636 l196 -30 l6 16 l-198 32 z"/>
-      <path d="M1210 614 l160 -22 l4 14 l-162 24 z"/>
+      <path d="M1520 660 l210 -26 l6 18 l-212 28 z"/>
+      <path d="M1526 636 l196 -30 l6 16 l-198 32 z"/>
+      <path d="M1550 614 l160 -22 l4 14 l-162 24 z"/>
     </g>
     <g>
       <rect x="3640" y="576" width="250" height="26" fill="#57534a"/>

@@ -146,27 +146,37 @@ body{ overflow: hidden; overscroll-behavior: none; }
      half the frame; at 27% the room read as a giant empty hall. */
   bottom: 15.55%;
   height: 46%;
-  aspect-ratio: 120 / 260;
+  /* aspect-ratio is set from the sprite at runtime */
   transform-origin: 50% 100%;
   pointer-events: none;
   filter: drop-shadow(0 12px 14px rgba(0,0,0,0.6));
 }
-.actor svg{ width: 100%; height: 100%; overflow: visible; }
+.actor img{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: block;
+  image-rendering: auto;
+}
+.a-body{ top: 0; height: var(--body-h, 69.67%); }
+.a-leg{
+  top: var(--leg-top, 66.56%);
+  height: var(--leg-h, 33.44%);
+  transform-origin: 50% 0%;      /* the hip */
+}
+/* one drawing serves both legs; the far one is simply darker */
+.a-leg-b{ filter: brightness(0.62) saturate(0.85); }
 
-.actor.is-walking{ animation: bob 0.44s steps(2, end) infinite; }
-@keyframes bob{ 0%,100%{ margin-bottom: 0; } 50%{ margin-bottom: 0.7%; } }
+.actor.is-walking{ animation: bob 0.52s ease-in-out infinite; }
+@keyframes bob{ 0%,100%{ margin-bottom: 0; } 50%{ margin-bottom: 0.8%; } }
 
-.a-leg{ transform-origin: 58px 150px; }
-.actor.is-walking .a-leg-a{ animation: stepA 0.44s ease-in-out infinite; }
-.actor.is-walking .a-leg-b{ animation: stepB 0.44s ease-in-out infinite; }
-.actor.is-walking .a-arm { animation: swing 0.44s ease-in-out infinite; transform-origin: 88px 84px; }
-@keyframes stepA{ 0%,100%{ transform: rotate(16deg); } 50%{ transform: rotate(-16deg); } }
-@keyframes stepB{ 0%,100%{ transform: rotate(-16deg); } 50%{ transform: rotate(16deg); } }
-@keyframes swing{ 0%,100%{ transform: rotate(-12deg); } 50%{ transform: rotate(14deg); } }
+.actor.is-walking .a-leg-a{ animation: stepA 0.52s ease-in-out infinite; }
+.actor.is-walking .a-leg-b{ animation: stepB 0.52s ease-in-out infinite; }
+@keyframes stepA{ 0%,100%{ transform: rotate(13deg); } 50%{ transform: rotate(-13deg); } }
+@keyframes stepB{ 0%,100%{ transform: rotate(-13deg); } 50%{ transform: rotate(13deg); } }
 
 @media (prefers-reduced-motion: reduce){
-  .actor.is-walking, .actor.is-walking .a-leg, .actor.is-walking .a-arm,
-  .edge.is-on{ animation: none; }
+  .actor.is-walking, .actor.is-walking .a-leg, .edge.is-on{ animation: none; }
 }
 
 /* ==================================================================

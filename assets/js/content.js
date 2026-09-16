@@ -69,8 +69,8 @@ act1: {
         {
           id: 'newsboy', kind: 'talk',
           label: 'A newsboy shouting the news',
-          standAt: 19.5,
-          box: { left: 22.4, top: 41.0, width: 5.0, height: 41.0 },
+          standAt: 19.0,
+          box: { left: 23.0, top: 35.2, width: 3.9, height: 48.5 },
           speaker: 'Newsboy',
           lines: [
             "War! We're at war! <em>Congress votes &mdash; Mr. Madison signs &mdash; war with Britain!</em>",
@@ -443,8 +443,8 @@ act2: {
         {
           id: 'mason', kind: 'talk',
           label: 'A stonemason working on the wall',
-          standAt: 25.5,
-          box: { left: 28.9, top: 41.0, width: 4.8, height: 41.0 },
+          standAt: 24.5,
+          box: { left: 29.2, top: 36.3, width: 3.9, height: 47.5 },
           speaker: 'Stonemason',
           lines: [
             "Mind the lime, lad. It'll take the skin off you.",
@@ -469,8 +469,8 @@ act2: {
         {
           id: 'timber', kind: 'look',
           label: 'Burnt timber pulled out of the building',
-          standAt: 34.0,
-          box: { left: 29.4, top: 66.0, width: 5.6, height: 8.0 },
+          standAt: 42.0,
+          box: { left: 37.9, top: 66.0, width: 5.6, height: 8.5 },
           caption: "Roof beams. Everything wooden in the building came out of it like this, in a cart. What stood was the stone, and only the stone."
         },
         {

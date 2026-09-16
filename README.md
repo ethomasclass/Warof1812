@@ -264,6 +264,37 @@ At this scale the President's House does not fit the frame, which is correct:
 standing across the avenue you see the ground floor and the foot of the portico,
 and the columns run off the top.
 
+## The character sprites
+
+The three figures are drawn art; the rooms are still SVG. Source files live in
+`assets/img/src/` and the game loads the processed PNGs in `assets/img/`.
+
+**Backgrounds were keyed out of JPEGs.** JPEG has no alpha and its compression
+smears colour across edges, so a plain colour-match leaves a pink halo. The
+processing measures the backdrop from the corners, cuts on distance from it with
+a soft band, then *despills* — pulling magenta out of the surviving edge pixels
+by clamping red and blue toward green. No halo.
+
+**The player is cut in two at the coat hem**, at 68% of his height. The body
+piece never moves; the leg piece is drawn twice and the two copies swing in
+opposite directions about the hip, which is the top-centre of the leg image. The
+far leg is the same drawing at 62% brightness, so one piece of art covers both
+legs and reads as depth.
+
+That is the whole reason for the split. A single flat sprite cannot walk — it
+slides along the floor — and asking an image model for a consistent multi-frame
+walk cycle is a good way to lose an evening. Cutting one drawing at the hip
+keeps the original CSS walk cycle working with painted art.
+
+To go back to vector shapes, set `ACTOR.svg` instead of `ACTOR.body` in
+`game.js`. To swap in a different sprite, replace the two PNGs and update the
+four numbers in the `ACTOR` object: `aspect`, `legTop`, `legH`, `bodyH`.
+
+The two NPCs are static, so they are single `<image>` elements inside the scene
+SVG, sized in world units like every other fixture: the newsboy is 430 units
+from the top of his raised newspaper to his boots (about five foot two), the
+stonemason 420 (about five foot nine).
+
 ## Art
 
 The scenes are flat vector SVG built on four rules, and they are the reason the
