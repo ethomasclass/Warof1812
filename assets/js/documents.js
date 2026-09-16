@@ -32,6 +32,19 @@ function foxing(spots) {
   ).join('');
 }
 
+/* A period document was "docketed" when it arrived: folded, and the
+   outside endorsed in a clerk's hand with when it came, who sent it and
+   where it was filed. Rendering that endorsement is what makes each
+   piece of evidence feel like it belongs on that desk instead of having
+   been placed there by a game designer. */
+function docket(text) {
+  return text ? `
+    <div class="docket">
+      <span class="docket-rule"></span>
+      <p class="docket-text">${text}</p>
+    </div>` : '';
+}
+
 /* ------------------------------------------------------------------
    The British royal arms, drawn crudely on purpose — this is a
    colonial reprint of a London proclamation, not the real thing.
@@ -62,6 +75,7 @@ const PAPERS = {
         <p class="hand hand-place">${d.place}</p>
         ${d.lines.map(l => `<p class="hand">${l}</p>`).join('')}
         <p class="hand hand-sign">${d.sign}</p>
+        ${docket(d.docket)}
       </div>
       <span class="wax" aria-hidden="true"><span class="wax-crack"></span></span>`;
   },
@@ -79,6 +93,7 @@ const PAPERS = {
         <span class="bs-rule bs-rule-thin"></span>
         ${d.lines.map(l => `<p class="bs-body">${l}</p>`).join('')}
         <p class="bs-foot">${d.foot}</p>
+        ${docket(d.docket)}
       </div>
       <span class="stamp" aria-hidden="true">${d.stamp}</span>`;
   },
@@ -94,6 +109,7 @@ const PAPERS = {
         <p class="hand hand-place">${d.place}</p>
         ${d.lines.map(l => `<p class="hand hand-fast">${l}</p>`).join('')}
         <p class="hand hand-sign">${d.sign}</p>
+        ${docket(d.docket)}
       </div>`;
   },
 
@@ -108,6 +124,7 @@ const PAPERS = {
           ${d.rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}
         </table>
         <p class="ledger-note">${d.note}</p>
+        ${docket(d.docket)}
       </div>`;
   },
 
@@ -124,6 +141,7 @@ const PAPERS = {
         <p class="treaty-article">${d.article}</p>
         ${d.lines.map(l => `<p class="bs-body treaty-body">${l}</p>`).join('')}
         <p class="bs-foot">${d.foot}</p>
+        ${docket(d.docket)}
       </div>`;
   },
 
@@ -135,6 +153,7 @@ const PAPERS = {
         <p class="notes-head">${d.head}</p>
         ${d.lines.map(l => `<p class="hand hand-notes">${l}</p>`).join('')}
         <p class="notes-margin">${d.margin}</p>
+        ${docket(d.docket)}
       </div>`;
   }
 };
@@ -168,6 +187,7 @@ function buildEvidence(spot) {
       <div class="ev-read">
         <p class="ev-tag">${spot.tag}</p>
         <h2 class="ev-heading" id="modal-heading">${spot.heading}</h2>
+        ${spot.found ? `<p class="ev-found"><span>Why it is here &mdash;</span> ${spot.found}</p>` : ''}
         ${spot.body.map(p => `<p class="ev-body">${p}</p>`).join('')}
         <div class="ev-note">
           <span class="ev-note-label">Your notebook &mdash;</span>

@@ -343,7 +343,7 @@ body{ overflow: hidden; overscroll-behavior: none; }
 @keyframes fadeIn{ from{ opacity: 0; } to{ opacity: 1; } }
 
 .modal-evidence{
-  width: min(1080px, 100%);
+  width: min(1160px, 100%);
   background: linear-gradient(#0c2b33, #05161c);
 }
 .modal-evidence .btn-primary{ margin-top: 26px; }

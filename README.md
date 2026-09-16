@@ -156,6 +156,37 @@ it was before the war.
 No inventory, and nothing combines with anything. That is where adventure
 games become unteachable.
 
+### Every document has a reason to be in that room
+
+The first pass had eight well-written documents that felt randomly placed,
+because nothing explained how any of them got onto that desk. Real archival
+papers carry their own history, so now each one does:
+
+- **A docket.** When a paper arrived it was folded and endorsed on the outside
+  in a clerk's hand: when it came, who sent it, where it was filed. Each
+  document now carries that endorsement at its foot, in a browner ink and a
+  different hand. The Detroit letter's reads *"Recd. War Dept. 4 Apl. 1815.
+  Referred to the Secy. of War. No answer sent."* Those last three words do more
+  work than a paragraph of analysis.
+- **A "Why it is here" note** in the reading panel, stating the chain of custody
+  in plain language. This is the sourcing half of historical thinking, which the
+  game was otherwise skipping.
+
+The Act One documents are on the desk because a clerk pulled them from the files
+to support the President's war message to Congress &mdash; which is genuinely
+what that message cited. That also motivates the drawer puzzle: the clerk set
+the three dials from the three papers he had spent the evening docketing.
+
+The Act Two documents are there because a clerk has been sorting salvage for a
+fortnight on a plank laid over the burned desk, and because committees with no
+building left are meeting wherever they can.
+
+**One continuity error fixed.** The treaty cannot have been burned in the 1814
+fire &mdash; it was signed four months after the building burned. It is singed
+because the masons light the hearth with whatever paper is lying about and this
+was in the pile. That is a better image anyway: ten weeks after it ended the
+war, the peace treaty was very nearly used as kindling.
+
 ### Evidence is paper, not a dialog box
 
 Each document is a physical object: a letter folded in four with a broken wax

@@ -221,17 +221,23 @@ act1: {
             place: 'Off Halifax, the 4th March 1811',
             lines: [
               'Dear Mother,',
-              'They boarded us at sea and called me an Englishman. I was born in Baltimore and said so twice.',
-              'They took <strong>six</strong> of us off the deck that morning. I am well used, but I am not free to come home.'
+              'They stopped the Baltimore brig <em>Eliza</em> on the 2nd and mustered every man of us on deck.',
+              'The officer said I spoke like an Englishman. I told him twice I was born at Fell\'s Point. He took my protection paper out of my hand, put it in his pocket, and that was the end of the argument.',
+              'They took <strong>six</strong> of us off the deck that morning. I am rated ordinary seaman now and used no worse than their own men. But I cannot leave.',
+              'If you can swear out another protection at the custom house, send it to the agent at Halifax. Mr. Dunbar says it has done nothing for the eleven men taken before me.'
             ],
             sign: 'Yr. obedient son, Wm. Hale',
+            docket: 'Recd. Dept. of State 12 Augt. 1811, enclosed by the mother. Entered, register of impressed seamen, No. 1,214. <em>Laid before Congress with the President\'s Message.</em>',
             plain: [
               '<strong>Dear Mother,</strong>',
-              'British sailors boarded our ship out at sea. They said I was English. I told them twice that I was born in Baltimore.',
-              'They took <strong>six</strong> of us off the deck that morning. They treat me all right, but they will not let me go home.',
+              'A British warship stopped our ship, the <em>Eliza</em> out of Baltimore, and lined all of us up on deck.',
+              'The officer said I sounded English. I told him twice I was born in Baltimore. He took my <em>protection paper</em> &mdash; the document that proved I was an American citizen &mdash; put it in his pocket, and that ended the argument.',
+              'They took <strong>six</strong> of us that morning. They treat me the same as their own sailors, but I am not allowed to leave.',
+              'If you can get another protection paper from the customs house, send it to Halifax. A man here says it did no good for the eleven men taken before me.',
               '<em>&mdash; William Hale</em>'
             ]
           },
+          found: "American sailors carried a paper called a <strong>protection certificate</strong> to prove they were citizens. His was taken out of his hand. His mother forwarded the letter to the State Department, which kept a running register of seized sailors. It is on this desk because it was one of the papers pulled out of that register to support the President's war message to Congress three weeks ago.",
           quote: "&ldquo;They took <strong>six</strong> of us off the deck that morning.&rdquo;",
           body: [
             "Britain was fighting a long war against France, and the British navy always needed more sailors. So British warships stopped American ships at sea and took sailors off them by force. This was called <strong>impressment</strong>.",
@@ -257,17 +263,21 @@ act1: {
             sub: 'Respecting the Trade of Neutral Vessels with France and her Allies',
             lines: [
               'Whereas the enemy hath declared the ports of these kingdoms to be in a state of blockade, and hath thereby compelled His Majesty to resort to a like measure of retaliation&hellip;',
-              '<strong>Article 3.</strong> No neutral vessel shall trade with any port of France or her allies, save such as shall first touch at a British port and there pay the duties hereby imposed.'
+              '<strong>Article 3.</strong> No neutral vessel shall trade with any port of France or her allies, save such as shall first touch at a British port and there pay the duties hereby imposed.',
+              'Article 4. Any vessel found trading contrary hereto shall be lawful prize, together with her cargo, and shall be condemned in the Admiralty Court.'
             ],
             foot: 'God save the King',
             stamp: 'Board of Trade &middot; London',
+            docket: 'Transmitted by Mr. Russell at London, recd. 3 Feby. 1812. <em>Article 3 copied out for the Message.</em>',
             plain: [
               '<strong>An order from the King of Great Britain.</strong>',
-              'France has tried to shut down British trade. So Britain is doing the same thing back.',
+              'France has tried to shut down British trade, so Britain is doing the same thing back.',
               '<strong>Rule 3.</strong> No <em>neutral</em> ship may trade with France or her allies unless it stops at a British port first and pays a British fee.',
-              '<em>A neutral country is one that is not fighting on either side. The United States was neutral. This rule applied to American ships.</em>'
+              '<strong>Rule 4.</strong> Any ship caught breaking this rule can be seized and kept, cargo and all.',
+              '<em>A neutral country is one that is not fighting on either side. The United States was neutral. These rules applied to American ships.</em>'
             ]
           },
+          found: "This is a London printing. After the United States withdrew its ambassador, Jonathan Russell was the senior American diplomat left in London, and he sent copies of every new order home so the government could see exactly what the rules were. It is pinned to the wall here because a clerk has been copying Article 3 out by hand for the war message.",
           quote: "&ldquo;<strong>Article 3.</strong> No neutral vessel shall trade with any port of France or her allies&hellip;&rdquo;",
           body: [
             "Britain and France were at war with each other. Each one tried to wreck the other's trade. American ships got caught in the middle.",
@@ -291,19 +301,23 @@ act1: {
             haste: 'Haste &mdash; post haste',
             place: 'Vincennes, Indiana Territory',
             lines: [
-              'Sir &mdash; the action on the Tippecanoe was fought the <strong>7th</strong> of November and the ground is ours, though dearly.',
-              'I am to report that the muskets taken from the warriors are of British manufacture, and new.',
-              'They did not come by trade alone. I would stake my commission on it.'
+              'Sir &mdash; the action on the Tippecanoe was fought the <strong>7th</strong> of November and the ground is ours, though dearly. We buried thirty-seven.',
+              'I am to report a matter the Governor wishes laid before the Department. Of the arms taken from the warriors on the field, a great part are military muskets of British manufacture, and new.',
+              'Six that I examined myself carry the Tower proof and a crown upon the lockplate. They have not been fired above a season.',
+              'Such arms are not got by ordinary trade with the posts. I would stake my commission that they were issued, and issued lately.'
             ],
-            sign: 'Jno. Gibson, Sec., Ind. Terr.',
+            sign: 'Jno. Gibson, Sec., Indiana Terr.',
+            docket: 'Recd. War Dept. 9 Decr. 1811. Referred to the Secy. of War. <em>Copy to the President.</em>',
             plain: [
               '<strong>Sir,</strong>',
-              'We fought the battle at Tippecanoe on <strong>November 7th</strong>. We hold the ground, but we lost a lot of men.',
-              'I have to report this: the guns we took from the warriors were made in Britain, and they were brand new.',
-              'They did not get them through ordinary trading. I would bet my job on it.',
+              'We fought the battle at Tippecanoe on <strong>November 7th</strong>. We hold the ground, but we lost a lot of men &mdash; we buried thirty-seven.',
+              'The Governor wants the Department to know this: many of the guns we took from the warriors are British <em>military</em> muskets, and they are new.',
+              'I checked six of them myself. They are stamped with a crown and the word TOWER &mdash; the mark of the British government arsenal in London. They have barely been fired.',
+              'You do not get army guns like that by ordinary trading. I would bet my job that the British handed them out, and handed them out recently.',
               '<em>&mdash; John Gibson</em>'
             ]
           },
+          found: "Reports from the western territories went to the Secretary of War, who forwarded copies to the President. This one has been handled a lot lately. British support for Tecumseh's alliance was the third charge in the war message, and this dispatch is the proof behind it.",
           quote: "&ldquo;The muskets taken from the warriors are of British manufacture, and new.&rdquo;",
           body: [
             "American settlers kept pushing west onto land where Native nations already lived. A Shawnee leader named <strong>Tecumseh</strong> tried to stop it. He worked to join many nations together into one alliance strong enough to hold the line.",
@@ -324,7 +338,7 @@ act1: {
           puzzle: {
             tag: 'The locked drawer',
             title: 'Three Brass Dials',
-            prompt: "Three brass dials under the lock. Someone scratched a note into the wood above them:",
+            prompt: "Three brass dials under the lock. The clerk who shut this drawer set them from the three papers he had spent all evening docketing, and scratched himself a reminder in the wood so he would not forget:",
             riddle: "&ldquo;<em>What the Navy took. What the Article numbered. What the day was at Tippecanoe.</em>&rdquo;",
             slots: [
               { label: 'The Navy took', answer: 6 },
@@ -348,6 +362,7 @@ act1: {
               'The militia of Kentucky alone are competent to place Montreal at your feet.'
             ],
             margin: 'say this twice',
+            docket: 'Found on the cabinet table after the caucus broke up. Not the President\'s property. Put by in the drawer until Mr. Clay sends for them.',
             plain: [
               '<strong>Speech notes &mdash; Henry Clay of Kentucky</strong>',
               'I would not trade one sailor\'s freedom for all the land in Canada.',
@@ -356,6 +371,7 @@ act1: {
               '<em>He crossed out the polite version and wrote the blunt one. He also noted to himself: say this twice.</em>'
             ]
           },
+          found: "These are not a government record and nobody filed them. Henry Clay is Speaker of the House, and he was in these rooms for the war meeting. He left his notes on the table. The President's clerk put them in the drawer because they are not the President's to keep &mdash; which is why the only locked thing in this room is holding somebody else's speech.",
           quote: "&ldquo;The taking of Canada is in our power, and the honor of this nation is not.&rdquo;",
           body: [
             "A group of young congressmen pushed hardest for war. People called them the <strong>War Hawks</strong>. Henry Clay of Kentucky led them. Most came from the West and the South, and most were too young to remember the Revolution.",
@@ -436,7 +452,9 @@ act2: {
             "Well. They came up from the bay in August and they walked straight in. Ate the dinner that was laid on the table in there, then set fire to the house around it.",
             "Burned your paper's office too. I heard the admiral told his men to smash all the letter C's, so the printers couldn't spell his name to insult him again.",
             "Look at the stone though. Black as your hat, but she's <em>standing</em>. Walls held. Three years and we'll have her back, better than she was.",
-            "Go on in, if you're going. Mind the floor. Everything that was worth anything in there is gone, but a few papers turned up in the mess."
+            "Go on in, if you're going. Mind the floor.",
+            "There's a clerk been in there a fortnight sorting what's left, and a plank laid over the President's desk to work on. Half of what he's got isn't even salvage &mdash; it's new paper, sent here because there's nowhere else to send it.",
+            "Only thing I'd say is: don't let the lads light the fire with anything before he's looked at it. They've near burned the peace treaty twice."
           ],
           unlocks: 'doorway',
           thenObjective: 'Go in through the doorway and see what is left.'
@@ -562,14 +580,17 @@ act2: {
               ['Glass, crates', '410', '38'],
               ['Made at home', 'almost none', 'most of it']
             ],
-            note: 'We could not buy from them, so we built it here. Now we do not need to buy from them at all.',
+            note: 'We could not buy from them, so we paid to have it built here. Now we do not need to buy from them at all. I would ask the Committee to remember what it cost us to learn it.',
+            docket: 'Exhibit B. Submitted to the Committee on Commerce and Manufactures, 20 Feby. 1815.',
             plain: [
               '<strong>A Baltimore merchant\'s account book.</strong>',
-              'Before the war, this merchant bought almost everything from British companies: cloth, nails, iron, glass.',
-              'During the war he could not buy from Britain at all. So American workshops started making those things instead.',
-              'By 1815 he is buying almost nothing from Britain. <em>He does not need to.</em>'
+              'Before the war he bought nearly everything from British companies &mdash; cloth, nails, iron, glass.',
+              'During the war he could not buy from Britain at all. So he and others paid American workshops to make those things instead.',
+              'By 1815 he is buying almost nothing from Britain. <em>He does not need to.</em>',
+              'His note at the bottom asks Congress to remember how expensive it was to learn how.'
             ]
           },
+          found: "Congress is about to argue over whether to tax British goods coming in, to protect the new American factories. Merchants were asked to send in their account books as evidence. This one came up from Baltimore for a committee that has nowhere proper to meet, because the Capitol is a burned shell too.",
           quote: "&ldquo;We could not buy from them, so we built it here.&rdquo;",
           body: [
             "Before the war, the United States bought most of its manufactured goods from Britain. Cloth, nails, glass, tools &mdash; almost all of it came across the ocean.",
@@ -593,20 +614,24 @@ act2: {
             haste: 'By express',
             place: 'New Orleans, 9th January 1815',
             lines: [
-              'Sir &mdash; the enemy attacked our line at daybreak yesterday and was repulsed in something under half an hour.',
-              'Their loss: <strong>291</strong> killed, <strong>1,262</strong> wounded, <strong>484</strong> missing.',
-              'Our own: <strong>13</strong> killed, 39 wounded, 19 missing.',
-              'Genl. Jackson desires me to say the militia stood as well as any regulars in the world.'
+              'Sir &mdash; the enemy came against our line at daybreak yesterday in column, and was repulsed in something under half an hour.',
+              'Their loss, as near as can be counted: <strong>291</strong> killed, <strong>1,262</strong> wounded, <strong>484</strong> missing. Their General Pakenham fell in front of the works.',
+              'Our own loss: <strong>13</strong> killed, 39 wounded, 19 missing.',
+              'The line was held by regulars, by the Tennessee and Kentucky militia, by free men of colour, by Baratarian sailors, and by the citizens of this city, standing together behind the same mud bank.',
+              'Genl. Jackson desires me to say that the militia stood as well as any regulars in the world, and that he will not have it reported otherwise.'
             ],
             sign: 'Aide-de-camp, 7th Military District',
+            docket: 'Express from N. Orleans, recd. 4 Feby. 1815. Printed for the city by order of the War Dept.',
             plain: [
               '<strong>New Orleans, January 9th, 1815.</strong>',
-              'The British attacked our line at dawn yesterday. We drove them back in less than half an hour.',
-              'British losses: <strong>291 killed, 1,262 wounded, 484 missing</strong> &mdash; about 2,000 men.',
+              'The British attacked our line at dawn yesterday. We drove them back in under half an hour.',
+              'British losses: <strong>291 killed, 1,262 wounded, 484 missing</strong> &mdash; about 2,000 men. Their commander, General Pakenham, was killed.',
               'American losses: <strong>13 killed, 39 wounded, 19 missing</strong> &mdash; about 70 men.',
-              'General Jackson wants it said that our volunteer soldiers fought as well as any professional army in the world.'
+              'The line was held by regular soldiers, Tennessee and Kentucky volunteers, free Black men, local pirates, and ordinary citizens of the city, all behind the same mud wall.',
+              'General Jackson wants it said that the volunteers fought as well as any professional army in the world, and he will not have it reported any other way.'
             ]
           },
+          found: "When the express rider reached Washington on February 4th, the War Department had the report printed and posted up around the city so people could read it for themselves. This is one of those sheets. Somebody nailed it to the wall in here, in the ruin of the President's house, which tells you what that news meant to people.",
           quote: "&ldquo;Their loss: <strong>291</strong> killed, <strong>1,262</strong> wounded&hellip; our own: <strong>13</strong> killed.&rdquo;",
           body: [
             "On January 8, 1815, Andrew Jackson's army crushed a British attack outside New Orleans. About 2,000 British soldiers were killed, wounded or missing. American losses were about 70.",
@@ -630,18 +655,22 @@ act2: {
             place: 'Detroit, the 2nd March 1815',
             lines: [
               'Sir,',
-              'The British have gone back over the lakes and they are not coming again. That is understood here by everyone.',
-              'Tecumseh fell at the Thames a year and a half since, and what he built has come apart.',
-              'The nations ask what the treaty does for them. I have no answer that I would care to give in person.'
+              'The British have gone back over the lakes and the posts are giving out nothing &mdash; no powder, no provisions, no promises. That is understood here by everyone, on both sides of the water.',
+              'Tecumseh fell at the Thames a year and a half since, and what he spent six years building has come apart in eighteen months.',
+              'Delegations have come in from four nations this month asking what the ninth article of the treaty means, since it speaks of restoring what they held in 1811.',
+              'I have read them the article. They then ask me who is to make it happen, and I have no answer that I would care to give a man in person.'
             ],
-            sign: 'Yr. servant, a clerk of the Indian Agency',
+            sign: 'Yr. obedt. servant, clerk of the Indian Agency at Detroit',
+            docket: 'Recd. War Dept. 4 Apl. 1815. Referred to the Secy. of War. <em>No answer sent.</em>',
             plain: [
               '<strong>Detroit, March 2nd, 1815.</strong>',
-              'The British have pulled back across the lakes, and they are not coming back. Everyone here understands that.',
-              'Tecumseh was killed in battle a year and a half ago, and the alliance he built has fallen apart without him.',
-              'The Native nations are asking what the peace treaty does for them. <em>I do not have an answer I would want to give them face to face.</em>'
+              'The British have pulled back across the lakes. Their forts are handing out nothing &mdash; no gunpowder, no food, no promises. Everybody here understands what that means.',
+              'Tecumseh was killed in battle a year and a half ago. What he spent six years building fell apart in eighteen months.',
+              'Groups from four nations came in this month to ask what <em>Article 9</em> of the peace treaty means, because it says their land and rights from 1811 will be given back.',
+              'I read them the article. Then they ask me who is going to make that happen. <em>I do not have an answer I would want to give a man to his face.</em>'
             ]
           },
+          found: "The Indian agency at Detroit reported to the Secretary of War. This letter came in three weeks ago and is still lying where it was opened. Look at the bottom of it: a clerk wrote the date it arrived, who it went to, and then three more words.",
           quote: "&ldquo;The nations ask what the treaty does for them. I have no answer that I would care to give in person.&rdquo;",
           body: [
             "Tecumseh was killed at the Battle of the Thames in October 1813. Without him, and without British guns, the alliance he had spent years building fell apart.",
@@ -663,7 +692,7 @@ act2: {
             tag: 'Pulled out of the fire',
             title: 'The Torn Treaty',
             kind: 'sequence',
-            prompt: "Somebody pulled this out of the fire and tore it getting it loose. It is the first article of the peace treaty &mdash; the part that says what each side gets to keep.",
+            prompt: "It went into the kindling pile and came out again in four pieces. This is the first article of the peace treaty &mdash; the part that says what each side gets to keep.",
             riddle: "Put the sentence back together. Read the pieces and choose the one that comes next.",
             blank: 'Article the First &mdash; &hellip;',
             pieces: [
@@ -689,12 +718,14 @@ act2: {
               'All territory, places, and possessions taken by either party from the other during the war shall be restored without delay, and things shall return to the state they were in before the war.'
             ],
             foot: 'Ratified 17 February 1815',
+            docket: 'Printed by order of Congress, Feby. 1815. One copy to each Department.',
             plain: [
               '<strong>The peace treaty, signed December 24, 1814.</strong>',
               '<strong>Article 1.</strong> Everything either side captured during the war goes back. The border returns to exactly where it was before the war started.',
-              '<em>That is it. Read the rest and you will not find impressment. You will not find trade. You will not find a single thing America went to war over in 1812.</em>'
+              '<em>That is it. Read the rest and you will not find impressment. You will not find trade. You will not find one single thing America went to war over in 1812.</em>'
             ]
           },
+          found: "Congress had the treaty printed and a copy sent to every department. This one is singed because the masons working in here light the hearth with whatever paper is lying about, and it was in the pile. Somebody pulled it back out. Ten weeks after it ended the war, the peace treaty was very nearly used to start a fire.",
           quote: "&ldquo;Things shall return to the state they were in before the war.&rdquo;",
           body: [
             "Look at what this treaty does <em>not</em> say. Not one word about impressment &mdash; the thing that made Americans angriest. Not one word about trade rules. Not one inch of land changes hands.",

@@ -19,7 +19,7 @@
 /* ---------- the two-part layout -------------------------------- */
 .ev{
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr);
   gap: clamp(18px, 3vw, 40px);
   align-items: start;
 }
@@ -53,9 +53,9 @@
     0 3px 0 rgba(0,0,0,0.25),
     inset 0 0 44px rgba(150,115,60,0.22);
   transform: rotate(-2.1deg);
-  padding: clamp(16px, 2.4vw, 26px) clamp(16px, 2.6vw, 30px);
+  padding: clamp(14px, 2.1vw, 22px) clamp(15px, 2.4vw, 26px);
   width: 100%;
-  max-width: 440px;
+  max-width: 470px;
 }
 /* paper grain sits over the fill, under the writing */
 .paper::before{
@@ -104,10 +104,10 @@
 /* ---------- handwriting ----------------------------------------- */
 .hand{
   font-family: var(--hand);
-  font-size: clamp(0.95rem, 1.55vw, 1.1rem);
-  line-height: 1.72;
+  font-size: clamp(0.88rem, 1.4vw, 1rem);
+  line-height: 1.62;
   color: #33281c;
-  margin: 0 0 10px;
+  margin: 0 0 9px;
   text-shadow: 0 0 0.6px rgba(51,40,28,0.45);   /* ink soaking in */
 }
 .hand-place{
@@ -116,7 +116,7 @@
 .hand-sign{
   text-align: right; margin-top: 16px; font-size: 1.12em; color: #2a2016;
 }
-.hand-fast{ letter-spacing: 0.01em; }
+.hand-fast{ letter-spacing: 0.01em; font-size: clamp(0.85rem, 1.34vw, 0.96rem); line-height: 1.58; }
 .paper .hand:nth-of-type(3n)  { transform: rotate(-0.45deg); }
 .paper .hand:nth-of-type(3n+1){ transform: rotate(0.35deg) translateX(1px); }
 .paper .hand:nth-of-type(3n+2){ transform: rotate(-0.2deg) translateX(-1px); }
@@ -176,7 +176,7 @@
 
 /* ---------- field dispatch --------------------------------------- */
 .paper-dispatch{
-  max-width: 320px;
+  max-width: 430px;
   background: linear-gradient(172deg, #efe3c4 0%, #e0cfa6 55%, #d3c092 100%);
   transform: rotate(-3.4deg);
 }
@@ -188,7 +188,7 @@
 
 /* ---------- marked-up speech notes -------------------------------- */
 .paper-notes{
-  max-width: 390px;
+  max-width: 440px;
   transform: rotate(2.6deg);
 }
 .notes-head{
@@ -295,7 +295,7 @@
 /* ==================================================================
    LEDGER — a merchant's book, two years side by side
 ==================================================================*/
-.paper-ledger{ max-width: 430px; transform: rotate(-1.6deg); }
+.paper-ledger{ max-width: 450px; transform: rotate(-1.6deg); }
 .ledger-head{
   font-family: var(--press); font-size: 0.7rem; letter-spacing: 0.22em;
   text-transform: uppercase; color: var(--ink-2);
@@ -326,7 +326,7 @@
    THE TREATY — singed down one edge, and shorter than anyone expects
 ==================================================================*/
 .paper-treaty{
-  max-width: 430px; transform: rotate(0.9deg); text-align: center;
+  max-width: 450px; transform: rotate(0.9deg); text-align: center;
   background: linear-gradient(168deg, #f4efdc 0%, #e8dfc4 52%, #d8ccab 100%);
 }
 .char-edge{
@@ -379,3 +379,37 @@
 
 .puzzle-done{ color: var(--warm-hi); display: block; line-height: 1.6; }
 .seq-lead{ color: rgba(43,38,32,0.5); }
+
+
+/* ==================================================================
+   THE DOCKET — a clerk's endorsement, added after the fact in a
+   different hand and a browner ink than the document itself
+==================================================================*/
+.docket{ margin-top: 18px; text-align: left; }
+.docket-rule{
+  display: block; height: 1px; width: 100%;
+  background: rgba(43,38,32,0.22); margin-bottom: 9px;
+}
+.docket-text{
+  margin: 0;
+  font-family: var(--hand);
+  font-size: 0.82rem; line-height: 1.5;
+  color: #6b4a2c;
+  transform: rotate(-0.7deg);
+}
+.docket-text em{ font-style: normal; color: var(--rubric); }
+.paper-broadside .docket-text,
+.paper-treaty .docket-text{ text-align: left; }
+
+/* provenance, in the reading panel */
+.ev-found{
+  margin: 0 0 18px; padding: 12px 15px;
+  background: rgba(79,211,196,0.08);
+  border-left: 3px solid var(--cold);
+  font-size: clamp(0.92rem, 1.7vw, 1rem); line-height: 1.66;
+  color: #cfe4e2;
+}
+.ev-found span{
+  font-family: var(--press); font-size: 0.66rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--cold); display: block; margin-bottom: 5px;
+}
