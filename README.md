@@ -4,9 +4,47 @@ A walkable point-and-click lesson for 9th grade US History. Students play a
 printer's apprentice at the *National Intelligencer*, sent to find the real
 causes of the war. No timer, no score, no fail states.
 
-**Status: Act One vertical slice.** The street and the study are complete and
-playable, with all four causes and the drawer puzzle. Act Two (the ruined
-street and the burned study, covering the impacts) is not built yet.
+**Status: Act One vertical slice.** The street and the two rooms are complete
+and playable, with all four reasons and the drawer puzzle. Act Two (the same
+street in ruins and these rooms burned out, covering the impacts) is not built
+yet.
+
+### When it is set
+
+The night of **June 18, 1812** &mdash; the day Madison signed the declaration of
+war. That framing does the heavy lifting: the player is a newspaper apprentice
+sent to answer the question the whole country is asking that night, *why did we
+do this?*, and the four pieces of evidence in the President's rooms are the
+answer. It also lets the opening establish the stakes honestly:
+
+- The vote was the closest for any declared war in American history: **79&ndash;49**
+  in the House (June 4), **19&ndash;13** in the Senate (June 17). All 39 Federalists
+  voted no.
+- Bonfires in Kentucky and Baltimore; church bells tolling and flags at
+  half-mast in New England.
+- The United States Navy had sixteen ships. Britain had hundreds.
+
+Sources: the [US House history office](https://history.house.gov/Records-and-Research/Listing/lfp_012/)
+and the [National Park Service](https://www.nps.gov/articles/mr-madison-s-war.htm)
+on the declaration and the debates.
+
+## Reading level
+
+Written for 8th&ndash;9th grade, and the rules are enforced in `content.js`:
+
+- Short sentences, one idea each, generally under 20 words.
+- Terms defined the first time they appear, in the same sentence. Nothing
+  assumes prior knowledge &mdash; not Napoleon, not "neutral", not what the
+  Royal Navy was.
+- Concrete over abstract: *"ships sat empty at the docks"* rather than
+  *"economic contraction"*.
+- **Every document has a plain-English version one button away.** The 1812
+  wording stays on the sheet, because reading a primary source is the skill
+  being taught; but archaic English is a wall, not a lesson. Pressing
+  *Translate this* swaps the text on the same piece of paper, so students see
+  that a source gets decoded rather than replaced. The translation also carries
+  the glosses &mdash; the Orders in Council translation is where "neutral" gets
+  defined.
 
 ## Running it
 

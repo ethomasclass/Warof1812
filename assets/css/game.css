@@ -455,7 +455,7 @@ body{ overflow: hidden; overscroll-behavior: none; }
     radial-gradient(ellipse at 50% 38%, rgba(255,180,92,0.16), transparent 60%),
     linear-gradient(#0c2b33, #040d10);
 }
-.card-inner{ max-width: 640px; animation: riseIn 0.5s ease both; }
+.card-inner{ max-width: 680px; animation: riseIn 0.5s ease both; }
 .card-kicker{
   font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.3em;
   text-transform: uppercase; color: var(--cold); margin: 0 0 16px;
@@ -464,9 +464,24 @@ body{ overflow: hidden; overscroll-behavior: none; }
   font-size: clamp(1.8rem, 4.6vw, 2.7rem); line-height: 1.12;
   margin: 0 0 22px; font-weight: 600;
 }
+/* Long passages are centred only for the heading. Body copy is ragged
+   right at a fixed measure, because centred paragraphs are genuinely
+   harder to read and this card carries the most text in the game. */
 .card-text{
-  font-size: clamp(1rem, 2.1vw, 1.1rem); line-height: 1.72;
-  color: #cfe4e2; margin: 0 0 34px;
+  font-size: clamp(1rem, 2.1vw, 1.1rem); line-height: 1.75;
+  color: #cfe4e2; margin: 0 0 30px; text-align: left;
+}
+.card-text p{ margin: 0 0 16px; }
+.card-text strong{ color: var(--warm-hi); }
+
+/* the editor's question, which is the whole assignment */
+.card-ask{
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  font-style: italic; color: var(--warm-hi);
+  text-align: center; line-height: 1.3;
+  margin: 26px 0 4px !important;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255,180,92,0.3);
 }
 .card-text em{ color: var(--warm); }
 .recap{ text-align: left; padding-left: 1.2em; }

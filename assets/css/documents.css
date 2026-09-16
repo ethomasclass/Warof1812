@@ -246,3 +246,47 @@
   .ev-prop{ min-height: 0; padding: 20px 12px; }
   .paper{ max-width: 320px; }
 }
+
+
+/* ==================================================================
+   PLAIN ENGLISH
+   The original wording stays; the translation sits on the same sheet.
+   Students see that a primary source has to be decoded, not replaced.
+==================================================================*/
+.paper-plain{ display: none; position: relative; z-index: 2; }
+/* the plain reading is prose, so it sets ragged-right regardless of how
+   the original was typeset, and it does not need the stamp's footroom */
+.paper.is-plain{ text-align: left; padding-bottom: clamp(16px, 2.4vw, 26px); }
+.paper.is-plain .paper-inner,
+.paper.is-plain .wax,
+.paper.is-plain .stamp,
+.paper.is-plain .crest{ display: none; }
+.paper.is-plain .paper-plain{ display: block; }
+
+.plain-label{
+  font-family: var(--press); font-size: 0.64rem; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--rubric);
+  border-bottom: 1px solid rgba(142,43,34,0.35);
+  padding-bottom: 7px; margin: 0 0 14px;
+}
+.plain-line{
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.98rem, 1.6vw, 1.08rem);
+  line-height: 1.68; color: #2e2820; margin: 0 0 12px;
+}
+.plain-line em{ color: var(--rubric); font-style: normal; }
+.plain-line strong{ color: #1d1913; }
+
+.plain-toggle{
+  position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%);
+  font-family: var(--press); font-size: 0.72rem; letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(246,236,214,0.92); color: #2b2620;
+  border: none; border-radius: 2px; padding: 9px 16px; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+.plain-toggle:hover{ background: #fff6e2; }
+.plain-toggle:focus-visible{ outline: 3px solid var(--warm-hi); outline-offset: 2px; }
+
+.ev-prop{ padding-bottom: 62px; }

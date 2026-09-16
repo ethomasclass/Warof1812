@@ -54,6 +54,7 @@
     chainIndex: 0,
     dialogueIdx: 0,
     activeSpot: null,
+    cardNext: null,
     finished: false,
     editing: /[?&]edit\b/.test(location.search)
   };
@@ -270,7 +271,10 @@
   ==================================================================*/
   function openEvidence(spot) {
     el.evMount.innerHTML = buildEvidence(spot);
+    wirePlainToggle();
     el.scrim.hidden = false;
+    const panel = el.scrim.querySelector('.modal');
+    if (panel) panel.scrollTop = 0;
     el.mClose.focus({ preventScroll: true });
 
     if (state.notebook.every(n => n.id !== spot.id)) {
@@ -282,6 +286,19 @@
         quote: spot.quote, record: spot.record
       });
     }
+  }
+
+  /* The original wording stays on the sheet; the translation replaces
+     only the text, so students keep the sense of handling a real thing. */
+  function wirePlainToggle() {
+    const btn = document.getElementById('plain-toggle');
+    const paper = document.getElementById('the-paper');
+    if (!btn || !paper) return;
+    btn.addEventListener('click', () => {
+      const plain = paper.classList.toggle('is-plain');
+      btn.textContent = plain ? '\u2039 Show the original' : 'Translate this \u203a';
+      btn.setAttribute('aria-pressed', plain ? 'true' : 'false');
+    });
   }
 
   el.mClose.addEventListener('click', () => {
@@ -399,13 +416,31 @@
     show(el.game);
   }
 
+  /* One card renderer for the opening, the act break and the recap.
+     Each card carries what happens when the button is pressed. */
+  function showCard(data, next) {
+    el.cKicker.innerHTML = data.kicker;
+    el.cHeading.innerHTML = data.heading;
+    el.cText.innerHTML = data.text;
+    el.cNext.textContent = data.button.replace(/&mdash;/g, '—');
+    state.cardNext = next;
+    show(el.card);
+    el.cNext.focus({ preventScroll: true });
+  }
+
   function endAct() {
     const act = CONTENT[ACT_ORDER[state.act]];
-    el.cKicker.innerHTML = act.exit.kicker;
-    el.cHeading.innerHTML = act.exit.heading;
-    el.cText.innerHTML = act.exit.text;
-    el.cNext.textContent = act.exit.button.replace(/&mdash;/g, '—');
-    show(el.card);
+    showCard(act.exit, showRecap);
+  }
+
+  function showRecap() {
+    showCard({
+      kicker: 'For your worksheet',
+      heading: 'Four Reasons, One Night',
+      text: '<ol class="recap">' +
+        state.notebook.map(n => '<li>' + n.record + '</li>').join('') + '</ol>',
+      button: 'Play again'
+    }, () => location.reload());
   }
 
   function show(screen) {
@@ -413,13 +448,7 @@
   }
 
   el.cNext.addEventListener('click', () => {
-    if (state.finished) { location.reload(); return; }
-    state.finished = true;
-    el.cKicker.innerHTML = 'For your worksheet';
-    el.cHeading.innerHTML = 'Four Causes, One Room';
-    el.cText.innerHTML = '<ol class="recap">' +
-      state.notebook.map(n => '<li>' + n.record + '</li>').join('') + '</ol>';
-    el.cNext.textContent = 'Play again';
+    if (state.cardNext) state.cardNext();
   });
 
   /* =================================================================
@@ -429,7 +458,7 @@
     state.act = 0;
     state.notebook = [];
     el.actor.innerHTML = ACTOR_SVG;
-    gotoScene('street');
+    showCard(CONTENT[ACT_ORDER[0]].intro, () => gotoScene('street'));
   });
 
   // click the floor to walk there

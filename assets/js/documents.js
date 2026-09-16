@@ -115,13 +115,24 @@ const PAPERS = {
 function buildEvidence(spot) {
   const d = spot.doc;
   const clip = TORN[d.type] ? `clip-path:${TORN[d.type]};` : '';
+  /* The real wording is the point of a primary source, but 1812 English
+     is a wall for a 9th grader. So the plain version lives on the same
+     sheet of paper, one button away, instead of replacing the original. */
+  const plain = `
+    <div class="paper-plain">
+      <p class="plain-label">In plain English</p>
+      ${d.plain.map(l => `<p class="plain-line">${l}</p>`).join('')}
+    </div>`;
   return `
     <div class="ev">
       <div class="ev-prop">
         <div class="desk-grain"></div>
-        <article class="paper paper-${d.type}" style="${clip}--grain:${GRAIN_SVG}">
+        <article class="paper paper-${d.type}" id="the-paper" style="${clip}--grain:${GRAIN_SVG}">
           ${PAPERS[d.type](d)}
+          ${plain}
         </article>
+        <button class="plain-toggle" id="plain-toggle" type="button"
+                aria-pressed="false">Translate this &rsaquo;</button>
       </div>
       <div class="ev-read">
         <p class="ev-tag">${spot.tag}</p>

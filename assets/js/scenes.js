@@ -410,11 +410,21 @@ const study = {
       <rect x="726" y="202" width="168" height="240" fill="#16414a"/>
       <path d="M726 202 L894 442 L894 202 Z" fill="#1e5560" opacity="0.6"/>
       <path d="M760 160 q50 -34 100 0 l-8 30 q-42 -26 -84 0 z" fill="#a8762f"/>
-      <rect x="700" y="546" width="220" height="16" fill="#123840"/>
-      <rect x="716" y="562" width="14" height="98" fill="#0a2229"/>
-      <rect x="890" y="562" width="14" height="98" fill="#0a2229"/>
-      <rect x="742" y="516" width="52" height="30" fill="#0f333a"/>
-      <rect x="826" y="508" width="36" height="38" rx="4" fill="#12444a"/>
+      <rect x="686" y="540" width="248" height="18" fill="#123840"/>
+      <rect x="686" y="540" width="248" height="5" fill="#8fe8dc" opacity="0.3"/>
+      <rect x="700" y="558" width="18" height="102" fill="#0a2229"/>
+      <rect x="902" y="558" width="18" height="102" fill="#0a2229"/>
+      <path d="M700 558 q110 26 220 0 l0 16 q-110 26 -220 0 z" fill="#0d2b32"/>
+      <!-- decanter and two glasses -->
+      <path d="M736 540 q-14 -40 2 -54 q-8 -14 4 -18 l14 0 q12 4 4 18 q16 14 2 54 z" fill="#8e3129" opacity="0.72"/>
+      <path d="M740 512 q10 -6 20 0 l-2 22 q-8 4 -16 0 z" fill="#c2503c" opacity="0.5"/>
+      <path d="M776 540 l4 -26 l18 0 l4 26 z" fill="#7fe3d6" opacity="0.3"/>
+      <path d="M806 540 l4 -26 l18 0 l4 26 z" fill="#7fe3d6" opacity="0.26"/>
+      <!-- a hat set down, and a little stack of cards -->
+      <ellipse cx="878" cy="536" rx="38" ry="11" fill="#0a2229"/>
+      <path d="M852 536 q26 -32 52 0 z" fill="#0c262e"/>
+      <rect x="822" y="530" width="26" height="8" fill="#e9e0c8"/>
+      <rect x="826" y="524" width="26" height="8" fill="#f2e9d2"/>
     </g>
 
     <!-- ITEM 2 pinned to the wall between window and desk -->
@@ -485,6 +495,15 @@ const study = {
       ${[0,1,2,3,4].map(r=>{const y=232+r*86;return books(1556,y,10,r)+`<rect x="1548" y="${y+72}" width="236" height="8" fill="#123840"/>`}).join('')}
     </g>
 
+    <!-- a side chair drawn up to the window, and a basket of papers
+         that somebody has been working through -->
+    <g>
+      <path d="M232 760 q-10 -62 46 -66 l84 0 q56 4 46 66 z" fill="#0f333a"/>
+      <path d="M232 760 q-10 -62 46 -66 l14 0 q-46 8 -38 66 z" fill="#1b5a5f"/>
+      <rect x="262" y="672" width="76" height="28" fill="#e9e0c8" transform="rotate(-6 300 686)"/>
+      <rect x="276" y="662" width="76" height="26" fill="#f2e9d2" transform="rotate(4 314 675)"/>
+    </g>
+
     <!-- coat and hat on a peg, far left -->
     <g>
       <rect x="92" y="300" width="46" height="10" rx="4" fill="#0f333a"/>
@@ -544,9 +563,14 @@ const study = {
       <rect x="3064" y="750" width="46" height="12" rx="4" fill="#081f26"/>
       <!-- green baize, papers, a wine glass and a decanter -->
       <rect x="2380" y="546" width="620" height="12" fill="#1d4a3c"/>
-      <g>
-        <rect x="2680" y="532" width="86" height="15" fill="#e6dcc0"/>
-        <rect x="2690" y="524" width="80" height="12" fill="#f0e7ce"/>
+      <g transform="rotate(-3 2724 532)">
+        <rect x="2674" y="512" width="100" height="34" fill="#f2e9d2"/>
+        <rect x="2684" y="520" width="34" height="4" fill="#5c5a52"/>
+        <rect x="2684" y="528" width="46" height="3" fill="#8e2b22"/>
+        <rect x="2684" y="535" width="40" height="3" fill="#8e2b22"/>
+        <rect x="2740" y="520" width="24" height="3" fill="#95928a"/>
+        <rect x="2740" y="527" width="24" height="3" fill="#95928a"/>
+        <rect x="2740" y="534" width="18" height="3" fill="#95928a"/>
       </g>
       <g>
         <path d="M2940 546 l6 -34 l26 0 l6 34 z" fill="#7fe3d6" opacity="0.35"/>
@@ -635,9 +659,9 @@ const study = {
       ${Array.from({length:26},(_,i)=>`<line x1="${i*160}" y1="660" x2="${i*160-70}" y2="900"/>`).join('')}
     </g>
     <g>
-      <rect x="640" y="736" width="1120" height="128" rx="6" fill="#13333a"/>
-      <rect x="690" y="754" width="1020" height="92" rx="4" fill="none" stroke="#c98a3c" stroke-width="5" opacity="0.4"/>
-      <rect x="760" y="778" width="880" height="44" rx="4" fill="#173d42"/>
+      <path d="M700 726 L1700 726 L1830 880 L570 880 Z" fill="#13333a"/>
+      <path d="M744 744 L1656 744 L1762 862 L638 862 Z" fill="none" stroke="#c98a3c" stroke-width="5" opacity="0.38"/>
+      <path d="M840 774 L1560 774 L1632 838 L768 838 Z" fill="#173d42"/>
     </g>
     <!-- a dropped despatch and a footstool, because people worked here -->
     <g transform="rotate(-9 900 792)">
