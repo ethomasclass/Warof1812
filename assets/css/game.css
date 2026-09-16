@@ -181,55 +181,93 @@ body{ overflow: hidden; overscroll-behavior: none; }
 
 /* ==================================================================
    HOTSPOTS
+
+   Light, not boxes. A rectangle with a border reads as user interface;
+   a soft pool of light reads as part of the scene, and it can bleed
+   past the object's bounds the way real light does.
+
+   Two colours carry the two jobs, matching the scenes' own lighting:
+     warm amber  = the thing the lesson wants you to find next
+     cool teal   = there is something here, but you may ignore it
 ==================================================================*/
 .hotspots{ position: absolute; inset: 0; }
-.hotspot{
-  position: absolute; padding: 0; border: none;
-  background: transparent; border-radius: 10px; cursor: pointer;
-  box-shadow: 0 0 0 2px rgba(255,212,138,0.3);
-  animation: breathe 2.8s ease-in-out infinite;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-.hotspot:hover, .hotspot:focus-visible{
-  outline: none; transform: scale(1.04);
-  box-shadow: 0 0 0 3px var(--warm-hi), 0 0 44px 12px rgba(255,180,92,0.34) inset;
-}
-@keyframes breathe{
-  0%,100%{ box-shadow: 0 0 0 2px rgba(255,212,138,0.22); }
-  50%    { box-shadow: 0 0 0 2px rgba(255,212,138,0.6), 0 0 30px 8px rgba(255,180,92,0.22) inset; }
-}
-.hotspot.is-pinged{ animation: ping 0.7s ease 3; }
-@keyframes ping{
-  0%,100%{ transform: scale(1); box-shadow: 0 0 0 2px rgba(255,212,138,0.4); }
-  50%    { transform: scale(1.14); box-shadow: 0 0 0 5px #fff2d2, 0 0 60px 18px rgba(255,180,92,0.55) inset; }
-}
-@media (prefers-reduced-motion: reduce){
-  .hotspot, .hotspot.is-pinged{ animation: none; box-shadow: 0 0 0 3px rgba(255,212,138,0.55); }
-}
-.hotspot-look{
-  box-shadow: none;
-  animation: none;
-  border-radius: 4px;
-}
-.hotspot-look:hover, .hotspot-look:focus-visible{
-  transform: none;
-  box-shadow: 0 0 0 1.5px rgba(191,243,234,0.5);
-  background: rgba(191,243,234,0.05);
-}
-.hotspot-look::after{
-  content: "";
-  position: absolute; left: 50%; top: 50%;
-  width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px;
-  border-radius: 50%;
-  background: rgba(191,243,234,0.42);
-  box-shadow: 0 0 9px rgba(191,243,234,0.5);
-  transition: opacity 0.2s ease;
-}
-.hotspot-look:hover::after{ opacity: 0; }
 
-.hotspots.is-editing .hotspot{
-  background: rgba(255,80,80,0.22); box-shadow: 0 0 0 2px #ff5050; animation: none;
+.hotspot{
+  position: absolute;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
+/* the glow itself, larger than the hitbox so the light spills */
+.hotspot::before{
+  content: "";
+  position: absolute;
+  inset: -38%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%,
+              rgba(255,214,140,0.50) 0%,
+              rgba(255,180,92,0.26) 38%,
+              rgba(255,166,74,0.09) 60%,
+              transparent 76%);
+  animation: glowPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+.hotspot:hover{ transform: scale(1.03); }
+.hotspot:hover::before{
+  background: radial-gradient(ellipse at 50% 50%,
+              rgba(255,236,196,0.72) 0%,
+              rgba(255,196,110,0.4) 38%,
+              rgba(255,166,74,0.15) 62%,
+              transparent 78%);
+  animation: none;
+}
+.hotspot:focus-visible{
+  outline: 3px solid var(--warm-hi);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+@keyframes glowPulse{
+  0%, 100%{ opacity: 0.6; transform: scale(0.95); }
+  50%     { opacity: 1;   transform: scale(1.04); }
+}
+
+/* ambient objects: cooler, dimmer, and they never pulse. Present, but
+   not competing with the thing the student is meant to find next. */
+.hotspot-look::before{
+  background: radial-gradient(ellipse at 50% 50%,
+              rgba(191,243,234,0.30) 0%,
+              rgba(127,227,214,0.13) 42%,
+              transparent 70%);
+  animation: none;
+  opacity: 0.72;
+}
+.hotspot-look:hover::before{
+  background: radial-gradient(ellipse at 50% 50%,
+              rgba(214,250,244,0.55) 0%,
+              rgba(127,227,214,0.26) 44%,
+              transparent 74%);
+  opacity: 1;
+}
+
+/* "Where do I look?" drives this */
+.hotspot.is-pinged::before{ animation: ping 0.75s ease 3; }
+@keyframes ping{
+  0%, 100%{ opacity: 0.5; transform: scale(0.94); }
+  50%     { opacity: 1;   transform: scale(1.3); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .hotspot::before, .hotspot.is-pinged::before{ animation: none; opacity: 0.9; }
+}
+
+/* ?edit draws the real boxes for repositioning */
+.hotspots.is-editing .hotspot{
+  background: rgba(255,80,80,0.22);
+  box-shadow: 0 0 0 2px #ff5050;
+}
+.hotspots.is-editing .hotspot::before{ display: none; }
 
 /* ==================================================================
    NUDGE + DIALOGUE
@@ -240,12 +278,12 @@ body{ overflow: hidden; overscroll-behavior: none; }
   background: rgba(3,12,15,0.9); color: #cfe4e2;
   font-family: var(--sans); font-size: 0.86rem;
   opacity: 0; transition: opacity 0.25s ease; pointer-events: none;
-  max-width: 80%; text-align: center;
+  max-width: 80%; text-align: center; z-index: 7;
 }
 .nudge.is-shown{ opacity: 1; }
 
 .dialogue{
-  position: absolute; inset: 0; z-index: 5;
+  position: absolute; inset: 0; z-index: 20;
   display: flex; align-items: flex-end; justify-content: center; padding: 0 0 26px;
 }
 .dialogue[hidden]{ display: none; }
@@ -275,7 +313,7 @@ body{ overflow: hidden; overscroll-behavior: none; }
 
 /* ---------- ambient caption slip --------------------------------*/
 .caption{
-  position: absolute; left: 3%; bottom: 5%; z-index: 6;
+  position: absolute; left: 3%; bottom: 5%; z-index: 8;
   width: min(430px, 56%);
   padding: 16px 20px 18px;
   background: linear-gradient(#f5ebd2, #e6d7b2);

@@ -38,6 +38,18 @@ const D = `
   <linearGradient id="wallG" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#12313a"/><stop offset="1" stop-color="#0a1f26"/>
   </linearGradient>
+  <linearGradient id="whiteNight" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#d9e0dc"/><stop offset="0.55" stop-color="#b3bfbe"/>
+    <stop offset="1" stop-color="#8e9c9e"/>
+  </linearGradient>
+  <linearGradient id="whiteCol" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#eef2ec"/><stop offset="0.6" stop-color="#c4cecb"/>
+    <stop offset="1" stop-color="#8a9698"/>
+  </linearGradient>
+  <linearGradient id="whiteDay" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#d7d2c4"/><stop offset="0.5" stop-color="#bdb7a8"/>
+    <stop offset="1" stop-color="#9b9486"/>
+  </linearGradient>
   <linearGradient id="daySky" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#8ca4b2"/><stop offset="0.5" stop-color="#b9c4c4"/>
     <stop offset="1" stop-color="#dcd9cc"/>
@@ -225,51 +237,64 @@ const street = {
          the foot of the portico fit the frame; the columns run off the
          top, which is roughly what you would see standing across the
          road from it. -->
-    <g>
-      <rect x="1420" y="0" width="2040" height="660" fill="#0d2830"/>
-      <rect x="1420" y="0" width="12" height="660" fill="#4fd3c4" opacity="0.25"/>
+    <g transform="translate(1044 197) scale(0.55)">
+      <rect x="1180" y="0" width="2280" height="660" fill="url(#whiteNight)"/>
+      <rect x="1180" y="0" width="14" height="660" fill="#eef6f2" opacity="0.5"/>
+      <!-- cornice and roof balustrade, so the facade is not cut off flat -->
+      <rect x="1150" y="-62" width="2340" height="62" fill="#dfe6e1"/>
+      <rect x="1150" y="-74" width="2340" height="14" fill="#f0f4ef"/>
+      <rect x="1150" y="-162" width="2340" height="16" fill="#dfe6e1"/>
+      <g fill="#cbd5d1">${Array.from({length:38},(_,i)=>`<rect x="${1172+i*60}" y="-146" width="20" height="72" rx="7"/>`).join('')}</g>
       <!-- rusticated plinth -->
-      <rect x="1420" y="556" width="2040" height="104" fill="#0a2229"/>
-      ${Array.from({length:17},(_,i)=>`<rect x="${1420+i*120}" y="556" width="114" height="48" fill="none" stroke="#123840" stroke-width="3"/>`).join('')}
-      ${Array.from({length:17},(_,i)=>`<rect x="${1420+i*120}" y="608" width="114" height="46" fill="none" stroke="#123840" stroke-width="3"/>`).join('')}
+      <rect x="1180" y="556" width="2280" height="104" fill="#9daaab"/>
+      ${Array.from({length:19},(_,i)=>`<rect x="${1180+i*120}" y="556" width="114" height="48" fill="none" stroke="#7e8c8e" stroke-width="3"/>`).join('')}
+      ${Array.from({length:19},(_,i)=>`<rect x="${1180+i*120}" y="608" width="114" height="46" fill="none" stroke="#7e8c8e" stroke-width="3"/>`).join('')}
 
-      <!-- tall ground-floor windows, 4ft x 8ft, lit from within -->
+      <!-- ground-floor windows: 3ft wide, 6ft tall, with real piers of
+           wall between them. Neoclassical fenestration is narrow and
+           widely spaced; packing them edge to edge read as a shopfront. -->
       <g>
-        ${[1520, 1880, 3020, 3300].map((x,i)=>{
-          const lit = i !== 1;
-          return `<rect x="${x-14}" y="62" width="320" height="480" fill="#061820"/>
-            <rect x="${x}" y="76" width="292" height="452" fill="${lit ? '#ffc270' : '#0a2029'}" opacity="${lit ? 0.92 : 1}"/>
-            <g stroke="#061820" stroke-width="11">
-              <line x1="${x+146}" y1="76" x2="${x+146}" y2="528"/>
-              <line x1="${x}" y1="226" x2="${x+292}" y2="226"/>
-              <line x1="${x}" y1="376" x2="${x+292}" y2="376"/>
+        ${[1272, 1584, 1896, 2853, 3156].map((x,i)=>{
+          const lit = [0,1,3].indexOf(i) >= 0;
+          return `<rect x="${x-13}" y="62" width="246" height="480" fill="#7b8788"/>
+            <rect x="${x}" y="76" width="220" height="452" fill="${lit ? '#ffc270' : '#33403f'}" opacity="${lit ? 0.94 : 1}"/>
+            <g stroke="#43504f" stroke-width="9">
+              <line x1="${x+110}" y1="76" x2="${x+110}" y2="528"/>
+              <line x1="${x}" y1="226" x2="${x+220}" y2="226"/>
+              <line x1="${x}" y1="376" x2="${x+220}" y2="376"/>
             </g>
-            <rect x="${x-24}" y="528" width="340" height="24" fill="#0b2a31"/>
-            ${lit ? `<circle cx="${x+146}" cy="300" r="250" fill="url(#bloomW)" opacity="0.5"/>` : ''}`;
+            <rect x="${x-22}" y="528" width="264" height="22" fill="#ccd4d1"/>
+            <rect x="${x-18}" y="50" width="256" height="16" fill="#e2e8e3"/>
+            ${lit ? `<circle cx="${x+110}" cy="300" r="200" fill="url(#bloomW)" opacity="0.38"/>` : ''}`;
         }).join('')}
       </g>
 
       <!-- the portico: two columns, 3 feet across, running off the top -->
       <g>
-        <rect x="2210" y="0" width="560" height="52" fill="#0f2f38"/>
+        <rect x="2210" y="0" width="560" height="52" fill="#e4eae5"/>
+        <rect x="2210" y="52" width="560" height="10" fill="#9daaab"/>
+        <!-- entablature and pediment over the portico -->
+        <rect x="2168" y="-70" width="644" height="70" fill="#eef2ec"/>
+        <rect x="2168" y="-82" width="644" height="14" fill="#f6f9f4"/>
+        <path d="M2150 -82 L2830 -82 L2490 -216 Z" fill="#e4eae5"/>
+        <path d="M2150 -82 L2830 -82 L2490 -216 Z" fill="none" stroke="#b6c1bf" stroke-width="6"/>
         ${[2250, 2620].map(x=>`
-          <rect x="${x}" y="0" width="150" height="556" fill="#0b242c"/>
-          <rect x="${x}" y="0" width="22" height="556" fill="#4fd3c4" opacity="0.32"/>
-          <rect x="${x+122}" y="0" width="28" height="556" fill="#04141a" opacity="0.7"/>
-          <rect x="${x-18}" y="536" width="186" height="26" fill="#123840"/>`).join('')}
+          <rect x="${x}" y="0" width="150" height="556" fill="url(#whiteCol)"/>
+          <rect x="${x-18}" y="536" width="186" height="26" fill="#dfe6e1"/>
+          <rect x="${x-18}" y="562" width="186" height="14" fill="#93a0a1"/>`).join('')}
       </g>
 
       <!-- the door, and the steps up to it -->
       <g>
-        <rect x="2402" y="188" width="176" height="368" fill="#061820"/>
-        <rect x="2416" y="202" width="148" height="354" fill="#0c2c33"/>
-        <rect x="2416" y="202" width="10" height="354" fill="#ffb45c" opacity="0.5"/>
-        <path d="M2402 188 q88 -58 176 0 z" fill="#0a2229"/>
+        <rect x="2402" y="188" width="176" height="368" fill="#7d8a8b"/>
+        <rect x="2416" y="202" width="148" height="354" fill="#22312f"/>
+        <rect x="2416" y="202" width="10" height="354" fill="#ffb45c" opacity="0.6"/>
+        <path d="M2402 188 q88 -58 176 0 z" fill="#c3ccc9"/>
         <circle cx="2552" cy="392" r="9" fill="#c98a3c"/>
-        <rect x="2318" y="556" width="344" height="30" fill="#123840"/>
-        <rect x="2288" y="586" width="404" height="30" fill="#0f2f38"/>
-        <rect x="2258" y="616" width="464" height="32" fill="#0c262e"/>
-        <rect x="2228" y="648" width="524" height="30" fill="#0a2229"/>
+        <rect x="2318" y="556" width="344" height="30" fill="#c8d1ce"/>
+        <rect x="2288" y="586" width="404" height="30" fill="#b3bdbb"/>
+        <rect x="2258" y="616" width="464" height="32" fill="#9daaab"/>
+        <rect x="2228" y="648" width="524" height="30" fill="#879496"/>
         <!-- lanterns either side of the door -->
         ${sconce(2350, 380)}
         ${sconce(2600, 380)}
@@ -278,14 +303,20 @@ const street = {
 
     <!-- gate piers and iron railing -->
     <g>
-      <rect x="1300" y="380" width="74" height="280" fill="#0a2229"/>
-      <rect x="1292" y="356" width="90" height="28" fill="#123840"/>
-      <rect x="3480" y="380" width="74" height="280" fill="#0a2229"/>
-      <rect x="3472" y="356" width="90" height="28" fill="#123840"/>
-      <rect x="0" y="474" width="1300" height="9" fill="#061820"/>
-      <g fill="#081f26">${Array.from({length:33},(_,i)=>`<rect x="${i*40}" y="478" width="8" height="182"/>`).join('')}</g>
-      <rect x="3554" y="474" width="446" height="9" fill="#061820"/>
-      <g fill="#081f26">${Array.from({length:12},(_,i)=>`<rect x="${3560+i*40}" y="478" width="8" height="182"/>`).join('')}</g>
+      <!-- the lawn between the avenue and the house -->
+      <rect x="0" y="566" width="4000" height="96" fill="#16323a"/>
+      <rect x="0" y="566" width="4000" height="5" fill="#2a6a6c" opacity="0.4"/>
+      <!-- railing across the front, with the gate opposite the door -->
+      <rect x="2210" y="470" width="70" height="196" fill="#0a2229"/>
+      <rect x="2202" y="446" width="86" height="28" fill="#123840"/>
+      <rect x="2560" y="470" width="70" height="196" fill="#0a2229"/>
+      <rect x="2552" y="446" width="86" height="28" fill="#123840"/>
+      <rect x="0" y="524" width="2210" height="9" fill="#061820"/>
+      <g fill="#081f26">${Array.from({length:55},(_,i)=>`<rect x="${i*40}" y="528" width="8" height="138"/>`).join('')}</g>
+      <rect x="2630" y="524" width="1370" height="9" fill="#061820"/>
+      <g fill="#081f26">${Array.from({length:34},(_,i)=>`<rect x="${2636+i*40}" y="528" width="8" height="138"/>`).join('')}</g>
+      <!-- the path from the gate to the steps -->
+      <path d="M2300 566 L2540 566 L2596 660 L2244 660 Z" fill="#33403f" opacity="0.7"/>
     </g>
 
     <!-- the road: mud, ruts, puddles catching the last of the sun -->
@@ -314,18 +345,18 @@ const street = {
 
     <!-- the newsboy. 430 units from the top of his raised newspaper to
          his boots, which puts him around five foot two. -->
-    <image href="assets/img/newsboy.png" x="926" y="320" width="148" height="430"
+    <image href="assets/img/newsboy.png" x="1426" y="320" width="148" height="430"
            preserveAspectRatio="xMidYMax meet"/>
 
     <!-- his crate of papers -->
     <g>
-      <rect x="1180" y="576" width="156" height="98" fill="#0a2229"/>
-      <rect x="1180" y="576" width="156" height="7" fill="#2a6a6c" opacity="0.6"/>
-      <rect x="1196" y="600" width="124" height="6" fill="#123840"/>
-      <rect x="1200" y="536" width="118" height="42" fill="#e9e0c8"/>
-      <rect x="1208" y="524" width="118" height="38" fill="#f4ecd6"/>
-      <rect x="1222" y="538" width="88" height="7" fill="#6e6a60"/>
-      <rect x="1222" y="552" width="64" height="4" fill="#9a968c"/>
+      <rect x="1680" y="576" width="156" height="98" fill="#0a2229"/>
+      <rect x="1680" y="576" width="156" height="7" fill="#2a6a6c" opacity="0.6"/>
+      <rect x="1696" y="600" width="124" height="6" fill="#123840"/>
+      <rect x="1700" y="536" width="118" height="42" fill="#e9e0c8"/>
+      <rect x="1708" y="524" width="118" height="38" fill="#f4ecd6"/>
+      <rect x="1722" y="538" width="88" height="7" fill="#6e6a60"/>
+      <rect x="1722" y="552" width="64" height="4" fill="#9a968c"/>
     </g>
 
     <!-- a handcart, and the building rubble of an unfinished capital -->
@@ -751,48 +782,70 @@ const ruins = {
     <!-- =========================================================
          THE RUIN. The walls stood; everything inside did not.
     ========================================================== -->
-    <g>
-      <rect x="1420" y="0" width="2040" height="660" fill="url(#sootStone)"/>
-      <rect x="1420" y="556" width="2040" height="104" fill="#3d3a34"/>
-      ${Array.from({length:17},(_,i)=>`<rect x="${1420+i*120}" y="556" width="114" height="48" fill="none" stroke="#2a2724" stroke-width="3"/>`).join('')}
-      ${Array.from({length:17},(_,i)=>`<rect x="${1420+i*120}" y="608" width="114" height="46" fill="none" stroke="#2a2724" stroke-width="3"/>`).join('')}
+    <g transform="translate(1044 197) scale(0.55)">
+      <rect x="1180" y="0" width="2280" height="660" fill="url(#whiteDay)"/>
+      <!-- the cornice survived in stretches; the balustrade mostly did not -->
+      <rect x="1150" y="-62" width="2340" height="62" fill="#c8c1b0"/>
+      <rect x="1150" y="-74" width="2340" height="14" fill="#d6cfbd"/>
+      <g fill="#3a352d" opacity="0.45">
+        <path d="M1700 -62 l420 0 l0 62 l-420 0 z"/>
+        <path d="M2760 -62 l380 0 l0 62 l-380 0 z"/>
+      </g>
+      <rect x="1150" y="-162" width="640" height="16" fill="#c8c1b0"/>
+      <rect x="3010" y="-162" width="480" height="16" fill="#c8c1b0"/>
+      <g fill="#bdb5a4">${[0,1,2,3,4,5,6,7,8,9,31,32,33,34,35,36,37].map(i=>`<rect x="${1172+i*60}" y="-146" width="20" height="72" rx="7"/>`).join('')}</g>
+      <rect x="1180" y="556" width="2280" height="104" fill="#a89f8f"/>
+      ${Array.from({length:19},(_,i)=>`<rect x="${1180+i*120}" y="556" width="114" height="48" fill="none" stroke="#8b8273" stroke-width="3"/>`).join('')}
+      ${Array.from({length:19},(_,i)=>`<rect x="${1180+i*120}" y="608" width="114" height="46" fill="none" stroke="#8b8273" stroke-width="3"/>`).join('')}
+      <!-- soot washed down the face by the rain that put the fire out -->
+      <g fill="#3a352d" opacity="0.3">
+        <path d="M1300 300 q22 160 6 360 l-46 0 q18 -200 -4 -360 z"/>
+        <path d="M2900 340 q26 140 8 320 l-52 0 q20 -180 -4 -320 z"/>
+        <path d="M2060 260 q18 180 4 400 l-38 0 q14 -220 -2 -400 z"/>
+      </g>
 
       <!-- the windows are holes now, and the fire ran up the stone -->
       <g>
-        ${[1520, 1880, 3020, 3300].map(x=>`
-          <rect x="${x-14}" y="62" width="320" height="480" fill="#26251f"/>
-          <rect x="${x}" y="76" width="292" height="452" fill="#0e0e0d"/>
-          <rect x="${x+8}" y="84" width="276" height="180" fill="#4e5a5e" opacity="0.35"/>
-          <rect x="${x-24}" y="528" width="340" height="24" fill="#33302b"/>
-          ${scorch(x-10, 66, 312, 150)}`).join('')}
+        ${[1272, 1584, 1896, 2853, 3156].map(x=>`
+          <rect x="${x-13}" y="62" width="246" height="480" fill="#79705f"/>
+          <rect x="${x}" y="76" width="220" height="452" fill="#0e0e0d"/>
+          <rect x="${x+8}" y="84" width="204" height="170" fill="#5d6a6e" opacity="0.4"/>
+          <rect x="${x-22}" y="528" width="264" height="22" fill="#bdb5a4"/>
+          <rect x="${x-18}" y="50" width="256" height="16" fill="#cdc6b5"/>
+          ${scorch(x-12, 60, 244, 185)}`).join('')}
       </g>
 
       <!-- the portico: the columns cracked and were re-dressed later,
            but in 1815 two of them are down and propped -->
       <g>
         ${[2250, 2620].map((x,i)=>`
-          <rect x="${x}" y="${i===1?120:0}" width="150" height="${i===1?436:556}" fill="#3f3b35"/>
-          <rect x="${x}" y="${i===1?120:0}" width="20" height="${i===1?436:556}" fill="#7d7566" opacity="0.5"/>
-          <rect x="${x-18}" y="536" width="186" height="26" fill="#302d29"/>
-          ${i===1 ? `<path d="M${x} 120 l150 0 l-16 -34 l-118 0 z" fill="#4a463e"/>
+          <rect x="${x}" y="${i===1?120:0}" width="150" height="${i===1?436:556}" fill="#c0b9a8"/>
+          <rect x="${x}" y="${i===1?120:0}" width="20" height="${i===1?436:556}" fill="#e2ddce" opacity="0.7"/>
+          <rect x="${x+118}" y="${i===1?120:0}" width="32" height="${i===1?436:556}" fill="#8d8676"/>
+          <rect x="${x-18}" y="536" width="186" height="26" fill="#a89f8f"/>
+          ${i===1 ? `<path d="M${x} 120 l150 0 l-16 -34 l-118 0 z" fill="#8d8676"/>
                       <path d="M${x+170} 560 l120 -190 l34 20 l-118 186 z" fill="#6b5a3e"/>` : ''}`).join('')}
-        <rect x="2210" y="0" width="560" height="52" fill="#35322d"/>
+        <rect x="2210" y="0" width="560" height="52" fill="#cdc6b5"/>
+        <rect x="2168" y="-70" width="644" height="70" fill="#c8c1b0"/>
+        <path d="M2150 -82 L2830 -82 L2490 -216 Z" fill="#c0b9a8"/>
+        <path d="M2150 -82 L2830 -82 L2490 -216 Z" fill="none" stroke="#8d8676" stroke-width="6"/>
+        ${scorch(2300, -86, 380, 110)}
         ${scorch(2210, 56, 560, 120)}
       </g>
 
       <!-- the doorway: no door, just the opening and a plank ramp -->
       <g>
         <rect x="2402" y="188" width="176" height="368" fill="#0c0c0b"/>
-        <path d="M2402 188 q88 -58 176 0 z" fill="#1a1917"/>
-        ${scorch(2398, 190, 184, 112)}
-        <rect x="2318" y="556" width="344" height="30" fill="#3d3a34"/>
-        <rect x="2288" y="586" width="404" height="30" fill="#36332e"/>
-        <rect x="2258" y="616" width="464" height="32" fill="#302d29"/>
+        <path d="M2402 188 q88 -58 176 0 z" fill="#b5ad9d"/>
+        ${scorch(2398, 190, 184, 130)}
+        <rect x="2318" y="556" width="344" height="30" fill="#c0b9a8"/>
+        <rect x="2288" y="586" width="404" height="30" fill="#b5ad9d"/>
+        <rect x="2258" y="616" width="464" height="32" fill="#a89f8f"/>
         <path d="M2228 660 l300 -30 l14 24 l-300 32 z" fill="#7d6840"/>
       </g>
 
       <!-- scaffolding: three years of work starts here -->
-      ${scaffold(1480, 660, 600)}
+      ${scaffold(1260, 660, 600)}
       ${scaffold(2960, 660, 600)}
       <g stroke="#6b5a3e" stroke-width="10">
         <line x1="1700" y1="660" x2="1760" y2="300"/>
@@ -802,13 +855,15 @@ const ruins = {
 
     <!-- gate piers, one of them knocked about -->
     <g>
-      <rect x="1300" y="380" width="74" height="280" fill="#3a3732"/>
-      <rect x="1292" y="356" width="90" height="28" fill="#474339"/>
-      <rect x="3480" y="392" width="74" height="268" fill="#3a3732" transform="rotate(3 3517 526)"/>
-      <rect x="0" y="474" width="1300" height="9" fill="#2d2b27"/>
-      <g fill="#332f2b">${Array.from({length:33},(_,i)=>`<rect x="${i*40}" y="478" width="8" height="${i%7===3?120:182}"/>`).join('')}</g>
-      <rect x="3554" y="474" width="446" height="9" fill="#2d2b27"/>
-      <g fill="#332f2b">${Array.from({length:12},(_,i)=>`<rect x="${3560+i*40}" y="478" width="8" height="182"/>`).join('')}</g>
+      <rect x="0" y="566" width="4000" height="96" fill="#54584a"/>
+      <rect x="2210" y="470" width="70" height="196" fill="#3a3732"/>
+      <rect x="2202" y="446" width="86" height="28" fill="#474339"/>
+      <rect x="2560" y="482" width="70" height="184" fill="#3a3732" transform="rotate(4 2595 574)"/>
+      <rect x="0" y="524" width="2210" height="9" fill="#2d2b27"/>
+      <g fill="#332f2b">${Array.from({length:55},(_,i)=>`<rect x="${i*40}" y="528" width="8" height="${i%7===3?92:138}"/>`).join('')}</g>
+      <rect x="2630" y="524" width="1370" height="9" fill="#2d2b27"/>
+      <g fill="#332f2b">${Array.from({length:34},(_,i)=>`<rect x="${2636+i*40}" y="528" width="8" height="${i%5===2?96:138}"/>`).join('')}</g>
+      <path d="M2300 566 L2540 566 L2596 660 L2244 660 Z" fill="#45433c" opacity="0.8"/>
     </g>
 
     <!-- the road, dried out and rutted -->
@@ -822,7 +877,7 @@ const ruins = {
     </g>
 
     <!-- the stonemason, and his work. 420 units, about five foot nine. -->
-    <image href="assets/img/mason.png" x="1176" y="330" width="148" height="420"
+    <image href="assets/img/mason.png" x="1826" y="330" width="148" height="420"
            preserveAspectRatio="xMidYMax meet"/>
 
     <!-- dressed stone, a lime tub, a barrow -->

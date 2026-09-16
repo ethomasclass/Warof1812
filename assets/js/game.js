@@ -216,7 +216,19 @@
      the thing you clicked. */
   function approach(spot) {
     state.activeSpot = spot;
-    walkTo(spot.standAt, () => trigger(spot));
+    walkTo(spot.standAt, () => {
+      faceToward(spot);
+      trigger(spot);
+    });
+  }
+
+  /* On arrival, turn to face the thing itself. Travel direction is the
+     wrong cue: the stand point is offset from the object, so walking to
+     it from the far side leaves him looking the opposite way. */
+  function faceToward(spot) {
+    const centre = spot.box.left + spot.box.width / 2;
+    state.facing = centre >= state.x ? 1 : -1;
+    placeActor();
   }
 
   function trigger(spot) {

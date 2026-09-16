@@ -63,14 +63,14 @@ act1: {
     ================================================================*/
     street: {
       art: 'street',
-      startAt: 6,
+      startAt: 30,
       objective: 'Walk down the street to the newsboy. Click where you want to go.',
       hotspots: [
         {
           id: 'newsboy', kind: 'talk',
           label: 'A newsboy shouting the news',
-          standAt: 19.0,
-          box: { left: 23.0, top: 35.2, width: 3.9, height: 48.5 },
+          standAt: 31.5,
+          box: { left: 35.5, top: 35.2, width: 3.9, height: 48.5 },
           speaker: 'Newsboy',
           lines: [
             "War! We're at war! <em>Congress votes &mdash; Mr. Madison signs &mdash; war with Britain!</em>",
@@ -93,15 +93,15 @@ act1: {
         {
           id: 'crate', kind: 'look',
           label: 'A crate of newspapers',
-          standAt: 27.0,
-          box: { left: 29.6, top: 57.5, width: 4.2, height: 15.5 },
+          standAt: 40.0,
+          box: { left: 42.1, top: 57.5, width: 4.2, height: 15.5 },
           caption: "The <em>National Intelligencer</em>, still damp from the press. In two years British soldiers will burn this paper's office and throw its type into the street."
         },
         {
           id: 'door', kind: 'exit',
           label: 'The door at the top of the steps',
-          hidden: true, standAt: 56.5,
-          box: { left: 59.9, top: 21.0, width: 4.6, height: 41.0 },
+          hidden: true, standAt: 60.5,
+          box: { left: 58.6, top: 32.5, width: 3.6, height: 24.0 },
           to: 'study'
         }
       ]
@@ -437,14 +437,14 @@ act2: {
     ================================================================*/
     ruins: {
       art: 'ruins',
-      startAt: 6,
+      startAt: 30,
       objective: 'Same street. Walk down and find someone who can tell you what happened here.',
       hotspots: [
         {
           id: 'mason', kind: 'talk',
           label: 'A stonemason working on the wall',
-          standAt: 24.5,
-          box: { left: 29.2, top: 36.3, width: 3.9, height: 47.5 },
+          standAt: 41.5,
+          box: { left: 45.5, top: 36.3, width: 3.9, height: 47.5 },
           speaker: 'Stonemason',
           lines: [
             "Mind the lime, lad. It'll take the skin off you.",
@@ -476,15 +476,15 @@ act2: {
         {
           id: 'scaffold', kind: 'look',
           label: 'Scaffolding against the burned wall',
-          standAt: 40.0,
-          box: { left: 36.2, top: 12.0, width: 5.6, height: 62.0 },
+          standAt: 47.0,
+          box: { left: 43.6, top: 24.0, width: 4.6, height: 36.0 },
           caption: "The black tongue over each window is where the fire came out and ran up the stone. A rainstorm the next day put most of it out. People still argue about whether that storm saved the building."
         },
         {
           id: 'doorway', kind: 'exit',
           label: 'The burned doorway at the top of the steps',
-          hidden: true, standAt: 56.5,
-          box: { left: 59.9, top: 21.0, width: 4.6, height: 41.0 },
+          hidden: true, standAt: 60.5,
+          box: { left: 58.6, top: 32.5, width: 3.6, height: 24.0 },
           to: 'burned'
         }
       ]

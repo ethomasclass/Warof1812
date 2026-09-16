@@ -196,6 +196,26 @@ still being argued with in red ink. They lie at an angle on a desk with the
 historical reading pinned beside them. Paper grain, fold creases, torn edges and
 age spots are all generated in CSS and SVG &mdash; there are no image files.
 
+### Hotspots glow, they do not draw boxes
+
+A rectangle with a border reads as user interface. A soft pool of light reads as
+part of the scene, and it can spill past the object the way real light does. So
+each hotspot renders a radial glow from a pseudo-element inset past its own
+bounds, in one of two colours that match the scenes' own lighting:
+
+- **warm amber, slowly pulsing** &mdash; the thing the lesson wants next
+- **cool teal, dimmer, never pulsing** &mdash; there is something here, and you
+  may ignore it
+
+The `?edit` view still draws the real boxes.
+
+### The character faces what he is looking at
+
+Facing used to be set from the direction of travel, which is the wrong cue: a
+stand point is offset from its object, so walking to it from the far side left
+him reading a letter over his shoulder. He now turns toward the object's centre
+on arrival.
+
 ### Ambient objects
 
 Eleven objects in the two scenes do nothing except reward looking: the Argand
@@ -260,9 +280,20 @@ Every piece of furniture is built from a real dimension: a desk is 30 inches
 high, a mantel is 4'6", a door is 7 feet. The first pass ignored this and the
 room read as a giant empty hall with doll-sized props.
 
-At this scale the President's House does not fit the frame, which is correct:
-standing across the avenue you see the ground floor and the foot of the portico,
-and the columns run off the top.
+The house is **set back from the avenue** behind a lawn and a railing, and drawn
+at 0.55 scale to sit at that distance. Flush with the fence it filled the frame
+and you could never see it as a building; set back, the whole facade, cornice,
+balustrade and portico read at once, and the camera has something to arrive at.
+
+It is painted **white**, which sounds obvious and was the single biggest reason
+it did not read. It was lime-washed sandstone; the first pass painted it dark
+teal to sit in the night palette and it disappeared. Repainting it exposed a
+second problem: the windows were 292 units wide with only 48 units of pier
+between them, so they merged into one glazed band. They are now 3ft openings
+with real wall between, which is what neoclassical fenestration looks like.
+
+Both acts now open with the house already in frame, so the ruin in Act Two lands
+against the memory of the intact building rather than against a caption.
 
 ## The character sprites
 
