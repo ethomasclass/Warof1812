@@ -413,3 +413,50 @@
   font-family: var(--press); font-size: 0.66rem; letter-spacing: 0.2em;
   text-transform: uppercase; color: var(--cold); display: block; margin-bottom: 5px;
 }
+
+
+/* ==================================================================
+   THE MAP
+   A cession map, not a tribal-boundary map: it shows land that was
+   Native-held and was signed away, which is what the record supports.
+==================================================================*/
+.paper-map{ max-width: 470px; transform: rotate(-1.1deg); }
+/* the map keeps its body when toggled; only its own layers swap */
+.paper-map.is-plain .paper-inner{ display: block; }
+.paper-map .paper-plain{ display: none !important; }
+
+.map-head{
+  font-family: var(--press); font-size: 0.68rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--ink-2); text-align: center;
+  border-bottom: 1.5px solid rgba(43,38,32,0.4); padding-bottom: 8px; margin: 0 0 12px;
+}
+.map-svg{ display: block; width: 100%; height: auto; }
+
+/* the year layers */
+.map-1815, .map-cap-b{ display: none; }
+.paper-map.is-plain .map-1811, .paper-map.is-plain .map-cap-a{ display: none; }
+.paper-map.is-plain .map-1815, .paper-map.is-plain .map-cap-b{ display: block; }
+
+.map-year{
+  font-family: var(--press); font-size: 21px; letter-spacing: 0.18em;
+  fill: var(--ink); font-weight: 700;
+}
+.map-label{ font-family: var(--press); font-size: 14px; fill: #3d342c; font-weight: 700; }
+.map-label-sm{ font-family: var(--press); font-size: 12.5px; fill: #5a5146; }
+.map-figure{ font-family: var(--press); font-size: 19px; font-weight: 700; fill: var(--rubric); }
+
+.map-legend{ margin: 12px 0 0; }
+.map-key{
+  display: flex; align-items: flex-start; gap: 9px;
+  font-family: var(--press); font-size: 0.82rem; line-height: 1.45;
+  color: var(--ink); margin: 0 0 7px;
+}
+.map-key i{
+  flex: 0 0 auto; width: 20px; height: 13px; margin-top: 2px;
+  border: 1.5px solid rgba(43,38,32,0.55);
+}
+.map-note{
+  font-family: var(--hand); font-size: 0.95rem; line-height: 1.55;
+  color: #33281c; margin: 14px 0 0; transform: rotate(-0.7deg);
+}
+.map-note em{ color: var(--rubric); font-style: normal; }

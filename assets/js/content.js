@@ -639,45 +639,78 @@ act2: {
             "It changed nothing about the peace. It changed everything about how the war felt. Americans had spent three years losing, and their capital had been burned. Now the last thing that happened was a crushing win. People remembered the ending, not the middle &mdash; and Andrew Jackson rode that ending all the way to the presidency."
           ],
           record: "New Orleans &mdash; Jackson's huge victory on January 8, 1815 happened two weeks AFTER the peace treaty was signed, but before the news arrived. It changed nothing officially, but it made Americans feel they had won, and it made Jackson a national hero.",
-          hint: "Through the arch, on what is left of the cabinet table, there is a letter."
+          hint: "Through the arch, on what is left of the cabinet table, a map has been left unrolled."
         },
 
         /* 3 --------------------------------------- NATIVE DISPLACEMENT */
         {
           id: 'nations', kind: 'evidence',
-          label: 'A letter on the collapsed cabinet table',
+          label: 'A map unrolled on the collapsed cabinet table',
           standAt: 67.5,
           box: { left: 60.8, top: 56.0, width: 3.0, height: 7.5 },
-          tag: 'Impact 3 &middot; Native nations lost their last ally',
-          heading: 'A Letter from the Northwest',
+          tag: 'Impact 3 &middot; Native nations lost the most',
+          heading: 'A Map of the Cessions',
           doc: {
-            type: 'letter',
-            place: 'Detroit, the 2nd March 1815',
-            lines: [
-              'Sir,',
-              'The British have gone back over the lakes and the posts are giving out nothing &mdash; no powder, no provisions, no promises. That is understood here by everyone, on both sides of the water.',
-              'Tecumseh fell at the Thames a year and a half since, and what he spent six years building has come apart in eighteen months.',
-              'Delegations have come in from four nations this month asking what the ninth article of the treaty means, since it speaks of restoring what they held in 1811.',
-              'I have read them the article. They then ask me who is to make it happen, and I have no answer that I would care to give a man in person.'
-            ],
-            sign: 'Yr. obedt. servant, clerk of the Indian Agency at Detroit',
-            docket: 'Recd. War Dept. 4 Apl. 1815. Referred to the Secy. of War. <em>No answer sent.</em>',
-            plain: [
-              '<strong>Detroit, March 2nd, 1815.</strong>',
-              'The British have pulled back across the lakes. Their forts are handing out nothing &mdash; no gunpowder, no food, no promises. Everybody here understands what that means.',
-              'Tecumseh was killed in battle a year and a half ago. What he spent six years building fell apart in eighteen months.',
-              'Groups from four nations came in this month to ask what <em>Article 9</em> of the peace treaty means, because it says their land and rights from 1811 will be given back.',
-              'I read them the article. Then they ask me who is going to make that happen. <em>I do not have an answer I would want to give a man to his face.</em>'
-            ]
+            type: 'map',
+            head: 'War Department &middot; Lands ceded by treaty',
+            toggleOff: 'Show 1815 ›',
+            toggleOn: '‹ Show 1811',
+            layers: `
+              <!-- everything west of the Mississippi, the same in both years -->
+              <path d="M43 44 L232 44 L258 60 L264 212 L271 284 L253 278 L238 281 L217 321 L202 303 L189 276 L176 286 L166 269 L155 252 L143 258 L124 258 L99 243 L83 243 L75 225 L60 219 L50 189 L36 148 L37 78 L32 51 Z" fill="#7d9457" opacity="0.82"/>
+              <g class="map-1811">
+                <path d="M266 58 q34 -4 40 18 q2 26 -8 40 q-24 8 -34 -12 q-6 -28 2 -46 z"
+                      fill="#7d9457" opacity="0.82"/>
+                <path d="M282 132 q28 -8 36 10 q4 26 -8 40 q-24 6 -32 -12 q-4 -24 4 -38 z"
+                      fill="#7d9457" opacity="0.82"/>
+                <path d="M288 234 q30 -10 40 8 q4 20 -4 32 q-24 8 -36 -8 q-6 -20 0 -32 z"
+                      fill="#7d9457" opacity="0.82"/>
+                <path d="M316 276 q14 -4 16 12 q2 26 -4 44 q-12 6 -16 -12 q-4 -26 4 -44 z"
+                      fill="#7d9457" opacity="0.82"/>
+                <text class="map-year" x="34" y="34">1811</text>
+                <line x1="300" y1="336" x2="308" y2="268" stroke="#5a5146" stroke-width="1.2"/>
+                <text class="map-label-sm" x="272" y="350">Creek, Cherokee, Choctaw</text>
+                <line x1="196" y1="336" x2="292" y2="160" stroke="#5a5146" stroke-width="1.2"/>
+                <text class="map-label-sm" x="150" y="350">Tecumseh&#8217;s alliance</text>
+              </g>
+              <g class="map-1815">
+                <path d="M266 58 q30 -2 34 16 q2 22 -8 34 q-20 6 -28 -12 q-4 -24 2 -38 z"
+                      fill="#7d9457" opacity="0.82"/>
+                <path d="M290 136 q18 -6 22 8 q2 20 -6 30 q-16 4 -20 -10 q-2 -18 4 -28 z"
+                      fill="#7d9457" opacity="0.82"/>
+                <path d="M288 234 q30 -10 40 8 q4 20 -4 32 q-24 8 -36 -8 q-6 -20 0 -32 z"
+                      fill="#c2503c" opacity="0.45" stroke="#8e2b22" stroke-width="1.6"/>
+                <path d="M310 236 q16 -4 18 8 q2 18 -4 28 q-12 6 -16 -8 q-2 -18 2 -28 z"
+                      fill="#7d9457" opacity="0.85"/>
+                <path d="M316 276 q14 -4 16 12 q2 26 -4 44 q-12 6 -16 -12 q-4 -26 4 -44 z"
+                      fill="#7d9457" opacity="0.82"/>
+                <text class="map-year" x="34" y="34">1815</text>
+                <text class="map-figure" x="150" y="330">23,000,000</text>
+                <text class="map-label-sm" x="150" y="345">acres, signed away</text>
+                <line x1="246" y1="322" x2="296" y2="258" stroke="#8e2b22" stroke-width="1.4"/>
+                <line x1="352" y1="336" x2="320" y2="264" stroke="#5a5146" stroke-width="1.2"/>
+                <text class="map-label-sm" x="326" y="350">what the Creeks keep</text>
+              </g>`,
+            legend: `
+              <div class="map-cap-a">
+                <p class="map-key"><i style="background:#8a9a6a"></i>Land held by Native nations.</p>
+                <p class="map-key"><i style="background:#8a9a6a;opacity:0.55;border-style:dashed"></i>Nations joined to Tecumseh&#8217;s alliance.</p>
+              </div>
+              <div class="map-cap-b">
+                <p class="map-key"><i style="background:#c2503c;opacity:0.5"></i>Signed away at Fort Jackson, 9 Augt. 1814.</p>
+                <p class="map-key"><i style="background:#8a9a6a"></i>What the Creek Nation still holds.</p>
+              </div>`,
+            note: 'Genl. Jackson took this land from the Creeks who <em>fought beside him</em>, the same as from those who fought against him. He said they ought to have stopped it.',
+            docket: 'Recd. War Dept. 4 Apl. 1815. Referred to the Secy. of War. <em>No answer sent.</em>'
           },
-          found: "The Indian agency at Detroit reported to the Secretary of War. This letter came in three weeks ago and is still lying where it was opened. Look at the bottom of it: a clerk wrote the date it arrived, who it went to, and then three more words.",
-          quote: "&ldquo;The nations ask what the treaty does for them. I have no answer that I would care to give in person.&rdquo;",
+          quote: "Twenty-three million acres, signed away in a single treaty.",
           body: [
-            "Tecumseh was killed at the Battle of the Thames in October 1813. Without him, and without British guns, the alliance he had spent years building fell apart.",
-            "The peace treaty did mention Native nations. <strong>Article 9</strong> said the United States would give back to them all the land and rights they had held in 1811.",
-            "It never happened. There was no way to force the United States to keep that promise, and nobody tried. Britain, which had spent years encouraging Native resistance, simply stopped &mdash; it had made its peace and it went home. Native nations east of the Mississippi had lost the one outside power that had any reason to help them, and settlement pushed west faster than ever."
+            "Tecumseh was killed in battle in October 1813. Without him, and without British guns, the alliance he had spent years building fell apart.",
+            "In the South, the war ran alongside a second war against the Creek Nation. When that ended, Andrew Jackson wrote the peace terms himself. The <strong>Treaty of Fort Jackson</strong>, August 1814, took <strong>23 million acres</strong> &mdash; most of what is now Alabama, plus the Creek land in Georgia.",
+            "Here is the part students should sit with. Jackson took that land from the Creeks who had fought <em>on his side</em> as well as from the ones who had fought against him. When his Creek allies pointed that out, he told them they should have stopped the war from starting.",
+            "The peace treaty with Britain did mention Native nations. <strong>Article 9</strong> said the United States would give back all the land and rights they had held in 1811. It never happened. Nobody could force the United States to keep that promise, and nobody tried. Britain had spent years encouraging Native resistance and now simply stopped. Native nations east of the Mississippi had lost the one outside power with any reason to help them, and settlement pushed west faster than ever."
           ],
-          record: "Native nations &mdash; Tecumseh died in 1813 and his alliance collapsed. The treaty's Article 9 promised to restore Native land and rights from 1811, but that promise was never kept. Britain abandoned its Native allies, and westward settlement sped up.",
+          record: "Native nations &mdash; they lost the most. Tecumseh died in 1813 and his alliance fell apart. The Treaty of Fort Jackson took 23 million acres from the Creek Nation in 1814, including from Creeks who had fought for the United States. Article 9 of the peace treaty promised to return Native land held in 1811, and that promise was never kept.",
           hint: "By the fireplace there is a board with something laid on it. It is the treaty itself, and it is in pieces."
         },
 

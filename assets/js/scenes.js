@@ -1082,11 +1082,19 @@ const burned = {
       <path d="M2880 666 l56 0 l0 12 l-56 0 z" fill="#242320"/>
     </g>
 
-    <!-- ITEM 3: a letter on the collapsed table -->
-    <g transform="rotate(5 2500 584)">
-      <path d="M2452 562 L2548 562 L2552 596 L2448 596 Z" fill="#ece5d0"/>
-      <path d="M2452 562 L2500 578 L2548 562" fill="none" stroke="#b5ae98" stroke-width="2.5"/>
-      <path d="M2528 590 l22 0 l0 -4 l-22 0 z" fill="#8b8778"/>
+    <!-- ITEM 3: a map, unrolled on the collapsed table and weighted down -->
+    <g transform="rotate(4 2500 580)">
+      <path d="M2434 550 L2566 550 L2570 600 L2430 600 Z" fill="#ece5d0"/>
+      <path d="M2434 550 L2566 550 L2566 556 L2434 556 Z" fill="#f6f1e0"/>
+      <g opacity="0.6" fill="none" stroke="#7e8f7a" stroke-width="1.6">
+        <path d="M2452 588 q16 -18 34 -10 q16 8 30 -4 q12 -10 24 2"/>
+        <path d="M2448 570 q22 8 44 0"/>
+      </g>
+      <path d="M2496 566 q18 -6 26 6 q4 16 -8 22 q-16 2 -20 -12 z" fill="#b8503c" opacity="0.55"/>
+      <!-- rolled edges, and a stone holding it flat -->
+      <path d="M2424 550 q10 26 6 50 l-10 0 q-6 -26 4 -50 z" fill="#cfc6ab"/>
+      <path d="M2566 550 q10 26 6 50 l10 0 q6 -26 -4 -50 z" fill="#cfc6ab"/>
+      <ellipse cx="2470" cy="552" rx="16" ry="6" fill="#6f675a"/>
     </g>
 
     <!-- the globe: burnt through, the stand still upright -->

@@ -145,6 +145,51 @@ const PAPERS = {
       </div>`;
   },
 
+
+  /* A War Department map. Not tribal borders — those were never lines on
+     a map, and drawing them that way teaches a false precision. What this
+     shows is CESSIONS: land that was Native-held and was signed away. The
+     1811/1815 toggle is the whole argument in one gesture. */
+  map(d) {
+    return `
+      ${foxing([[8,10,22,0.35],[84,72,20,0.3],[46,90,26,0.25]])}
+      <div class="paper-inner">
+        <p class="map-head">${d.head}</p>
+        <svg class="map-svg" viewBox="0 0 440 372" aria-hidden="true">
+          <!-- The lower 48, projected from real coordinates:
+                 x = 30 + (lon + 125) * 6.724 ,  y = 44 + (49 - lat) * 12.08
+               Native-held land has to read as one shrinking mass, which an
+               east-coast-only map hides. Simplified, not a survey. -->
+          <path d="M43 44 L171 44 L232 44 L265 56 L279 52 L302 74 L312 129
+                   L339 113 L356 98 L390 92 L415 67 L420 94 L399 109 L396 132
+                   L373 145 L363 161 L360 189 L363 209 L339 231 L324 256
+                   L324 269 L329 304 L332 324 L323 339 L315 300 L307 275
+                   L292 269 L279 270 L271 284 L253 278 L238 281 L217 321
+                   L202 303 L189 276 L176 286 L166 269 L155 252 L143 258
+                   L124 258 L99 243 L83 243 L75 225 L60 219 L50 189 L36 148
+                   L37 78 L32 51 Z"
+                fill="#f3efe0" stroke="#8b8270" stroke-width="2" stroke-linejoin="round"/>
+          <!-- the Great Lakes -->
+          <g fill="#b3c7c6" stroke="#7e908f" stroke-width="1.4">
+            <path d="M263 56 q26 -6 42 4 q-6 14 -26 14 q-20 0 -16 -18 z"/>
+            <path d="M286 80 q14 -4 16 8 l0 36 q-4 10 -10 8 q-8 -2 -8 -18 z"/>
+            <path d="M305 76 q14 -4 16 10 q0 18 -6 28 q-10 2 -12 -10 q-2 -18 2 -28 z"/>
+            <path d="M318 118 q22 -6 36 2 q-4 12 -20 13 q-18 0 -16 -15 z"/>
+            <path d="M348 100 q20 -6 28 4 q-6 10 -16 10 q-12 0 -12 -14 z"/>
+          </g>
+          <!-- the Mississippi and the Ohio -->
+          <g fill="none" stroke="#7e908f" stroke-width="1.8" opacity="0.85">
+            <path d="M258 62 q6 100 6 150 q0 48 7 72"/>
+            <path d="M333 148 q-30 22 -62 41"/>
+          </g>
+          ${d.layers}
+        </svg>
+        <div class="map-legend">${d.legend}</div>
+        <p class="map-note">${d.note}</p>
+        ${docket(d.docket)}
+      </div>`;
+  },
+
   /* a speech, still being argued with: struck through, scrawled over */
   notes(d) {
     return `
@@ -168,11 +213,12 @@ function buildEvidence(spot) {
   /* The real wording is the point of a primary source, but 1812 English
      is a wall for a 9th grader. So the plain version lives on the same
      sheet of paper, one button away, instead of replacing the original. */
-  const plain = `
+  const plain = d.plain ? `
     <div class="paper-plain">
       <p class="plain-label">In plain English</p>
       ${d.plain.map(l => `<p class="plain-line">${l}</p>`).join('')}
-    </div>`;
+    </div>` : '';
+  const toggleOff = d.toggleOff || 'Translate this \u203a';
   return `
     <div class="ev">
       <div class="ev-prop">
@@ -182,7 +228,9 @@ function buildEvidence(spot) {
           ${plain}
         </article>
         <button class="plain-toggle" id="plain-toggle" type="button"
-                aria-pressed="false">Translate this &rsaquo;</button>
+                data-on="${d.toggleOn || '\u2039 Show the original'}"
+                data-off="${toggleOff}"
+                aria-pressed="false">${toggleOff}</button>
       </div>
       <div class="ev-read">
         <p class="ev-tag">${spot.tag}</p>

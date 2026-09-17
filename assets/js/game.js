@@ -309,7 +309,7 @@
     if (!btn || !paper) return;
     btn.addEventListener('click', () => {
       const plain = paper.classList.toggle('is-plain');
-      btn.textContent = plain ? '\u2039 Show the original' : 'Translate this \u203a';
+      btn.textContent = plain ? btn.dataset.on : btn.dataset.off;
       btn.setAttribute('aria-pressed', plain ? 'true' : 'false');
     });
   }

@@ -216,6 +216,36 @@ stand point is offset from its object, so walking to it from the far side left
 him reading a letter over his shoulder. He now turns toward the object's centre
 on arrival.
 
+### The cession map
+
+Impact 3 was a clerk's letter. It is now a **War Department cession map** with an
+1811/1815 toggle, because the land loss is a spatial fact and a paragraph is the
+wrong instrument for it. The letter's best lines survive as the note in the
+margin and the docket at the foot.
+
+Two decisions about it:
+
+- **It maps cessions, not tribal borders.** Native nations did not hold territory
+  as lines on a map, and drawing them that way teaches a false precision. What
+  the map shades is land that was Native-held and was signed away, which is what
+  the treaty record actually supports.
+- **It shows the whole lower 48, not the Southeast.** The argument is one green
+  mass retreating westward; an east-coast-only map hides it. The outline is
+  projected from real coordinates (`x` from longitude, `y` from latitude) rather
+  than drawn by eye, so the Gulf, Florida and the Great Lakes land where a
+  student expects them.
+
+The payload is the **Treaty of Fort Jackson**, August 9, 1814: **23 million
+acres**, most of present-day Alabama plus the Creek land in Georgia. Jackson
+dictated the terms himself, and he took the land from Creeks who had fought
+*on his side* as well as from those who had fought against him &mdash; when his
+Creek allies pointed that out, he told them they should have stopped the war
+from starting. That connects directly to the Jackson document two items earlier.
+
+Sources: the [Encyclopedia of Alabama](https://encyclopediaofalabama.org/article/treaty-of-fort-jackson/)
+and the [National Park Service](https://www.nps.gov/articles/treaty-of-fort-jackson.htm)
+on Fort Jackson.
+
 ### Ambient objects
 
 Eleven objects in the two scenes do nothing except reward looking: the Argand
