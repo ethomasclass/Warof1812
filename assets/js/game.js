@@ -59,6 +59,10 @@
     dialogueIdx: 0,
     activeSpot: null,
     station: null,
+    seen: {},           // how many times each object has been clicked
+    helpCount: 0,
+    wrongCount: 0,
+    nudgeIdx: 0,
     cardNext: null,
     finished: false,
     editing: /[?&]edit\b/.test(location.search)
@@ -293,7 +297,7 @@
     if (spot.kind === 'exit')      return gotoScene(spot.to);
     if (spot.kind === 'station')   return openStation(spot.to);
     if (spot.kind === 'look')      return spot.doc ? openEvidence(spot)
-                                                     : showCaption(spot.caption);
+                                                     : showCaption(nextLine(spot.caption, spot.id));
   }
 
   function renderPips() {
@@ -414,6 +418,7 @@
     } else {
       el.pTry.hidden = false;
       dialValues = p.slots.map(() => 0);
+      state.wrongCount = 0;
       renderDials(p);
     }
     el.pScrim.hidden = false;
@@ -440,7 +445,11 @@
       btn.addEventListener('click', () => {
         const i = Number(btn.dataset.i);
         if (i !== state.seqIndex) {
-          el.pMsg.innerHTML = p.wrong + ' <span class="puzzle-help">' + p.help + '</span>';
+          const wrong = Array.isArray(p.wrong)
+        ? p.wrong[Math.min(state.wrongCount, p.wrong.length - 1)]
+        : p.wrong;
+      state.wrongCount++;
+      el.pMsg.innerHTML = wrong + ' <span class="puzzle-help">' + p.help + '</span>';
           btn.classList.remove('is-wrong');
           void btn.offsetWidth;
           btn.classList.add('is-wrong');
@@ -490,7 +499,11 @@
     if (ok) {
       solvePuzzle(spot);
     } else {
-      el.pMsg.innerHTML = p.wrong + ' <span class="puzzle-help">' + p.help + '</span>';
+      const wrong = Array.isArray(p.wrong)
+        ? p.wrong[Math.min(state.wrongCount, p.wrong.length - 1)]
+        : p.wrong;
+      state.wrongCount++;
+      el.pMsg.innerHTML = wrong + ' <span class="puzzle-help">' + p.help + '</span>';
       el.dials.classList.remove('is-wrong');
       void el.dials.offsetWidth;
       el.dials.classList.add('is-wrong');
@@ -618,16 +631,27 @@
     const frac = (e.clientX - r.left) / r.width;              // 0..1 across the view
     const target = state.camera + frac * VIEW;                 // into world-%
     const floor = (e.clientY - r.top) / r.height;
-    if (floor < 0.62) { nudge('Nothing there. Check your assignment below.'); return; }
+    if (floor < 0.62) { nudge(NUDGES[state.nudgeIdx++ % NUDGES.length]); return; }
     walkTo(target);
   });
 
   el.closeBack.addEventListener('click', closeStation);
 
+  const HELP_LINES = [
+    null,                                              // first press: just point
+    "It is glowing. I am not sure what else you want from me.",
+    "Still there. Objects in this house are famously bad at moving.",
+    "You know, when I was your age we did not have a glowing box. We had a man shouting at us, and we were grateful.",
+    "I could do this all night. I have nothing else on. The paper does not print itself, but apparently neither do you."
+  ];
+
   el.btnHelp.addEventListener('click', () => {
     const spot = (state.scene.hotspots || []).filter(
       (h, i) => state.scene.chained ? i === state.chainIndex : !h.hidden)[0];
     if (!spot) return;
+    const line = HELP_LINES[Math.min(state.helpCount, HELP_LINES.length - 1)];
+    state.helpCount++;
+    if (line) setTimeout(() => editorNote(line), 250);
     if (!state.station) {
       // pan to it so the student can see where it is, then flash it
       const st = spot.station ? state.scene.stations[spot.station] : spot;
@@ -644,6 +668,17 @@
     node.classList.add('is-pinged');
   });
 
+  /* Repeat lines. Clicking a thing twice should say something new, both
+     because it is funnier and because it quietly tells a student that
+     poking at the room is a thing the game expects. Runs out rather than
+     loops, so it never becomes noise. */
+  function nextLine(lines, key) {
+    if (typeof lines === 'string') return lines;
+    const n = state.seen[key] || 0;
+    state.seen[key] = n + 1;
+    return lines[Math.min(n, lines.length - 1)];
+  }
+
   /* The editor never appears. He just sends notes, and they arrive at
      the moments a student playing alone is most likely to drift. */
   function editorNote(text) {
@@ -658,6 +693,17 @@
     clearTimeout(captionTimer);
     captionTimer = setTimeout(hideCaption, 13000);
   }
+
+  /* Clicking at nothing. A student does this a lot in the first minute,
+     and a single repeated line makes the game feel deaf. */
+  const NUDGES = [
+    'Nothing there.',
+    'Nothing there either.',
+    'Still nothing.',
+    'You are being extremely thorough about a wall.',
+    'Try the things that are glowing. That is what the glowing is for.',
+    'Nothing there.'
+  ];
 
   let captionTimer = null;
   function showCaption(text) {

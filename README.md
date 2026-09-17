@@ -117,6 +117,36 @@ jobs at once: they are funny, they tell a student playing alone what to do next,
 and they model the standard the work is being held to. *"And no, I will not
 accept 'the British were mean' as a reason."*
 
+### Where the jokes are
+
+Five places, all cheap to run and all self-limiting:
+
+1. **The editor's notes**, at the top of each room and after each find.
+2. **Second-click lines.** Clicking an object twice says something new, then
+   stops. It is funnier, and it quietly teaches that poking at the room is a
+   thing this game expects.
+3. **The help button gets wearier the more you press it.** First press just
+   points. By the fifth: *"I could do this all night. I have nothing else on.
+   The paper does not print itself, but apparently neither do you."*
+4. **Wrong answers escalate** rather than repeating. The last line on the drawer
+   quietly tells a stuck student the answer is in the notebook.
+5. **Clicking at nothing** cycles through six replies instead of one, because a
+   single repeated line makes a game feel deaf.
+
+### Who the joke is on
+
+The editor is hard on the **copy**, never on the student. An NPC who implies a
+9th grader is stupid reads very differently to the kid who is already behind,
+and that is the one most likely to quit. So he mocks the writing, the era, the
+city, the congressmen and his own paper &mdash; and exactly once, at the end of
+Act Two, he drops it:
+
+> *"And &mdash; look. You have done a decent job tonight. Do not repeat that to
+> anyone. I have a reputation."*
+
+That single line is what makes the other fifteen land as affection rather than
+contempt.
+
 The humour rule: **it lives in the world, not in the history.** Period absurdity
 is fair game &mdash; the chairs that broke because men leaned back in them, the
 turtle, the editor. Impressment and dispossession are not played for laughs, and

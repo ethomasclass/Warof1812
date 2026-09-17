@@ -88,7 +88,10 @@ act1: {
           label: 'A street lamp',
           standAt: 16.0,
           box: { left: 12.0, top: 22.5, width: 2.0, height: 9.5 },
-          caption: "Whale oil. The city lights about a dozen of these along the avenue, and only when Congress is meeting. Tonight every one of them is lit."
+          caption: [
+            "Whale oil. The city lights about a dozen of these along the avenue, and only when Congress is meeting. Tonight every one of them is lit.",
+            "Still a lamp. A good one, though. Cost the city four dollars and a great deal of arguing."
+          ]
         },
         {
           id: 'crate', kind: 'look',
@@ -150,10 +153,10 @@ act1: {
         }
       },
       editor: {
-        open: "Four reasons, boy. Not three, not &ldquo;some.&rdquo; Four, and a piece of paper behind each one. Lean over anything you want a proper look at &mdash; you are a printer's apprentice, not a portrait painter, you may pick things up.",
-        1: "Good. Now stop admiring your handwriting and find me the next one. And no, I will not accept &ldquo;the British were mean&rdquo; as a reason.",
-        2: "Two down. There's a cartoon of a turtle pinned up over the desk &mdash; read its name backwards before you go. That one's free.",
-        3: "Three. The fourth is in the drawer and the drawer is locked, because of course it is. You have the numbers. You have been carrying them around all night."
+        open: "Four reasons, boy. Not three, not &ldquo;several,&rdquo; not &ldquo;a bunch.&rdquo; Four, and a piece of paper behind each one. Lean over anything you want a proper look at &mdash; you are a printer's apprentice, not a portrait painter. You may pick things up.",
+        1: "One. Good. Now stop admiring your own handwriting and find the next. And I will not be printing &ldquo;the British were being mean,&rdquo; so do not bring me that.",
+        2: "Two. There's a cartoon of a turtle pinned up over the desk &mdash; read its name backwards before you leave. That one is free, and free is the only kind of help this paper can currently afford.",
+        3: "Three. The fourth is in the drawer, the drawer is locked, and the numbers have been in your notebook for an hour. I am not going to tell you which ones. I have standards, and at this point they are very nearly the only ones left in this city."
       },
 
       /* ---- always clickable, never required ---- */
@@ -193,7 +196,10 @@ act1: {
           label: 'The vote count, written out on the table',
           standAt: 72.5,
           box: { left: 66.8, top: 56.5, width: 3.4, height: 7.0 },
-          caption: "The count, in somebody's neat hand. House: 79 yes, 49 no. Senate: 19 yes, 13 no. Every single Federalist voted against. No war this country has ever declared has passed by so little."
+          caption: [
+            "The count, in somebody's neat hand. House: 79 yes, 49 no. Senate: 19 yes, 13 no. Every single Federalist voted against. No war this country has ever declared has passed by so little.",
+            "Count it again if you like. It comes out the same. Move nine men in the House and you are not at war tonight, and none of this happens."
+          ]
         },
         {
           id: 'lamp', kind: 'look',
@@ -207,14 +213,20 @@ act1: {
           label: 'A Grecian chair beside the desk',
           standAt: 34.5,
           box: { left: 31.4, top: 57.0, width: 2.4, height: 8.5 },
-          caption: "Mr. Latrobe had these made in Baltimore. Greek style, with curved legs. Three of them broke within four months. Gentlemen will lean back in them."
+          caption: [
+            "Mr. Latrobe had these made in Baltimore. Greek style, with curved legs. Three of them broke within four months. Gentlemen will lean back in them.",
+            "You are thinking about leaning back in it. Everyone thinks about leaning back in it. That is precisely how they broke the other three."
+          ]
         },
         {
           id: 'window', kind: 'look',
           label: 'A tall window with red velvet drapes',
           standAt: 12,
           box: { left: 4.8, top: 9.0, width: 9.0, height: 45.0 },
-          caption: "Red silk velvet, the same cloth the Madisons hung in the big rooms downstairs. Outside, past the dirt road, half of Washington City is still a building site."
+          caption: [
+            "Red silk velvet, the same cloth the Madisons hung in the big rooms downstairs. Outside, past the dirt road, half of Washington City is still a building site.",
+            "Two hogs are going through a rubbish heap across the avenue. This is the capital city of the United States of America."
+          ]
         },
         {
           id: 'glass', kind: 'look',
@@ -228,7 +240,10 @@ act1: {
           label: 'A coat and hat on a peg',
           standAt: 6,
           box: { left: 2.0, top: 31.0, width: 2.4, height: 20.0 },
-          caption: "Somebody's coat, still damp. Whoever came in from the rain tonight has not gone home yet. Nobody in this house is sleeping much."
+          caption: [
+            "Somebody's coat, still damp. Whoever came in from the rain tonight has not gone home yet. Nobody in this house is sleeping much.",
+            "You check the pockets. A boarding-house key, a cold pipe, and a list of names with half of them scratched out. None of your business. You put it back."
+          ]
         },
         {
           id: 'books', kind: 'look',
@@ -249,14 +264,20 @@ act1: {
           label: 'A globe on a stand',
           standAt: 76,
           box: { left: 78.6, top: 50.0, width: 3.3, height: 26.0 },
-          caption: "The Atlantic Ocean takes up most of it. Almost everything this country is arguing about sits on the far side of that water, and news takes about six weeks to cross it."
+          caption: [
+            "The Atlantic Ocean takes up most of it. Almost everything this country is arguing about sits on the far side of that water, and news takes about six weeks to cross it.",
+            "You give it a spin. Six weeks each way means every argument this country has with Britain is three months out of date before it even starts."
+          ]
         },
         {
           id: 'hearth', kind: 'look',
           label: 'The fireplace',
           standAt: 82,
           box: { left: 84.9, top: 44.0, width: 6.6, height: 29.0 },
-          caption: "Somebody has been burning papers tonight. A corner of one did not catch, and the handwriting on it is not a clerk's."
+          caption: [
+            "Somebody has been burning papers tonight. A corner of one did not catch, and the handwriting on it is not a clerk's.",
+            "You fish the corner out with the tongs. Four words survive: <em>&ldquo;&hellip;if we are wrong&hellip;&rdquo;</em> Then nothing. Somebody in this house had doubts at eleven o'clock at night and made certain nobody would ever read them."
+          ]
         },
         {
           id: 'portrait', kind: 'look',
@@ -270,7 +291,10 @@ act1: {
           label: 'A tall case clock',
           standAt: 94,
           box: { left: 96.2, top: 17.0, width: 3.2, height: 55.0 },
-          caption: "A quarter past eleven, on the first night of the first war this country ever declared. Somewhere out in the dark, nobody in Britain has even heard about it yet."
+          caption: [
+            "A quarter past eleven, on the first night of the first war this country ever declared. Somewhere out in the dark, nobody in Britain has even heard about it yet.",
+            "Twenty past. Your editor wants this by morning, and you are standing here looking at a clock, which is an excellent way to find out what morning looks like."
+          ]
         }
       ],
 
@@ -425,7 +449,12 @@ act1: {
               { label: 'The day',       answer: 7 }
             ],
             help: "All three numbers are in things you have already read. Open your notebook and look again.",
-            wrong: "The dials spring back. Not it.",
+            wrong: [
+              "The dials spring back. Not it.",
+              "Nothing. The drawer is extremely comfortable staying shut.",
+              "No. Somewhere a dead clerk is enjoying this enormously.",
+              "Still no. Your notebook has all three numbers in it. It has had them for an hour. It is right there."
+            ],
             skip: "Ask the editor (he just tells you)"
           },
 
@@ -602,10 +631,10 @@ act2: {
         }
       },
       editor: {
-        open: "Same desk, same job, harder question. Four again. And before you ask: no, &ldquo;we won&rdquo; is not an answer, because we did not, and neither did they. Find me what actually changed.",
-        1: "Right. Next one's nailed to the wall where you can't miss it, which tells you something about whoever nailed it there.",
-        2: "Careful with that one. Everybody in this city is writing the same cheerful paragraph about New Orleans this month. You are going to write a different one.",
-        3: "Last piece. It's by the fire, in bits, because the masons nearly used the peace treaty for kindling. I want that detail in the story."
+        open: "Same desk, same job, harder question. And before you ask: no, &ldquo;we won&rdquo; is not an answer, because we did not, and neither did they. Find me what actually changed.",
+        1: "Right. The next one is nailed to a wall where nobody could possibly miss it, which tells you something about whoever nailed it there.",
+        2: "Careful with that one. Every paper in this city is printing the same cheerful paragraph about New Orleans this month. You are going to print a different one, and you are going to be right, and it will not make you popular.",
+        3: "Last piece. It's by the fire, in bits, because the masons very nearly lit the hearth with the peace treaty. Put that in. If a detail makes a reader stop chewing, it goes in.<br><br>And &mdash; look. You have done a decent job tonight. Do not repeat that to anyone. I have a reputation."
       },
 
       ambient: [
@@ -905,7 +934,11 @@ act2: {
               'and things shall return to the state they were in before the war.'
             ],
             help: "Read it as one long sentence. Which piece could start it?",
-            wrong: "That does not follow. Read the piece before it again.",
+            wrong: [
+              "That does not follow. Read the piece before it again.",
+              "No. Say the sentence out loud from the beginning &mdash; it will tell you what comes next.",
+              "Not that one either. Treaties are written to be boring, but they are still sentences."
+            ],
             skip: "Ask the editor (he just tells you)",
             done: "That is the whole article. Every soldier, every ship, every burned building &mdash; and the map goes back exactly where it started."
           },
