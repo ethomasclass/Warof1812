@@ -537,6 +537,18 @@ const study = {
       <rect x="1280" y="627" width="12" height="15" fill="#c98a3c"/>
     </g>
 
+    <!-- a printed cartoon, pinned up years ago and never taken down -->
+    <g transform="rotate(-3 1202 336)">
+      <rect x="1150" y="280" width="104" height="112" fill="#e6ddc4"/>
+      <rect x="1150" y="280" width="4" height="112" fill="#bff3ea" opacity="0.6"/>
+      <ellipse cx="1190" cy="352" rx="22" ry="12" fill="#b8ad88"/>
+      <path d="M1212 346 q10 -4 12 -8 q-2 -6 -8 -4 q-6 2 -4 12 z" fill="#b8ad88"/>
+      <path d="M1196 316 l-2 22 M1186 322 l6 18" stroke="#5c574c" stroke-width="2.4"/>
+      <circle cx="1198" cy="308" r="7" fill="#d8cca8"/>
+      <rect x="1160" y="374" width="84" height="3" fill="#8b8778"/>
+      <circle cx="1202" cy="278" r="5" fill="#1b5a5f"/>
+    </g>
+
     <!-- bookshelf -->
     <g>
       <rect x="1540" y="214" width="252" height="446" fill="#061a20"/>
@@ -1117,6 +1129,16 @@ const burned = {
       <path d="M3534 588 q14 22 6 42 q-10 12 -24 2 q-10 -20 8 -32 z" fill="#ffd88a"/>
       <circle cx="3530" cy="600" r="210" fill="url(#bloomW)" opacity="0.55"/>
       <path d="M3440 648 l88 -14 l6 14 l-94 12 z" fill="#2b1c10"/>
+      <!-- a newspaper the masons were going to burn -->
+      <g transform="rotate(-6 3268 620)">
+        <path d="M3226 596 L3310 596 L3314 644 L3222 644 Z" fill="#e6ddc4"/>
+        <path d="M3268 596 L3270 644" stroke="#b9b09a" stroke-width="1.5"/>
+        <rect x="3234" y="606" width="28" height="4" fill="#5c574c"/>
+        <rect x="3234" y="616" width="24" height="2.6" fill="#8b8778"/>
+        <rect x="3276" y="606" width="28" height="4" fill="#5c574c"/>
+        <rect x="3276" y="616" width="24" height="2.6" fill="#8b8778"/>
+        <path d="M3232 634 l58 -2" stroke="#8e2b22" stroke-width="2"/>
+      </g>
       <!-- ITEM 4: the treaty, pulled out of the fire and torn getting
            it loose, laid out on a board -->
       <g>
@@ -1162,6 +1184,18 @@ const burned = {
     <rect x="0" y="659" width="4000" height="241" fill="url(#ashFloor)"/>
     <g opacity="0.5" fill="#4a4740">
       ${Array.from({length:44},(_,i)=>`<ellipse cx="${(i*181)%4000}" cy="${690+((i*73)%180)}" rx="${26+(i%5)*18}" ry="${6+(i%3)*4}"/>`).join('')}
+    </g>
+    <!-- a song sheet, half under a fallen board -->
+    <g transform="rotate(8 1940 600)">
+      <path d="M1904 578 L1976 578 L1980 618 L1900 618 Z" fill="#efe7d0"/>
+      <rect x="1912" y="586" width="46" height="3.4" fill="#5c574c"/>
+      <g stroke="#8b8778" stroke-width="1.2">
+        <line x1="1912" y1="596" x2="1968" y2="596"/><line x1="1912" y1="600" x2="1968" y2="600"/>
+        <line x1="1912" y1="604" x2="1968" y2="604"/><line x1="1912" y1="608" x2="1968" y2="608"/>
+      </g>
+      <circle cx="1924" cy="602" r="2.4" fill="#3d382f"/>
+      <circle cx="1940" cy="598" r="2.4" fill="#3d382f"/>
+      <circle cx="1956" cy="604" r="2.4" fill="#3d382f"/>
     </g>
     <g fill="#5c584e" opacity="0.8">
       <path d="M760 742 l90 -14 l16 26 l-96 18 z"/>

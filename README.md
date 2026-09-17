@@ -67,6 +67,61 @@ war moved nothing &mdash; which is what makes the real question worth asking.
 Sources: [Britannica](https://www.britannica.com/event/Battle-of-New-Orleans-United-States-United-Kingdom-1815)
 on New Orleans; the [Senate's transcript of the Treaty of Ghent](https://www.senate.gov/about/powers-procedures/treaties/treaty-of-ghent/transcript-treaty-of-ghent.htm).
 
+## Against the standard
+
+Audited against the course requirement, which is:
+
+> British impressment of American sailors and interference with U.S. shipping
+> violated American sovereignty, and Jefferson's Embargo Act &mdash; an attempt
+> to pressure Britain and France economically without going to war &mdash;
+> instead devastated the American economy and helped push the nation toward the
+> War of 1812.
+
+| | Where it lives |
+|---|---|
+| **Required** &mdash; British impressment | Reason 1, the sailor's letter |
+| **Required** &mdash; Embargo Act | Reason 2, named and explained; plus the *Ograbme* cartoon as a bonus find |
+| **Given** &mdash; Warhawks | Reason 4, Clay's marked-up speech |
+| **Given** &mdash; Battle of Tippecanoe | Reason 3 body and docket |
+| **Given** &mdash; burning of the Capitol | Act Two opening and the stonemason |
+| **Given** &mdash; Battle of New Orleans | Impact 2, the newspaper extra |
+| **Illustrative** &mdash; Hartford Convention | Act Two bonus find |
+| **Illustrative** &mdash; Treaty of Ghent | Impact 4, the sequence puzzle |
+| **Illustrative** &mdash; Fort McHenry / Star-Spangled Banner | Act Two ambient object |
+| **Illustrative** &mdash; Jackson's rise | Impact 2 |
+
+The audit caught two real gaps. **The Embargo Act was described but never named
+once**, which meant a student could play the whole lesson and not be able to
+answer a question about it; it now has its own named passage on the required
+path, with the 80 percent collapse in exports and the New England smuggling.
+**The Hartford Convention was missing entirely**, which mattered because it is
+the answer to the second half of the essential question &mdash; a war fought for
+national unity had a whole region meeting in secret to discuss leaving.
+
+The word **sovereignty** is now taught explicitly, in plain language, on the
+impressment item.
+
+## Bonus finds
+
+Some objects open a full document rather than a caption. They never advance the
+required chain, but what they contain does go in the notebook, so exploring
+makes a student's worksheet richer rather than just longer. There are three:
+the *Ograbme* cartoon, the Hartford Convention report, and the Fort McHenry
+song sheet.
+
+## The editor
+
+He is named on nearly every screen and never appears. He now sends notes &mdash;
+at the top of each room and after each piece of evidence &mdash; which do three
+jobs at once: they are funny, they tell a student playing alone what to do next,
+and they model the standard the work is being held to. *"And no, I will not
+accept 'the British were mean' as a reason."*
+
+The humour rule: **it lives in the world, not in the history.** Period absurdity
+is fair game &mdash; the chairs that broke because men leaned back in them, the
+turtle, the editor. Impressment and dispossession are not played for laughs, and
+the notes thin out in Act Two as the material darkens.
+
 ## Reading level
 
 Written for 8th&ndash;9th grade, and the rules are enforced in `content.js`:

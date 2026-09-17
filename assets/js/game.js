@@ -236,7 +236,8 @@
     if (spot.kind === 'evidence')  return openEvidence(spot);
     if (spot.kind === 'puzzle')    return openPuzzle(spot);
     if (spot.kind === 'exit')      return gotoScene(spot.to);
-    if (spot.kind === 'look')      return showCaption(spot.caption);
+    if (spot.kind === 'look')      return spot.doc ? openEvidence(spot)
+                                                     : showCaption(spot.caption);
   }
 
   function renderPips() {
@@ -317,6 +318,7 @@
 
   el.mClose.addEventListener('click', () => {
     el.scrim.hidden = true;
+    if (state.activeSpot && state.activeSpot.kind === 'look') return;
     advanceChain();
   });
 
@@ -329,6 +331,8 @@
       setTimeout(endAct, 500);
     } else if (spot && spot.hint) {
       el.objective.innerHTML = spot.hint;
+      const notes = state.scene.editor || {};
+      if (notes[state.chainIndex]) setTimeout(() => editorNote(notes[state.chainIndex]), 700);
     }
   }
 
@@ -484,6 +488,8 @@
     centreCamera(true);
     renderHotspots();
     show(el.game);
+    const notes = state.scene.editor || {};
+    if (notes.open) setTimeout(() => editorNote(notes.open), 1100);
   }
 
   /* One card renderer for the opening, the act break and the recap.
@@ -570,8 +576,24 @@
     node.classList.add('is-pinged');
   });
 
+  /* The editor never appears. He just sends notes, and they arrive at
+     the moments a student playing alone is most likely to drift. */
+  function editorNote(text) {
+    if (!text) return;
+    el.captionText.innerHTML =
+      '<span class="from-editor">From the editor</span>' + text;
+    el.caption.classList.add('is-editor');
+    el.caption.hidden = false;
+    el.caption.classList.remove('is-shown');
+    void el.caption.offsetWidth;
+    el.caption.classList.add('is-shown');
+    clearTimeout(captionTimer);
+    captionTimer = setTimeout(hideCaption, 13000);
+  }
+
   let captionTimer = null;
   function showCaption(text) {
+    el.caption.classList.remove('is-editor');
     el.captionText.innerHTML = text;
     el.caption.hidden = false;
     el.caption.classList.remove('is-shown');
@@ -597,7 +619,11 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       if (!el.nScrim.hidden) { el.nScrim.hidden = true; return; }
-      if (!el.scrim.hidden)  { el.scrim.hidden = true; advanceChain(); return; }
+      if (!el.scrim.hidden)  {
+        el.scrim.hidden = true;
+        if (!(state.activeSpot && state.activeSpot.kind === 'look')) advanceChain();
+        return;
+      }
     }
     if ((e.key === ' ' || e.key === 'Spacebar') && !el.dialogue.hidden) {
       if (document.activeElement && document.activeElement.tagName === 'BUTTON') return;

@@ -116,9 +116,45 @@ act1: {
       facing: -1,
       objective: 'The President&rsquo;s writing desk is at the far end, past the arch. Someone left a letter open on it.',
       chained: true,
+      editor: {
+        open: "Four reasons, boy. Not three, not &ldquo;some.&rdquo; Four, and a piece of paper behind each one. Anything glowing warm is what you came for. Anything glowing cool is just me being nosy on your behalf &mdash; look at it or don't.",
+        1: "Good. Now stop admiring your handwriting and find me the next one. And no, I will not accept &ldquo;the British were mean&rdquo; as a reason.",
+        2: "Two down. There's a cartoon of a turtle pinned up over the desk &mdash; read its name backwards before you go. That one's free.",
+        3: "Three. The fourth is in the drawer and the drawer is locked, because of course it is. You have the numbers. You have been carrying them around all night."
+      },
 
       /* ---- always clickable, never required ---- */
       ambient: [
+        {
+          id: 'ograbme', kind: 'look',
+          label: 'A printed cartoon pinned above the desk',
+          standAt: 36.5,
+          box: { left: 28.4, top: 30.2, width: 3.0, height: 13.0 },
+          tag: 'Worth a detour &middot; The Embargo Act',
+          heading: 'Ograbme, the Snapping Turtle',
+          doc: {
+            type: 'cartoon',
+            head: 'Printed at New York &middot; 1807',
+            cry: '&ldquo;Oh! this cursed Ograbme!&rdquo;',
+            caption: 'A merchant tries to get his goods out to a British ship. The turtle will not let him.',
+            docket: 'Somebody pinned this up here years ago and nobody has taken it down. <em>Read the turtle&rsquo;s name backwards.</em>',
+            plain: [
+              '<strong>A political cartoon from 1807.</strong>',
+              'A snapping turtle has a man by the seat of the trousers. He is trying to carry a barrel of goods out to a British ship, and the turtle will not let go. He is yelling <em>"Oh! this cursed Ograbme!"</em>',
+              'The turtle&rsquo;s name is <strong>OGRABME</strong>. Spell it backwards: <strong>EMBARGO</strong>.',
+              'That is the joke, and it is also the argument. The cartoonist is saying the Embargo Act was supposed to bite Britain &mdash; and instead it clamped down on Americans.'
+            ]
+          },
+          quote: "&ldquo;Oh! this cursed Ograbme!&rdquo;",
+          found: "This is a print from 1807, pinned up by some clerk and never taken down. Political cartoons were how ordinary people argued in public before photographs existed &mdash; cheap to print, and you did not have to be able to read much to get the point.",
+          body: [
+            "Spell the turtle's name backwards: <strong>OGRABME</strong> is <strong>EMBARGO</strong>.",
+            "That is the whole cartoon. Jefferson's <strong>Embargo Act</strong> was meant to bite Britain by cutting off American trade. What the artist is saying is that it bit Americans instead &mdash; the merchant in the picture is not British. He is one of us, trying to earn a living, and his own government has hold of him.",
+            "Cartoons like this were everywhere in 1808 and 1809, and they worked. The Embargo was repealed in 1809. Notice what the artist did not have to do: he never had to explain the policy. He just drew a turtle."
+          ],
+          record: "Ograbme &mdash; an 1807 cartoon attacking the Embargo Act. The turtle's name is 'embargo' spelled backwards, and it is biting an American merchant, not a British one. The point: the Embargo was supposed to hurt Britain and hurt Americans instead.",
+          hint: ""
+        },
         {
           id: 'tally', kind: 'look',
           label: 'The vote count, written out on the table',
@@ -165,7 +201,7 @@ act1: {
           id: 'books', kind: 'look',
           label: 'A bookshelf',
           standAt: 47,
-          box: { left: 38.4, top: 22.0, width: 6.4, height: 51.0 },
+          box: { left: 38.8, top: 24.0, width: 5.8, height: 46.0 },
           caption: "Law books, mostly, and records of the last Congress. One of them is worn soft at the spine: a book about the rights of countries that stay out of other people's wars. Everyone has been quoting it this year."
         },
         {
@@ -242,7 +278,8 @@ act1: {
           body: [
             "Britain was fighting a long war against France, and the British navy always needed more sailors. So British warships stopped American ships at sea and took sailors off them by force. This was called <strong>impressment</strong>.",
             "Britain said it was only taking back its own runaway sailors. But thousands of the men it took were American citizens, born in the United States, like the boy who wrote this letter.",
-            "Here is the question that made people furious: if a country cannot protect its own people on its own ships, is it really free?"
+            "Here is the question that made people furious. If a country cannot protect its own citizens on its own ships, is it really in charge of itself? The word for being in charge of yourself as a country is <strong>sovereignty</strong>, and Americans said Britain was trampling theirs.",
+            "So what does a government owe you when a foreign country takes your rights away somewhere else? That argument is what the next twenty years of American politics was about, and it is still going on."
           ],
           record: "Impressment &mdash; British warships stopped American ships and took sailors by force. Americans saw it as an attack on their citizens and proof that Britain did not treat the United States as a real country.",
           hint: "Back toward the window there is a printed notice pinned to the wall. It looks official, and it has a blue seal."
@@ -254,7 +291,7 @@ act1: {
           label: "A printed British order pinned to the wall",
           standAt: 20.0,
           box: { left: 23.4, top: 30.5, width: 3.4, height: 18.0 },
-          tag: 'Reason 2 &middot; Blocked trade',
+          tag: 'Reason 2 &middot; Blocked trade &amp; the Embargo Act',
           heading: 'The Orders in Council',
           doc: {
             type: 'broadside',
@@ -268,7 +305,7 @@ act1: {
             ],
             foot: 'God save the King',
             stamp: 'Board of Trade &middot; London',
-            docket: 'Transmitted by Mr. Russell at London, recd. 3 Feby. 1812. <em>Article 3 copied out for the Message.</em>',
+            docket: 'Transmitted by Mr. Russell at London, recd. 3 Feby. 1812. <em>Article 3 copied out for the Message.</em> Endorsed in another hand: &ldquo;And our own Congress&rsquo;s answer was the Embargo, which forbade us to sail at all. Between the two of them I am ruined twice over.&rdquo;',
             plain: [
               '<strong>An order from the King of Great Britain.</strong>',
               'France has tried to shut down British trade, so Britain is doing the same thing back.',
@@ -280,11 +317,13 @@ act1: {
           found: "This is a London printing. After the United States withdrew its ambassador, Jonathan Russell was the senior American diplomat left in London, and he sent copies of every new order home so the government could see exactly what the rules were. It is pinned to the wall here because a clerk has been copying Article 3 out by hand for the war message.",
           quote: "&ldquo;<strong>Article 3.</strong> No neutral vessel shall trade with any port of France or her allies&hellip;&rdquo;",
           body: [
-            "Britain and France were at war with each other. Each one tried to wreck the other's trade. American ships got caught in the middle.",
-            "This British rule said American ships had to stop at a British port and pay a British fee before trading in Europe. America never agreed to it. Britain simply ordered it.",
-            "President Jefferson fought back by shutting down American trade completely. That hurt America far more than it hurt Britain. Ships sat empty at the docks. Merchants lost everything. By 1812 many Americans felt Britain still treated them like colonists instead of citizens of a free country."
+            "Britain and France were at war with each other. Each one tried to wreck the other's trade, and American ships got caught in the middle.",
+            "This British rule said American ships had to stop at a British port and pay a British fee before trading in Europe. America never agreed to it. Britain simply ordered it. A country that cannot decide who its own ships trade with is not really running itself &mdash; and that is what Americans meant when they said Britain was violating their <strong>sovereignty</strong>.",
+            "President Jefferson tried to fight back <em>without</em> going to war. In 1807 Congress passed his <strong>Embargo Act</strong>, which banned American ships from sailing to any foreign port at all. The idea was that Britain and France needed American goods so badly that losing them would force both countries to back down.",
+            "It did not work. Britain bought elsewhere. Meanwhile American ships sat rotting at the docks, sailors had no work, and merchants went broke &mdash; New England hardest of all, and many there smuggled goods out rather than obey. Exports fell by about <strong>80 percent</strong> in a single year. The Embargo was repealed in 1809, having hurt America far more than it hurt anybody else.",
+            "So by 1812 Americans had tried the peaceful option and watched it fail. That is a large part of why the next argument was about war."
           ],
-          record: "Blocked trade &mdash; Britain's Orders in Council stopped American ships from trading freely in Europe. It wrecked the American economy and treated the United States as less than a real country.",
+          record: "Blocked trade and the Embargo &mdash; Britain's Orders in Council forced American ships to stop at British ports and pay British fees, violating American sovereignty. Jefferson answered with the Embargo Act of 1807, banning American ships from foreign trade, hoping to pressure Britain without war. It failed: exports fell about 80 percent and the American economy, especially New England's, was devastated.",
           hint: "Through the arch, in the cabinet room, there is a dispatch lying on the long table. It came in from the frontier."
         },
 
@@ -325,10 +364,11 @@ act1: {
           body: [
             "<strong>Tecumseh</strong> was a Shawnee leader. American settlers kept moving onto land where Native nations already lived, and the United States kept buying that land one nation at a time &mdash; a few leaders signing, a treaty, another piece gone.",
             "Tecumseh said that was not a real sale. The land, he argued, belonged to all Native nations <em>together</em>, so no single nation could sell any of it. He spent years travelling from the Great Lakes to the Gulf trying to build one alliance strong enough to hold the line, and telling people to stop selling.",
-            "That is what he was fighting for, and it had nothing to do with Britain. But Britain still ruled Canada, just across the border, and British agents there were happy to supply his alliance with guns. In 1811 American soldiers fought his followers at Tippecanoe and found British muskets on the field, brand new.",
+            "That is what he was fighting for, and it had nothing to do with Britain. But Britain still ruled Canada, just across the border, and British agents there were happy to supply his alliance with guns.",
+            "In November 1811, while Tecumseh was away recruiting in the south, Governor Harrison marched on his brother's settlement and fought his followers at the <strong>Battle of Tippecanoe</strong>. The Americans held the ground &mdash; and on the field they found British muskets, brand new, stamped with the mark of the British government arsenal.",
             "For settlers in the west, that ended the argument. They stopped seeing a man defending his homeland and saw a British weapon instead. The way to make the frontier safe, they decided, was not to beat Tecumseh &mdash; it was to take Canada."
           ],
-          record: "The frontier &mdash; Tecumseh, a Shawnee leader, argued that Native land belonged to all nations together so no one nation could sell it, and built an alliance to stop the sales. Britain supplied that alliance with guns from Canada. Americans blamed Britain for the fighting and wanted the British pushed out of North America.",
+          record: "The frontier &mdash; Tecumseh, a Shawnee leader, argued that Native land belonged to all nations together so no one nation could sell it, and built an alliance to stop the sales. At the Battle of Tippecanoe (November 1811) American soldiers found new British muskets on the field. Americans blamed Britain for the fighting and wanted the British pushed out of North America.",
           hint: "Back at the desk. The bottom drawer is locked, and whatever the President wanted kept shut is inside it."
         },
 
@@ -503,8 +543,62 @@ act2: {
       facing: -1,
       objective: 'Same rooms. Someone laid a plank across the burned desk to work on. There is a ledger open on it.',
       chained: true,
+      editor: {
+        open: "Same job, harder question. Four again. And before you ask: no, &ldquo;we won&rdquo; is not an answer, because we did not, and neither did they. Find me what actually changed.",
+        1: "Right. Next one's nailed to the wall where you can't miss it, which tells you something about whoever nailed it there.",
+        2: "Careful with that one. Everybody in this city is writing the same cheerful paragraph about New Orleans this month. You are going to write a different one.",
+        3: "Last piece. It's by the fire, in bits, because the masons nearly used the peace treaty for kindling. I want that detail in the story."
+      },
 
       ambient: [
+        {
+          id: 'hartford', kind: 'look',
+          label: 'A newspaper folded open on the hearth stone',
+          standAt: 78.0,
+          box: { left: 80.5, top: 62.0, width: 4.4, height: 8.0 },
+          tag: 'Worth a detour &middot; The Hartford Convention',
+          heading: 'The Delegates from New England',
+          doc: {
+            type: 'news',
+            paper: 'The Connecticut Courant',
+            dateline: 'Hartford &middot; January 1815',
+            extra: 'Report',
+            head: 'The Convention Rises',
+            sub: 'Delegates of the New England states conclude three weeks of secret session',
+            lines: [
+              'The delegates, having sat with the doors closed since the 15th of December, have this day published their report.',
+              'They complain that this war has fallen hardest upon the commerce of New England, that the Embargo and its successors ruined their shipping, and that a government of one section ought not to spend the blood and money of another.',
+              'They propose amendments to the Constitution to limit the war powers, and they assert the right of a state to interpose itself against measures it holds unconstitutional.',
+              'Of a separation from the Union the report says nothing directly. It does not need to. Every reader in the country will supply the word for himself.'
+            ],
+            toast: 'Three commissioners are appointed to carry the report to Washington.',
+            docket: 'Left on the hearth by one of the masons, who says it is good for lighting fires and nothing else. <em>Somebody has drawn a line under the last paragraph.</em>',
+            plain: [
+              '<strong>Newspaper report. Hartford, Connecticut, January 1815.</strong>',
+              'For three weeks, delegates from the New England states met behind closed doors. Today they published what they decided.',
+              'Their complaints: this war has hurt New England&rsquo;s shipping trade more than anyone else&rsquo;s. The Embargo wrecked them. And one part of the country should not be able to spend the lives and money of another part.',
+              'They want changes to the Constitution limiting the government&rsquo;s war powers. And they claim a state has the right to <em>block</em> a federal law it believes is unconstitutional.',
+              'They never actually use the word <em>secession</em> &mdash; leaving the Union. <em>They did not have to. Everyone reading it knew.</em>'
+            ]
+          },
+          quote: "&ldquo;Of a separation from the Union the report says nothing directly. It does not need to.&rdquo;",
+          found: "One of the masons has been using old newspapers to light the hearth, and this was in the pile. It is from January, three weeks before the peace news arrived. Somebody has drawn a line under the last paragraph.",
+          body: [
+            "While the rest of the country was fighting the war, delegates from the New England states met in secret at Hartford for three weeks. New England had opposed this war from the first vote, its shipping had been ruined first by the <strong>Embargo Act</strong> and then by the fighting, and its Federalist leaders had had enough.",
+            "They demanded constitutional amendments, and they claimed a state could block a federal law it thought unconstitutional. They stopped just short of saying New England should leave the United States &mdash; but everyone understood.",
+            "Then the timing destroyed them. Their delegates reached Washington in February 1815, the same week the news came in that Jackson had won at New Orleans and the war was over. They arrived to complain about a war America had apparently just won. They looked, at best, ridiculous; at worst, disloyal. The Federalist Party never recovered and was finished within a decade.",
+            "Hold this next to your notebook. A war fought for national unity had a whole region quietly discussing leaving the country. That is worth more than the treaty is."
+          ],
+          record: "The Hartford Convention &mdash; New England Federalists met in secret from December 1814 to January 1815 to protest a war that had ruined their trade, demanded constitutional changes, and hinted at leaving the Union. The news of New Orleans and the peace arrived at the same moment their delegates did, making them look ridiculous and destroying the Federalist Party.",
+          hint: ""
+        },
+        {
+          id: 'mchenry', kind: 'look',
+          label: 'A printed song sheet under a fallen board',
+          standAt: 52.0,
+          box: { left: 47.5, top: 63.0, width: 4.4, height: 8.5 },
+          caption: "A song sheet. Last September the British shelled Fort McHenry at Baltimore for twenty-five hours and the flag was still up at dawn. A lawyer named Key watched it from a ship and wrote a poem about it; somebody set it to a drinking tune and now every printer in the country is selling it. <em>The Star-Spangled Banner.</em> Burn a man's capital and he writes you a song about a flag."
+        },
         {
           id: 'hook', kind: 'look',
           label: 'A bare iron hook on the scorched wall',

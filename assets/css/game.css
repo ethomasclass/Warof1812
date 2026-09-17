@@ -546,3 +546,19 @@ body{ overflow: hidden; overscroll-behavior: none; }
   .dial-arrow, .dial-num{ width: 48px; }
   .dial-num{ font-size: 1.6rem; }
 }
+
+/* the editor's notes: a scrap torn off something else, pinned at a
+   different angle from the scene captions so he reads as a person */
+.caption.is-editor{
+  background: linear-gradient(#e8e2cc, #d8d0b2);
+  transform: rotate(1.1deg) translateY(12px);
+  clip-path: polygon(0 5%, 52% 0, 100% 3%, 99% 94%, 44% 100%, 1% 96%);
+  border-left: 5px solid #8e2b22;
+}
+.caption.is-editor.is-shown{ transform: rotate(1.1deg) translateY(0); }
+.from-editor{
+  display: block;
+  font-family: var(--press);
+  font-size: 0.62rem; letter-spacing: 0.24em; text-transform: uppercase;
+  color: #8e2b22; margin-bottom: 6px;
+}

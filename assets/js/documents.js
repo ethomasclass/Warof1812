@@ -238,6 +238,66 @@ const PAPERS = {
       </div>`;
   },
 
+
+  /* The Ograbme cartoon, 1807. A snapping turtle with "embargo" spelled
+     backwards on its shell, biting a smuggler who is trying to get a
+     barrel out to a British ship. It is a real print, it teaches the
+     Embargo Act in one image, and ninth graders find it funny, which is
+     three jobs from one object. */
+  cartoon(d) {
+    return `
+      ${foxing([[10,12,22,0.3],[84,68,18,0.26]])}
+      <div class="paper-inner">
+        <p class="cart-head">${d.head}</p>
+        <svg class="cart-svg" viewBox="0 0 400 260" aria-hidden="true">
+          <line x1="0" y1="196" x2="400" y2="196" stroke="#4a4038" stroke-width="2"/>
+          <g fill="none" stroke="#4a4038" stroke-width="1.6" opacity="0.6">
+            <path d="M0 208 q40 -8 80 0 t80 0 t80 0 t80 0 t80 0"/>
+            <path d="M0 224 q40 -8 80 0 t80 0 t80 0 t80 0 t80 0"/>
+          </g>
+          <!-- the ship he is trying to reach -->
+          <g stroke="#4a4038" stroke-width="2" fill="none" opacity="0.8">
+            <path d="M300 196 l86 0 l-12 -22 l-62 0 z"/>
+            <line x1="344" y1="174" x2="344" y2="60"/>
+            <path d="M348 68 q34 16 30 46 l-30 0 z" fill="#4a4038" opacity="0.18"/>
+            <path d="M348 122 q40 18 34 48 l-34 0 z" fill="#4a4038" opacity="0.18"/>
+          </g>
+          <text class="cart-tag" x="300" y="188">a British ship</text>
+          <!-- the smuggler, mid-yelp -->
+          <g stroke="#3d342c" stroke-width="2.4" fill="none" stroke-linecap="round">
+            <circle cx="150" cy="70" r="15" fill="#e8dcc0"/>
+            <path d="M150 85 l-4 52"/>
+            <path d="M146 137 l-22 44 M146 137 l24 42"/>
+            <path d="M150 96 l-30 -14 M150 100 l34 -8"/>
+            <path d="M138 62 q10 -14 24 -4" />
+            <circle cx="145" cy="68" r="2" fill="#3d342c"/>
+            <path d="M152 78 q8 2 8 -4" />
+          </g>
+          <!-- the barrel -->
+          <g stroke="#3d342c" stroke-width="2.2" fill="#e0d4b4">
+            <rect x="176" y="76" width="42" height="34" rx="5"/>
+            <line x1="176" y1="88" x2="218" y2="88"/>
+            <line x1="176" y1="98" x2="218" y2="98"/>
+          </g>
+          <!-- OGRABME -->
+          <g>
+            <ellipse cx="104" cy="168" rx="52" ry="30" fill="#c8bd96" stroke="#3d342c" stroke-width="2.4"/>
+            <path d="M60 158 q44 -18 88 0" fill="none" stroke="#3d342c" stroke-width="1.6"/>
+            <path d="M104 140 l0 56 M74 146 l14 44 M134 146 l-14 44"
+                  fill="none" stroke="#3d342c" stroke-width="1.4" opacity="0.7"/>
+            <path d="M152 160 q22 -6 26 -18 q-4 -12 -18 -10 q-12 4 -8 28 z"
+                  fill="#c8bd96" stroke="#3d342c" stroke-width="2.4"/>
+            <circle cx="166" cy="140" r="2" fill="#3d342c"/>
+            <path d="M52 178 q-16 6 -20 18" stroke="#3d342c" stroke-width="2.4" fill="none"/>
+            <text class="cart-word" x="104" y="174">OGRABME</text>
+          </g>
+          <text class="cart-cry" x="126" y="40">${d.cry}</text>
+        </svg>
+        <p class="cart-cap">${d.caption}</p>
+        ${docket(d.docket)}
+      </div>`;
+  },
+
   /* a speech, still being argued with: struck through, scrawled over */
   notes(d) {
     return `
