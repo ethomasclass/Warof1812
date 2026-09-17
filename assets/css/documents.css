@@ -460,3 +460,82 @@
   color: #33281c; margin: 14px 0 0; transform: rotate(-0.7deg);
 }
 .map-note em{ color: var(--rubric); font-style: normal; }
+
+/* ==================================================================
+   TRANSCRIPT — a fair copy of a speech taken down at a council
+==================================================================*/
+.paper-transcript{ max-width: 470px; transform: rotate(-1.4deg); }
+.tr-head{
+  font-family: var(--press); font-size: 0.78rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink); text-align: center;
+  margin: 0 0 4px; font-weight: 700;
+}
+.tr-sub{
+  font-family: var(--press); font-style: italic; font-size: 0.82rem;
+  text-align: center; color: var(--ink-2); margin: 0 0 16px;
+  border-bottom: 1px solid rgba(43,38,32,0.3); padding-bottom: 10px;
+}
+.hand-tr{ font-size: clamp(0.9rem, 1.45vw, 1.02rem); line-height: 1.66; }
+.hand-tr em{ font-style: normal; color: var(--rubric); font-weight: 700; }
+.tr-interp{
+  font-family: var(--press); font-size: 0.78rem; line-height: 1.5;
+  font-style: italic; color: #6b4a2c;
+  border-top: 1px solid rgba(43,38,32,0.2);
+  margin: 16px 0 0; padding-top: 10px;
+}
+
+/* ==================================================================
+   NEWSPAPER EXTRA — the machine that made a war hero
+==================================================================*/
+.paper-news{
+  max-width: 470px; transform: rotate(0.8deg); text-align: center;
+  background: linear-gradient(172deg, #f1ece0 0%, #e6dfcd 55%, #d9d1bb 100%);
+}
+.news-name{
+  font-family: var(--press); font-weight: 700;
+  font-size: clamp(1rem, 1.9vw, 1.3rem); letter-spacing: 0.06em;
+  text-transform: uppercase; margin: 0 0 6px; color: var(--ink);
+  text-shadow: 0 0 1px rgba(43,38,32,0.5);
+}
+.news-rule{ display: block; height: 3px; background: var(--ink); margin: 7px 0; }
+.news-rule-thin{ height: 1px; }
+.news-dateline{
+  font-family: var(--press); font-size: 0.68rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ink-2); margin: 0;
+}
+.news-extra{
+  font-family: var(--press); font-weight: 700; font-size: 0.8rem;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--rubric); margin: 10px 0 6px;
+}
+.news-head{
+  font-family: var(--press); font-weight: 700;
+  font-size: clamp(1.35rem, 2.8vw, 1.95rem); line-height: 1.05;
+  letter-spacing: 0.01em; text-transform: uppercase;
+  margin: 0 0 8px; color: var(--ink);
+  text-shadow: 0 0 1px rgba(43,38,32,0.6);
+}
+.news-sub{
+  font-family: var(--press); font-style: italic;
+  font-size: 0.92rem; line-height: 1.4; margin: 0 0 4px; color: var(--ink-2);
+}
+.news-cols{ column-count: 2; column-gap: 16px; column-rule: 1px solid rgba(43,38,32,0.22); text-align: left; }
+.news-body{
+  font-family: var(--press); font-size: 0.8rem; line-height: 1.5;
+  margin: 0 0 8px; color: var(--ink); text-align: justify;
+}
+.news-body strong{ font-weight: 700; }
+.news-toast{
+  font-family: var(--press); font-style: italic; font-size: 0.86rem;
+  line-height: 1.45; margin: 8px 0 0; color: var(--rubric);
+}
+.note-docket{
+  font-family: var(--press); font-size: 0.78rem; line-height: 1.45;
+  color: rgba(207,228,226,0.62); margin: 7px 0 0; font-style: italic;
+}
+.note-docket em{ color: var(--warm); font-style: normal; }
+
+.key-lost{
+  background: repeating-linear-gradient(45deg, #b03c2c 0 3px, #e8c9bd 3px 7px);
+}
+.map-key span{ display: block; }

@@ -296,7 +296,8 @@
       // has to be a complete record rather than a summary
       state.notebook.push({
         id: spot.id, tag: spot.tag, heading: spot.heading,
-        quote: spot.quote, record: spot.record
+        quote: spot.quote, record: spot.record,
+        docket: spot.doc && spot.doc.docket
       });
     }
   }
@@ -450,7 +451,9 @@
           '<div class="note"><p class="note-tag">' + n.tag + '</p>' +
           '<p class="note-heading">' + n.heading + '</p>' +
           '<blockquote class="note-quote">' + n.quote + '</blockquote>' +
-          '<p class="note-record">' + n.record + '</p></div>').join('')
+          '<p class="note-record">' + n.record + '</p>' +
+          (n.docket ? '<p class="note-docket">' + n.docket + '</p>' : '') +
+          '</div>').join('')
       : '<p class="note-empty">Nothing written down yet.</p>';
     el.nScrim.hidden = false;
     el.nClose.focus({ preventScroll: true });

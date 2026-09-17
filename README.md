@@ -216,6 +216,38 @@ stand point is offset from its object, so walking to it from the far side left
 him reading a letter over his shoulder. He now turns toward the object's centre
 on arrival.
 
+### Tecumseh speaks for himself
+
+Reason 3 was an American officer's report about captured muskets. It explained
+the *British* angle and left Tecumseh a name in somebody else's paragraph. It is
+now a transcript of **his speech to Governor Harrison at Vincennes, August 1810**,
+and his own argument carries it: the land was held by all Native nations
+together, so no single nation could sell any of it. *"Sell a country! Why not
+sell the air, the clouds, and the Great Sea?"*
+
+The sourcing is the lesson as much as the words are. Nobody wrote Tecumseh down
+in Shawnee. Everything survives through an interpreter &mdash; and Harrison,
+enclosing the copy, noted that the man **"speaks bad English, and is not very
+remarkable for clearness of intellect."** That line is on the document. The
+plain-English version says plainly that this is as close as we can get to his
+voice.
+
+The muskets survive in the docket, which is also where the puzzle's third number
+now lives.
+
+### How a country makes a hero
+
+Impact 2 was a casualty report. The casualties were never the point &mdash;
+the point is that a battle fought after the war ended turned a general into a
+president. So the document is now the mechanism itself: a **printer's proof of
+the player's own newspaper**, the extra that carried the news. *Glorious News.
+The Hero of New Orleans. Struck off 2,000 and sold out by noon.*
+
+The analysis names the two things that did the work: the news arrived in the
+**wrong order** (victory first, peace ten days later, so for ten days Americans
+believed the battle had won the war), and **newspapers put a name on it** &mdash;
+not the army, a man.
+
 ### The cession map
 
 Impact 3 was a clerk's letter. It is now a **War Department cession map** with an
@@ -229,6 +261,10 @@ Two decisions about it:
   as lines on a map, and drawing them that way teaches a false precision. What
   the map shades is land that was Native-held and was signed away, which is what
   the treaty record actually supports.
+- **Lost land is drawn as lost.** The 1815 view hatches every acre held in 1811
+  in red, draws what survives back on top in green, and keeps the 1811 boundary
+  as a dashed ghost line. A smaller green shape reads as a smaller shape; a
+  hatched gap inside an old boundary reads as something taken.
 - **It shows the whole lower 48, not the Southeast.** The argument is one green
   mass retreating westward; an east-coast-only map hides it. The outline is
   projected from real coordinates (`x` from longitude, `y` from latitude) rather

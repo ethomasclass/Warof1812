@@ -291,40 +291,44 @@ act1: {
         /* 3 -------------------------------------------------- THE FRONTIER */
         {
           id: 'dispatch', kind: 'evidence',
-          label: "A dispatch on the cabinet table, tied with red cord",
+          label: "A transcript of a speech, on the cabinet table",
           standAt: 67.5,
           box: { left: 60.8, top: 54.0, width: 2.7, height: 10.0 },
           tag: 'Reason 3 &middot; The frontier',
-          heading: 'A Report from the Frontier',
+          heading: 'Tecumseh Speaks at Vincennes',
           doc: {
-            type: 'dispatch',
-            haste: 'Haste &mdash; post haste',
-            place: 'Vincennes, Indiana Territory',
+            type: 'transcript',
+            head: 'Speech of Tecumseh, a Shawanoe chief',
+            sub: 'At the council with Govr. Harrison, Vincennes, August 1810',
             lines: [
-              'Sir &mdash; the action on the Tippecanoe was fought the <strong>7th</strong> of November and the ground is ours, though dearly. We buried thirty-seven.',
-              'I am to report a matter the Governor wishes laid before the Department. Of the arms taken from the warriors on the field, a great part are military muskets of British manufacture, and new.',
-              'Six that I examined myself carry the Tower proof and a crown upon the lockplate. They have not been fired above a season.',
-              'Such arms are not got by ordinary trade with the posts. I would stake my commission that they were issued, and issued lately.'
+              'Brother, I wish you to listen to me well.',
+              'You have taken our land from us and I do not see how we can remain at peace with you if you continue to do so.',
+              'The land belongs to <em>all</em> of us. It was never divided. No one tribe has the right to sell it, even to each other, much less to strangers.',
+              '<em>Sell a country! Why not sell the air, the clouds, and the Great Sea?</em>',
+              'You wish to prevent the Indians from uniting. You want to make them fight each other. You never see an Indian endeavour to make the white people do so.',
+              'I am the head of them all. If you do not give up the land, you will have a hand in the affair, and I do not wish you to be hurt.'
             ],
-            sign: 'Jno. Gibson, Sec., Indiana Terr.',
-            docket: 'Recd. War Dept. 9 Decr. 1811. Referred to the Secy. of War. <em>Copy to the President.</em>',
+            interp: "Taken down by the interpreter. Govr. Harrison, sending on the copy, notes that the man &ldquo;speaks bad English, and is not very remarkable for clearness of intellect.&rdquo;",
+            docket: 'Recd. War Dept. Enclosed by Govr. Harrison. Filed with the papers on the action at Tippecanoe, the <em>7th</em> of November following, where the muskets taken from the warriors proved of British make, and new.',
             plain: [
-              '<strong>Sir,</strong>',
-              'We fought the battle at Tippecanoe on <strong>November 7th</strong>. We hold the ground, but we lost a lot of men &mdash; we buried thirty-seven.',
-              'The Governor wants the Department to know this: many of the guns we took from the warriors are British <em>military</em> muskets, and they are new.',
-              'I checked six of them myself. They are stamped with a crown and the word TOWER &mdash; the mark of the British government arsenal in London. They have barely been fired.',
-              'You do not get army guns like that by ordinary trading. I would bet my job that the British handed them out, and handed them out recently.',
-              '<em>&mdash; John Gibson</em>'
+              '<strong>Tecumseh, a Shawnee leader, speaking to Governor Harrison. August 1810.</strong>',
+              'Brother, listen carefully. You keep taking our land. I do not see how we can stay at peace with you if you keep doing it.',
+              'The land belongs to <em>all</em> of us together. It was never split up. No single nation has the right to sell it &mdash; not to another nation, and certainly not to outsiders.',
+              '<em>Sell a country! Why not sell the air, the clouds, and the ocean?</em>',
+              'You are trying to stop us from uniting. You want us fighting each other. We never try to make white people do that.',
+              'I speak for all of them. If you will not give the land back, you will be part of what happens next, and I do not want you hurt.',
+              '<em>Note: nobody wrote Tecumseh down in Shawnee. Everything above came through a translator, and Governor Harrison &mdash; who was arguing with him &mdash; said that translator spoke bad English and was not very clear-headed. This is as close as we can get to his voice.</em>'
             ]
           },
-          found: "Reports from the western territories went to the Secretary of War, who forwarded copies to the President. This one has been handled a lot lately. British support for Tecumseh's alliance was the third charge in the war message, and this dispatch is the proof behind it.",
-          quote: "&ldquo;The muskets taken from the warriors are of British manufacture, and new.&rdquo;",
+          found: "The United States had been buying land from individual nations, one treaty at a time. Tecumseh's whole argument was that this was a trick: the land was held by all Native nations together, so no one of them could sell it. Governor Harrison had his interpreter write the speech down and sent it to Washington. It is in this pile because the war message charged Britain with stirring up the frontier &mdash; but read it, and Tecumseh is not talking about Britain at all.",
+          quote: "&ldquo;Sell a country! Why not sell the air, the clouds, and the Great Sea?&rdquo;",
           body: [
-            "American settlers kept pushing west onto land where Native nations already lived. A Shawnee leader named <strong>Tecumseh</strong> tried to stop it. He worked to join many nations together into one alliance strong enough to hold the line.",
-            "Britain still ruled Canada, just across the northern border. British agents there gave Tecumseh's alliance guns and encouragement.",
-            "In 1811 American soldiers fought Tecumseh's followers at Tippecanoe. On the battlefield they found British-made muskets that had never been fired. To settlers in the west, that settled the argument. The real enemy was not Tecumseh. It was Britain &mdash; and Britain was right next door."
+            "<strong>Tecumseh</strong> was a Shawnee leader. American settlers kept moving onto land where Native nations already lived, and the United States kept buying that land one nation at a time &mdash; a few leaders signing, a treaty, another piece gone.",
+            "Tecumseh said that was not a real sale. The land, he argued, belonged to all Native nations <em>together</em>, so no single nation could sell any of it. He spent years travelling from the Great Lakes to the Gulf trying to build one alliance strong enough to hold the line, and telling people to stop selling.",
+            "That is what he was fighting for, and it had nothing to do with Britain. But Britain still ruled Canada, just across the border, and British agents there were happy to supply his alliance with guns. In 1811 American soldiers fought his followers at Tippecanoe and found British muskets on the field, brand new.",
+            "For settlers in the west, that ended the argument. They stopped seeing a man defending his homeland and saw a British weapon instead. The way to make the frontier safe, they decided, was not to beat Tecumseh &mdash; it was to take Canada."
           ],
-          record: "The frontier &mdash; Britain supplied guns to Tecumseh's alliance from Canada. Settlers in the west blamed Britain for the fighting and wanted the British pushed out of North America.",
+          record: "The frontier &mdash; Tecumseh, a Shawnee leader, argued that Native land belonged to all nations together so no one nation could sell it, and built an alliance to stop the sales. Britain supplied that alliance with guns from Canada. Americans blamed Britain for the fighting and wanted the British pushed out of North America.",
           hint: "Back at the desk. The bottom drawer is locked, and whatever the President wanted kept shut is inside it."
         },
 
@@ -598,47 +602,54 @@ act2: {
             "When the war ended, those factories did not close. In 1816 Congress passed a tax on imported goods to protect them. For the first time, the country could make what it needed without asking anyone's permission."
           ],
           record: "The economy &mdash; the war cut off British goods, so Americans started making those goods themselves. American factories grew during the war and stayed open after it. The country became far less dependent on Britain.",
-          hint: "There is a military report nailed to the wall over by the looking glass. It came up from New Orleans."
+          hint: "There is a newspaper sheet nailed to the wall over by the looking glass. Somebody wanted it where people would see it."
         },
 
         /* 2 --------------------------------------------- NEW ORLEANS */
         {
           id: 'orleans', kind: 'evidence',
-          label: 'A military report nailed to the wall',
+          label: 'A newspaper extra nailed to the wall',
           standAt: 20.0,
           box: { left: 23.4, top: 30.5, width: 3.4, height: 18.0 },
-          tag: 'Impact 2 &middot; A victory that came too late to matter',
-          heading: 'The Report from New Orleans',
+          tag: 'Impact 2 &middot; How a country makes a hero',
+          heading: 'The Making of Andrew Jackson',
           doc: {
-            type: 'dispatch',
-            haste: 'By express',
-            place: 'New Orleans, 9th January 1815',
+            type: 'news',
+            paper: 'The National Intelligencer',
+            dateline: 'Washington City &middot; Saturday, February 4, 1815',
+            extra: 'Extra',
+            head: 'Glorious News',
+            sub: 'The enemy beaten before New Orleans &mdash; Genl. Jackson victorious &mdash; the British commander slain',
             lines: [
-              'Sir &mdash; the enemy came against our line at daybreak yesterday in column, and was repulsed in something under half an hour.',
-              'Their loss, as near as can be counted: <strong>291</strong> killed, <strong>1,262</strong> wounded, <strong>484</strong> missing. Their General Pakenham fell in front of the works.',
+              'The express is this hour arrived. On the morning of the 8th ult. the enemy advanced in column upon our works below New Orleans and was repulsed in something under half an hour.',
+              'The British loss: <strong>291</strong> killed, <strong>1,262</strong> wounded, <strong>484</strong> missing. Their Genl. Pakenham fell in front of the works.',
               'Our own loss: <strong>13</strong> killed, 39 wounded, 19 missing.',
-              'The line was held by regulars, by the Tennessee and Kentucky militia, by free men of colour, by Baratarian sailors, and by the citizens of this city, standing together behind the same mud bank.',
-              'Genl. Jackson desires me to say that the militia stood as well as any regulars in the world, and that he will not have it reported otherwise.'
+              'The line was held by regulars, by the militia of Tennessee and Kentucky, by free men of colour, by the Baratarian sailors and by the citizens of the place, standing together behind one bank of earth.',
+              'Let it be remembered that these were not soldiers of a standing army but <strong>farmers and tradesmen</strong>, and that they broke the troops who beat Bonaparte.',
+              'Of Genl. <strong>Andrew Jackson</strong> it is enough to say that he found the city defenceless and has given it back to the nation entire.'
             ],
-            sign: 'Aide-de-camp, 7th Military District',
-            docket: 'Express from N. Orleans, recd. 4 Feby. 1815. Printed for the city by order of the War Dept.',
+            toast: 'Toasts were drunk last evening at Davis&rsquo;s: <em>&ldquo;The Hero of New Orleans &mdash; he has redeemed the year.&rdquo;</em>',
+            docket: 'Printer&rsquo;s proof. Set in haste, 4 Feby. 1815. <em>Struck off 2,000 and sold out by noon.</em>',
             plain: [
-              '<strong>New Orleans, January 9th, 1815.</strong>',
-              'The British attacked our line at dawn yesterday. We drove them back in under half an hour.',
+              '<strong>Newspaper extra. Washington, February 4, 1815.</strong>',
+              'The rider has just arrived. On January 8th the British marched on our defences outside New Orleans and were driven back in under half an hour.',
               'British losses: <strong>291 killed, 1,262 wounded, 484 missing</strong> &mdash; about 2,000 men. Their commander, General Pakenham, was killed.',
-              'American losses: <strong>13 killed, 39 wounded, 19 missing</strong> &mdash; about 70 men.',
-              'The line was held by regular soldiers, Tennessee and Kentucky volunteers, free Black men, local pirates, and ordinary citizens of the city, all behind the same mud wall.',
-              'General Jackson wants it said that the volunteers fought as well as any professional army in the world, and he will not have it reported any other way.'
+              'American losses: <strong>13 killed, 39 wounded, 19 missing</strong> &mdash; about 70.',
+              'The line was held by regular soldiers, Tennessee and Kentucky volunteers, free Black men, local pirates and ordinary townspeople, all behind one wall of dirt.',
+              'Remember: these were <strong>farmers and shopkeepers</strong>, not a professional army &mdash; and they beat the troops who had defeated Napoleon.',
+              'As for General <strong>Andrew Jackson</strong>: he found the city undefended and has handed it back whole.',
+              '<em>A toast last night: &ldquo;The Hero of New Orleans &mdash; he has redeemed the year.&rdquo;</em>'
             ]
           },
-          found: "When the express rider reached Washington on February 4th, the War Department had the report printed and posted up around the city so people could read it for themselves. This is one of those sheets. Somebody nailed it to the wall in here, in the ruin of the President's house, which tells you what that news meant to people.",
-          quote: "&ldquo;Their loss: <strong>291</strong> killed, <strong>1,262</strong> wounded&hellip; our own: <strong>13</strong> killed.&rdquo;",
+          found: "This is your own paper's printer's proof, pulled the hour the express rider got in. Two thousand copies were struck off and sold out by noon, and every other paper in the country reprinted it within the month. This sheet is not a record of what Jackson did. It is the thing that <em>made</em> him.",
+          quote: "&ldquo;The Hero of New Orleans &mdash; he has redeemed the year.&rdquo;",
           body: [
-            "On January 8, 1815, Andrew Jackson's army crushed a British attack outside New Orleans. About 2,000 British soldiers were killed, wounded or missing. American losses were about 70.",
-            "Here is the thing everybody forgets: <strong>the war was already over.</strong> The peace treaty had been signed in Europe two weeks earlier. News took six weeks to cross the Atlantic, so nobody at New Orleans knew.",
-            "It changed nothing about the peace. It changed everything about how the war felt. Americans had spent three years losing, and their capital had been burned. Now the last thing that happened was a crushing win. People remembered the ending, not the middle &mdash; and Andrew Jackson rode that ending all the way to the presidency."
+            "Look at what the country had to show for three years of war. Three failed invasions of Canada. A navy of sixteen ships against hundreds. The Capitol and the President's House burned. Then, on January 8, 1815, Andrew Jackson's army broke a British attack outside New Orleans in half an hour, losing about 70 men against roughly 2,000.",
+            "Two things turned that into something bigger. First, <strong>the news arrived in the wrong order.</strong> Word of the victory reached the east coast in the first week of February. Word that the war had already ended &mdash; the treaty was signed in Europe two weeks <em>before</em> the battle &mdash; did not arrive until about ten days later. So for ten days Americans believed they had won the war by winning this battle.",
+            "Second, <strong>newspapers like this one did the rest.</strong> They printed it, reprinted it, and put a name on it. Not the army: a man. Farmers and shopkeepers had beaten the troops who defeated Napoleon, and Andrew Jackson had led them.",
+            "It was not true that the battle won the war. It did not change one word of the treaty. But people remember how a story ends, and this is how this one ended. Jackson became <strong>&ldquo;Old Hickory,&rdquo;</strong> the most famous man in America &mdash; and thirteen years later, President."
           ],
-          record: "New Orleans &mdash; Jackson's huge victory on January 8, 1815 happened two weeks AFTER the peace treaty was signed, but before the news arrived. It changed nothing officially, but it made Americans feel they had won, and it made Jackson a national hero.",
+          record: "Making a hero &mdash; Jackson's victory at New Orleans (January 8, 1815) came two weeks AFTER the peace treaty was signed, but news of the win reached America before news of the peace. Newspapers turned it into proof that America had won the war, and turned Jackson into a national hero. He was elected President in 1828.",
           hint: "Through the arch, on what is left of the cabinet table, a map has been left unrolled."
         },
 
@@ -656,49 +667,55 @@ act2: {
             toggleOff: 'Show 1815 ›',
             toggleOn: '‹ Show 1811',
             layers: `
-              <!-- everything west of the Mississippi, the same in both years -->
-              <path d="M43 44 L232 44 L258 60 L264 212 L271 284 L253 278 L238 281 L217 321 L202 303 L189 276 L176 286 L166 269 L155 252 L143 258 L124 258 L99 243 L83 243 L75 225 L60 219 L50 189 L36 148 L37 78 L32 51 Z" fill="#7d9457" opacity="0.82"/>
+              <!-- west of the Mississippi: unchanged in both years -->
+              <path d="M43 44 L232 44 L258 60 L264 212 L271 284 L253 278 L238 281 L217 321 L202 303 L189 276 L176 286 L166 269 L155 252 L143 258 L124 258 L99 243 L83 243 L75 225 L60 219 L50 189 L36 148 L37 78 L32 51 Z" fill="#7d9457" opacity="0.85"/>
+
               <g class="map-1811">
-                <path d="M266 58 q34 -4 40 18 q2 26 -8 40 q-24 8 -34 -12 q-6 -28 2 -46 z"
-                      fill="#7d9457" opacity="0.82"/>
-                <path d="M282 132 q28 -8 36 10 q4 26 -8 40 q-24 6 -32 -12 q-4 -24 4 -38 z"
-                      fill="#7d9457" opacity="0.82"/>
-                <path d="M288 234 q30 -10 40 8 q4 20 -4 32 q-24 8 -36 -8 q-6 -20 0 -32 z"
-                      fill="#7d9457" opacity="0.82"/>
-                <path d="M316 276 q14 -4 16 12 q2 26 -4 44 q-12 6 -16 -12 q-4 -26 4 -44 z"
-                      fill="#7d9457" opacity="0.82"/>
+                <path d="M266 58 q34 -4 40 18 q2 26 -8 40 q-24 8 -34 -12 q-6 -28 2 -46 z" fill="#7d9457" opacity="0.85"/>
+                <path d="M282 132 q28 -8 36 10 q4 26 -8 40 q-24 6 -32 -12 q-4 -24 4 -38 z" fill="#7d9457" opacity="0.85"/>
+                <path d="M288 234 q30 -10 40 8 q4 20 -4 32 q-24 8 -36 -8 q-6 -20 0 -32 z" fill="#7d9457" opacity="0.85"/>
+                <path d="M316 276 q14 -4 16 12 q2 26 -4 44 q-12 6 -16 -12 q-4 -26 4 -44 z" fill="#7d9457" opacity="0.85"/>
                 <text class="map-year" x="34" y="34">1811</text>
-                <line x1="300" y1="336" x2="308" y2="268" stroke="#5a5146" stroke-width="1.2"/>
-                <text class="map-label-sm" x="272" y="350">Creek, Cherokee, Choctaw</text>
-                <line x1="196" y1="336" x2="292" y2="160" stroke="#5a5146" stroke-width="1.2"/>
-                <text class="map-label-sm" x="150" y="350">Tecumseh&#8217;s alliance</text>
+                <line x1="300" y1="336" x2="308" y2="262" stroke="#5a5146" stroke-width="1.2"/>
+                <text class="map-label-sm" x="268" y="350">Creek, Cherokee, Choctaw</text>
+                <line x1="196" y1="336" x2="292" y2="158" stroke="#5a5146" stroke-width="1.2"/>
+                <text class="map-label-sm" x="146" y="350">Tecumseh&#8217;s alliance</text>
               </g>
+
               <g class="map-1815">
-                <path d="M266 58 q30 -2 34 16 q2 22 -8 34 q-20 6 -28 -12 q-4 -24 2 -38 z"
-                      fill="#7d9457" opacity="0.82"/>
-                <path d="M290 136 q18 -6 22 8 q2 20 -6 30 q-16 4 -20 -10 q-2 -18 4 -28 z"
-                      fill="#7d9457" opacity="0.82"/>
-                <path d="M288 234 q30 -10 40 8 q4 20 -4 32 q-24 8 -36 -8 q-6 -20 0 -32 z"
-                      fill="#c2503c" opacity="0.45" stroke="#8e2b22" stroke-width="1.6"/>
-                <path d="M310 236 q16 -4 18 8 q2 18 -4 28 q-12 6 -16 -8 q-2 -18 2 -28 z"
-                      fill="#7d9457" opacity="0.85"/>
-                <path d="M316 276 q14 -4 16 12 q2 26 -4 44 q-12 6 -16 -12 q-4 -26 4 -44 z"
-                      fill="#7d9457" opacity="0.82"/>
+                <!-- everything held in 1811, hatched: this is the land itself -->
+                <path d="M266 58 q34 -4 40 18 q2 26 -8 40 q-24 8 -34 -12 q-6 -28 2 -46 z" fill="url(#lost)"/>
+                <path d="M282 132 q28 -8 36 10 q4 26 -8 40 q-24 6 -32 -12 q-4 -24 4 -38 z" fill="url(#lost)"/>
+                <path d="M288 234 q30 -10 40 8 q4 20 -4 32 q-24 8 -36 -8 q-6 -20 0 -32 z" fill="url(#lost)"/>
+                <!-- what survives, drawn back on top -->
+                <path d="M270 64 q26 -2 28 16 q2 20 -8 30 q-18 4 -24 -12 q-2 -22 4 -34 z" fill="#7d9457" opacity="0.85"/>
+                <path d="M292 140 q16 -6 18 8 q2 18 -6 26 q-14 4 -16 -10 q-2 -16 4 -24 z" fill="#7d9457" opacity="0.85"/>
+                <path d="M310 236 q16 -4 18 8 q2 18 -4 28 q-12 6 -16 -8 q-2 -18 2 -28 z" fill="#7d9457" opacity="0.85"/>
+                <path d="M316 276 q14 -4 16 12 q2 26 -4 44 q-12 6 -16 -12 q-4 -26 4 -44 z" fill="#7d9457" opacity="0.85"/>
+                <!-- the 1811 outline kept as a dashed ghost, so the gap is
+                     visible as a gap rather than as a smaller shape -->
+                <g fill="none" stroke="#8e2b22" stroke-width="1.8" stroke-dasharray="5 4" opacity="0.9">
+                  <path d="M266 58 q34 -4 40 18 q2 26 -8 40 q-24 8 -34 -12 q-6 -28 2 -46 z"/>
+                  <path d="M282 132 q28 -8 36 10 q4 26 -8 40 q-24 6 -32 -12 q-4 -24 4 -38 z"/>
+                  <path d="M288 234 q30 -10 40 8 q4 20 -4 32 q-24 8 -36 -8 q-6 -20 0 -32 z"/>
+                </g>
                 <text class="map-year" x="34" y="34">1815</text>
-                <text class="map-figure" x="150" y="330">23,000,000</text>
-                <text class="map-label-sm" x="150" y="345">acres, signed away</text>
-                <line x1="246" y1="322" x2="296" y2="258" stroke="#8e2b22" stroke-width="1.4"/>
-                <line x1="352" y1="336" x2="320" y2="264" stroke="#5a5146" stroke-width="1.2"/>
-                <text class="map-label-sm" x="326" y="350">what the Creeks keep</text>
+                <line x1="248" y1="322" x2="296" y2="252" stroke="#8e2b22" stroke-width="1.4"/>
+                <text class="map-figure" x="120" y="330">23,000,000</text>
+                <text class="map-label-sm" x="120" y="345">acres taken at Fort Jackson alone</text>
+                <line x1="360" y1="300" x2="322" y2="252" stroke="#5a5146" stroke-width="1.2"/>
+                <text class="map-label-sm" x="332" y="314">what is left</text>
+                <line x1="212" y1="150" x2="278" y2="150" stroke="#8e2b22" stroke-width="1.2"/>
+                <text class="map-label-sm" x="150" y="146">alliance</text>
+                <text class="map-label-sm" x="150" y="159">broken up</text>
               </g>`,
             legend: `
               <div class="map-cap-a">
-                <p class="map-key"><i style="background:#8a9a6a"></i>Land held by Native nations.</p>
-                <p class="map-key"><i style="background:#8a9a6a;opacity:0.55;border-style:dashed"></i>Nations joined to Tecumseh&#8217;s alliance.</p>
+                <p class="map-key"><i style="background:#7d9457"></i>Land held by Native nations in 1811.</p>
               </div>
               <div class="map-cap-b">
-                <p class="map-key"><i style="background:#c2503c;opacity:0.5"></i>Signed away at Fort Jackson, 9 Augt. 1814.</p>
-                <p class="map-key"><i style="background:#8a9a6a"></i>What the Creek Nation still holds.</p>
+                <p class="map-key"><i class="key-lost"></i><span><strong>Signed away</strong> between 1811 and this spring. The dashed line is where the boundary used to run.</span></p>
+                <p class="map-key"><i style="background:#7d9457"></i>What is left.</p>
               </div>`,
             note: 'Genl. Jackson took this land from the Creeks who <em>fought beside him</em>, the same as from those who fought against him. He said they ought to have stopped it.',
             docket: 'Recd. War Dept. 4 Apl. 1815. Referred to the Secy. of War. <em>No answer sent.</em>'

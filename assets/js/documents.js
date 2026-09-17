@@ -156,6 +156,13 @@ const PAPERS = {
       <div class="paper-inner">
         <p class="map-head">${d.head}</p>
         <svg class="map-svg" viewBox="0 0 440 372" aria-hidden="true">
+          <defs>
+            <pattern id="lost" width="7" height="7" patternTransform="rotate(45)"
+                     patternUnits="userSpaceOnUse">
+              <rect width="7" height="7" fill="#e8c9bd"/>
+              <line x1="0" y1="0" x2="0" y2="7" stroke="#b03c2c" stroke-width="2.6"/>
+            </pattern>
+          </defs>
           <!-- The lower 48, projected from real coordinates:
                  x = 30 + (lon + 125) * 6.724 ,  y = 44 + (49 - lat) * 12.08
                Native-held land has to read as one shrinking mass, which an
@@ -186,6 +193,47 @@ const PAPERS = {
         </svg>
         <div class="map-legend">${d.legend}</div>
         <p class="map-note">${d.note}</p>
+        ${docket(d.docket)}
+      </div>`;
+  },
+
+
+  /* A clerk's fair copy of a speech taken down at a council. The
+     interpreter's note at the foot is the point as much as the words
+     are: we have Tecumseh only through a translator the American
+     governor himself did not trust. */
+  transcript(d) {
+    return `
+      <span class="crease crease-h" style="top:50%"></span>
+      ${foxing([[12,16,24,0.42],[78,20,18,0.35],[56,78,28,0.32]])}
+      <div class="paper-inner">
+        <p class="tr-head">${d.head}</p>
+        <p class="tr-sub">${d.sub}</p>
+        ${d.lines.map(l => `<p class="hand hand-tr">${l}</p>`).join('')}
+        <p class="tr-interp">${d.interp}</p>
+        ${docket(d.docket)}
+      </div>`;
+  },
+
+  /* A printed extra. This is the machine that made Andrew Jackson: not
+     the battle, the press. The player works for one of these. */
+  news(d) {
+    return `
+      ${foxing([[10,12,20,0.3],[82,60,18,0.26]])}
+      <div class="paper-inner">
+        <p class="news-name">${d.paper}</p>
+        <span class="news-rule"></span>
+        <p class="news-dateline">${d.dateline}</p>
+        <span class="news-rule news-rule-thin"></span>
+        <p class="news-extra">${d.extra}</p>
+        <h3 class="news-head">${d.head}</h3>
+        <p class="news-sub">${d.sub}</p>
+        <span class="news-rule news-rule-thin"></span>
+        <div class="news-cols">
+          ${d.lines.map(l => `<p class="news-body">${l}</p>`).join('')}
+        </div>
+        <span class="news-rule news-rule-thin"></span>
+        <p class="news-toast">${d.toast}</p>
         ${docket(d.docket)}
       </div>`;
   },
