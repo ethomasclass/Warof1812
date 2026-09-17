@@ -35,6 +35,8 @@
     btnStart: $('btn-start'), btnHelp: $('btn-help'), btnNotebook: $('btn-notebook'),
     scrim: $('scrim'), evMount: $('evidence-mount'), mClose: $('modal-close'),
     caption: $('caption'), captionText: $('caption-text'),
+    closeup: $('closeup'), closeArt: $('closeup-art'),
+    closeHotspots: $('closeup-hotspots'), closeBack: $('closeup-back'),
     pScrim: $('puzzle-scrim'), pNotebook: $('puzzle-notebook'),
     pTag: $('puzzle-tag'), pHeading: $('puzzle-heading'), pPrompt: $('puzzle-prompt'), pRiddle: $('puzzle-riddle'),
     dials: $('dials'), pMsg: $('puzzle-msg'), pTry: $('puzzle-try'), pSkip: $('puzzle-skip'),
@@ -56,6 +58,7 @@
     seqIndex: 0,
     dialogueIdx: 0,
     activeSpot: null,
+    station: null,
     cardNext: null,
     finished: false,
     editing: /[?&]edit\b/.test(location.search)
@@ -180,42 +183,94 @@
   /* =================================================================
      HOTSPOTS
   ==================================================================*/
-  /* Ambient objects are always live. The chain shows only its next
-     link. Curiosity is never gated; the lesson still has one path. */
+  /* Some chain items live on a station rather than out in the room. In
+     the room those are represented by the station itself, which is a
+     large forgiving target; the item appears once you are leaning over
+     it. A station stays enterable after its item is found, because it
+     is a place, not a step. */
+  function stationLead(key, isNext) {
+    const st = state.scene.stations[key];
+    return {
+      id: 'station-' + key, kind: 'station', to: key,
+      label: st.label, standAt: st.standAt, box: st.box, lead: !!isNext
+    };
+  }
+
   function visibleSpots() {
-    const ambient = state.scene.ambient || [];
-    const spots = state.scene.hotspots;
+    const scene = state.scene;
+
+    if (state.station) {
+      const st = scene.stations[state.station];
+      const list = (st.objects || []).slice();
+      const next = scene.hotspots[state.chainIndex];
+      if (next && next.station === state.station) list.push(next);
+      return list;
+    }
+
+    const ambient = scene.ambient || [];
+    const stationKeys = Object.keys(scene.stations || {});
+    const spots = scene.hotspots;
     if (state.editing) return ambient.concat(spots);
-    if (!state.scene.chained) {
+    if (!scene.chained) {
       return ambient.concat(spots.filter(s => !s.hidden || state.found.indexOf(s.id) >= 0));
     }
     const next = spots[state.chainIndex];
-    return next ? ambient.concat([next]) : ambient.slice();
+    const leadKey = next && next.station;
+    const stationSpots = stationKeys.map(k => stationLead(k, k === leadKey));
+    return ambient.concat(stationSpots, next && !next.station ? [next] : []);
+  }
+
+  /* Labels are authored with HTML entities. setAttribute does not decode
+     them, so a screen reader would read "President &rsquo;s". Decode once
+     through a detached element. */
+  const decoder = document.createElement('textarea');
+  function plainText(html) {
+    decoder.innerHTML = html;
+    return decoder.value;
   }
 
   function renderHotspots() {
+    const layer = state.station ? el.closeHotspots : el.hotspots;
     el.hotspots.innerHTML = '';
-    el.hotspots.classList.toggle('is-editing', state.editing);
+    el.closeHotspots.innerHTML = '';
+    layer.classList.toggle('is-editing', state.editing);
     visibleSpots().forEach(spot => {
       const b = spot.box;
       const btn = document.createElement('button');
-      btn.className = spot.kind === 'look' ? 'hotspot hotspot-look' : 'hotspot';
+      btn.className = 'hotspot' +
+        (spot.kind === 'look' ? ' hotspot-look' : '') +
+        (spot.kind === 'station' ? ' hotspot-station' + (spot.lead ? ' is-lead' : '') : '');
       btn.type = 'button';
       btn.style.left = b.left + '%';
       btn.style.top = b.top + '%';
       btn.style.width = b.width + '%';
       btn.style.height = b.height + '%';
-      btn.setAttribute('aria-label', spot.label);
+      btn.setAttribute('aria-label', plainText(spot.label));
       btn.addEventListener('click', e => { e.stopPropagation(); approach(spot); });
-      el.hotspots.appendChild(btn);
+      layer.appendChild(btn);
     });
     renderPips();
   }
 
-  /* Walking is never a toll: one click both walks you there and opens
-     the thing you clicked. */
+  function openStation(key) {
+    state.station = key;
+    el.closeArt.innerHTML = state.scene.stations[key].art;
+    el.closeup.hidden = false;
+    renderHotspots();
+    el.closeBack.focus({ preventScroll: true });
+  }
+
+  function closeStation() {
+    state.station = null;
+    el.closeup.hidden = true;
+    renderHotspots();
+  }
+
+  /* Inside a station there is nothing to walk to, so clicking an object
+     opens it straight away. */
   function approach(spot) {
     state.activeSpot = spot;
+    if (state.station) { trigger(spot); return; }
     walkTo(spot.standAt, () => {
       faceToward(spot);
       trigger(spot);
@@ -236,6 +291,7 @@
     if (spot.kind === 'evidence')  return openEvidence(spot);
     if (spot.kind === 'puzzle')    return openPuzzle(spot);
     if (spot.kind === 'exit')      return gotoScene(spot.to);
+    if (spot.kind === 'station')   return openStation(spot.to);
     if (spot.kind === 'look')      return spot.doc ? openEvidence(spot)
                                                      : showCaption(spot.caption);
   }
@@ -330,6 +386,8 @@
       el.objective.innerHTML = 'Every piece of evidence is in your notebook.';
       setTimeout(endAct, 500);
     } else if (spot && spot.hint) {
+      const next = state.scene.hotspots[state.chainIndex];
+      if (state.station && (!next || next.station !== state.station)) closeStation();
       el.objective.innerHTML = spot.hint;
       const notes = state.scene.editor || {};
       if (notes[state.chainIndex]) setTimeout(() => editorNote(notes[state.chainIndex]), 700);
@@ -477,6 +535,8 @@
     state.scene = act.scenes[key];
     state.chainIndex = 0;
     state.found = [];
+    state.station = null;
+    el.closeup.hidden = true;
     state.x = state.scene.startAt;
     state.facing = state.scene.facing || 1;
     state.walking = null;
@@ -551,6 +611,7 @@
   el.stage.addEventListener('click', e => {
     if (e.target.closest('.hotspot')) return;
     if (!el.scrim.hidden || !el.pScrim.hidden || !el.nScrim.hidden) return;
+    if (state.station) return;
     hideCaption();
     if (!el.dialogue.hidden) return;
     const r = el.stage.getBoundingClientRect();
@@ -561,15 +622,22 @@
     walkTo(target);
   });
 
+  el.closeBack.addEventListener('click', closeStation);
+
   el.btnHelp.addEventListener('click', () => {
     const spot = (state.scene.hotspots || []).filter(
       (h, i) => state.scene.chained ? i === state.chainIndex : !h.hidden)[0];
     if (!spot) return;
-    // pan to it so the student can see where it is, then flash it
-    state.x = spot.standAt;
-    placeActor();
+    if (!state.station) {
+      // pan to it so the student can see where it is, then flash it
+      const st = spot.station ? state.scene.stations[spot.station] : spot;
+      state.x = st.standAt;
+      placeActor();
+    }
     renderHotspots();
-    const node = el.hotspots.querySelector('.hotspot:not(.hotspot-look)');
+    const layer = state.station ? el.closeHotspots : el.hotspots;
+    const node = layer.querySelector('.hotspot-station.is-lead')
+              || layer.querySelector('.hotspot:not(.hotspot-look):not(.hotspot-station)');
     if (!node) return;
     node.classList.remove('is-pinged');
     void node.offsetWidth;
@@ -631,6 +699,10 @@
       el.dNext.click();
     }
     // arrow keys walk, for students who prefer the keyboard
+    if (state.station) {
+      if (e.key === 'Escape') closeStation();
+      return;
+    }
     if (e.key === 'ArrowLeft')  walkTo(state.x - 12);
     if (e.key === 'ArrowRight') walkTo(state.x + 12);
   });

@@ -103,6 +103,17 @@ const D = `
   <filter id="bl" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="16"/></filter>
 </defs>`;
 
+/* Paper-and-lamplight grain over a close-up, so a big flat fill does not
+   read as a screen. Carries its own filter, independent of D. */
+const GRAIN = `
+  <filter id="grainF">
+    <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.16"/></feComponentTransfer>
+  </filter>
+  <rect width="1600" height="900" filter="url(#grainF)" opacity="0.55"
+        style="mix-blend-mode:overlay" pointer-events="none"/>`;
+
 /* small helpers ---------------------------------------------------*/
 const svg = (w, body) =>
   `<svg viewBox="0 0 ${w} 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">${D}${body}</svg>`;
@@ -1227,4 +1238,148 @@ const burned = {
     </g>`)
 };
 
+
+/* ==================================================================
+   CLOSE-UP STATIONS
+
+   Leaning over the desk. Same objects as the room, drawn at a size a
+   student can read and a trackpad can hit. The two views share their
+   layout exactly, so Act Two lands as a comparison.
+==================================================================*/
+const DESK_1812 = `
+<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+${D}
+  <rect width="1600" height="900" fill="#0a2229"/>
+  <!-- the desk top, seen from above and a little to the side -->
+  <path d="M-40 150 L1640 150 L1700 760 L-100 760 Z" fill="url(#woodDesk)"/>
+  <path d="M-40 150 L1640 150 L1642 176 L-42 176 Z" fill="#a8703f" opacity="0.5"/>
+  <g opacity="0.16" stroke="#3a1f0c" stroke-width="3">
+    ${Array.from({length:22},(_,i)=>`<path d="M${-60+i*80} 176 q10 300 ${4+(i%3)*6} 584"/>`).join('')}
+  </g>
+  <!-- green baize writing surface -->
+  <path d="M170 236 L1430 236 L1470 664 L130 664 Z" fill="#1d4a3c"/>
+  <path d="M170 236 L1430 236 L1432 250 L168 250 Z" fill="#3c7a5e" opacity="0.55"/>
+  <path d="M170 236 L1430 236 L1470 664 L130 664 Z" fill="none" stroke="#8a6a34" stroke-width="5"/>
+
+  <!-- the Argand lamp, and the pool of light everything else sits in -->
+  <circle cx="352" cy="330" r="470" fill="url(#bloomCand)"/>
+  <g>
+    <ellipse cx="352" cy="404" rx="118" ry="34" fill="#8a6a2c"/>
+    <path d="M276 404 q20 -88 76 -100 q56 12 76 100 z" fill="#c98a3c"/>
+    <rect x="328" y="216" width="48" height="92" fill="#a8762f"/>
+    <path d="M272 216 l160 0 l-18 -54 l-124 0 z" fill="#c98a3c"/>
+    <path d="M286 40 q14 -116 66 -116 q52 0 66 116 q-14 48 -66 48 q-52 0 -66 -48 z"
+          fill="#ffeec4" opacity="0.3"/>
+    <rect x="286" y="40" width="132" height="122" fill="#ffeec4" opacity="0.2"/>
+    <path d="M352 84 q38 54 0 102 q-38 -48 0 -102 z" fill="#ffd88a"/>
+    <path d="M352 106 q20 34 0 62 q-20 -28 0 -62 z" fill="#fff6dd"/>
+  </g>
+
+  <!-- ITEM: the sailor's letter, open on the baize -->
+  <g transform="rotate(-6 800 420)">
+    <path d="M630 268 L972 268 L992 566 L612 566 Z" fill="#f6ecd6"/>
+    <path d="M630 268 L972 268 L974 284 L630 284 Z" fill="#fffaf0"/>
+    <path d="M612 424 L988 424" stroke="#c9bb9a" stroke-width="3" opacity="0.8"/>
+    <g fill="#9a8a68">
+      ${Array.from({length:11},(_,i)=>`<rect x="${656+((i%3)*10)}" y="${306+i*22}" width="${252-(i%4)*44}" height="6" rx="3"/>`).join('')}
+    </g>
+    <circle cx="930" cy="528" r="26" fill="#a8362c"/>
+    <circle cx="930" cy="528" r="14" fill="#7d211f" opacity="0.6"/>
+  </g>
+
+  <!-- inkstand, quill, sand shaker -->
+  <g>
+    <rect x="1140" y="330" width="230" height="52" rx="8" fill="#8a6a2c"/>
+    <ellipse cx="1196" cy="326" rx="42" ry="18" fill="#0a1418"/>
+    <ellipse cx="1196" cy="326" rx="26" ry="10" fill="#040a0c"/>
+    <ellipse cx="1300" cy="326" rx="34" ry="15" fill="#123840"/>
+    <path d="M1196 316 q88 -166 216 -244 q-58 134 -176 258 z" fill="#f4ead2"/>
+    <path d="M1216 300 q84 -108 178 -170" stroke="#c9b892" stroke-width="5" fill="none"/>
+  </g>
+
+  <!-- a stack of papers, freshly docketed -->
+  <g>
+    <rect x="1062" y="560" width="266" height="58" rx="3" fill="#e6dcc0" transform="rotate(3 1195 589)"/>
+    <rect x="1078" y="544" width="266" height="58" rx="3" fill="#f0e7ce" transform="rotate(-2 1211 573)"/>
+    <rect x="1112" y="562" width="140" height="7" fill="#8b8778" transform="rotate(-2 1182 565)"/>
+    <circle cx="1330" cy="556" r="22" fill="#2a3a42"/>
+  </g>
+
+  <!-- ITEM: the locked drawer, and its three dials, finally legible -->
+  <g>
+    <path d="M130 664 L1470 664 L1520 860 L80 860 Z" fill="#0e2f36"/>
+    <path d="M130 664 L1470 664 L1472 678 L128 678 Z" fill="#2a6a6c" opacity="0.7"/>
+    <path d="M196 694 L1404 694 L1440 838 L160 838 Z" fill="#0a262d"/>
+    <g>
+      ${[600, 790, 980].map(x=>`
+        <circle cx="${x}" cy="766" r="52" fill="#c98a3c"/>
+        <circle cx="${x}" cy="766" r="40" fill="#8a6a2c"/>
+        <circle cx="${x}" cy="766" r="30" fill="#0a1418"/>
+        <rect x="${x-5}" y="726" width="10" height="20" rx="4" fill="#e0b56a"/>`).join('')}
+      <path d="M1150 740 l0 52 l34 0 l0 -52 z" fill="#c98a3c"/>
+      <circle cx="1167" cy="740" r="17" fill="#c98a3c"/>
+      <circle cx="1167" cy="740" r="7" fill="#0a1418"/>
+    </g>
+  </g>
+  ${GRAIN}
+</svg>`;
+
+const DESK_1815 = `
+<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+${D}
+  <rect width="1600" height="900" fill="#1a1918"/>
+  <!-- the same desk, burned to a carcass -->
+  <path d="M-40 150 L1640 150 L1700 760 L-100 760 Z" fill="#232220"/>
+  <path d="M-40 150 L1640 150 L1642 176 L-42 176 Z" fill="#5c584e"/>
+  <g opacity="0.5" fill="#12100f">
+    ${Array.from({length:16},(_,i)=>`<path d="M${-40+i*108} 176 q${20+(i%4)*14} 280 ${-8+(i%3)*10} 584 l46 0 q${10+(i%3)*12} -300 ${6+(i%4)*10} -584 z"/>`).join('')}
+  </g>
+  <!-- daylight, from a ceiling that is not there -->
+  <path d="M420 0 L1180 0 L1420 760 L200 760 Z" fill="#dfe6e6" opacity="0.12"/>
+
+  <!-- a scaffold plank laid across it to make a working surface -->
+  <path d="M110 300 L1500 258 L1516 442 L120 486 Z" fill="#8a7448"/>
+  <path d="M110 300 L1500 258 L1502 280 L112 322 Z" fill="#b59a63"/>
+  <g opacity="0.3" stroke="#6b5836" stroke-width="4">
+    ${Array.from({length:12},(_,i)=>`<path d="M${150+i*116} 306 q8 90 2 172"/>`).join('')}
+  </g>
+
+  <!-- ITEM: the merchant's ledger, open on the plank -->
+  <g transform="rotate(-3 770 372)">
+    <path d="M520 276 L1024 258 L1038 466 L512 486 Z" fill="#e8e2ce"/>
+    <path d="M772 266 L780 476" stroke="#b5ae98" stroke-width="4"/>
+    <g fill="#8b8778">
+      ${Array.from({length:6},(_,i)=>`<rect x="556" y="${306+i*26}" width="180" height="5"/><rect x="812" y="${302+i*26}" width="180" height="5"/>`).join('')}
+    </g>
+    <rect x="556" y="288" width="120" height="8" fill="#5c574c"/>
+    <rect x="812" y="284" width="120" height="8" fill="#8e2b22"/>
+  </g>
+
+  <!-- the Argand lamp, run into a puddle where it stood -->
+  <g>
+    <ellipse cx="352" cy="520" rx="122" ry="36" fill="#5c5140"/>
+    <ellipse cx="352" cy="512" rx="96" ry="26" fill="#6b5f46"/>
+    <path d="M300 500 q22 -64 52 -68 q30 4 52 68 q-52 22 -104 0 z" fill="#7d6f52"/>
+    <path d="M326 452 q26 -30 52 -4 q-8 26 -52 4 z" fill="#4a4235"/>
+  </g>
+
+  <!-- ITEM: the drawer, forced and empty -->
+  <g>
+    <path d="M120 560 L1480 520 L1530 860 L80 860 Z" fill="#141312"/>
+    <path d="M120 560 L1480 520 L1482 542 L122 582 Z" fill="#5c584e"/>
+    <path d="M190 610 L1410 572 L1450 830 L160 830 Z" fill="#0b0a0a"/>
+    <!-- the dials are still there, seized and green -->
+    <g opacity="0.75">
+      ${[600, 790, 980].map(x=>`
+        <circle cx="${x}" cy="700" r="50" fill="#5c5140"/>
+        <circle cx="${x}" cy="700" r="38" fill="#3f382c"/>
+        <circle cx="${x}" cy="700" r="28" fill="#100f0e"/>`).join('')}
+    </g>
+    <path d="M1150 676 l0 50 l34 -2 l0 -50 z" fill="#5c5140"/>
+    <path d="M300 640 l180 -8 l4 26 l-184 8 z" fill="#2a2724"/>
+  </g>
+  ${GRAIN}
+</svg>`;
+
 const SCENES = { street, study, ruins, burned };
+const STATIONS = { desk1812: DESK_1812, desk1815: DESK_1815 };

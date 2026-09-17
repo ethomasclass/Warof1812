@@ -114,10 +114,43 @@ act1: {
       art: 'study',
       startAt: 94,
       facing: -1,
-      objective: 'The President&rsquo;s writing desk is at the far end, past the arch. Someone left a letter open on it.',
+      objective: 'The President&rsquo;s writing desk is at the far end, past the arch. Walk down and lean over it.',
       chained: true,
+
+      /* Two things on this desk are small enough that hunting for them at
+         room scale is a trackpad exercise, not a history one. Leaning
+         over the desk makes them readable and makes the locked drawer's
+         three dials visible, which is where the puzzle actually lives. */
+      stations: {
+        desk: {
+          label: 'The President&rsquo;s writing desk',
+          standAt: 37.5,
+          box: { left: 25.0, top: 55.0, width: 12.0, height: 22.0 },
+          art: STATIONS.desk1812,
+          objects: [
+            {
+              id: 'lamp-close', kind: 'look',
+              label: 'The Argand lamp',
+              box: { left: 16.0, top: 2.0, width: 12.0, height: 44.0 },
+              caption: "An Argand lamp. It burns six times brighter than a candle, which is why anyone can read at this desk after dark at all. Both Mr. Jefferson and Mr. Madison keep them."
+            },
+            {
+              id: 'ink-close', kind: 'look',
+              label: 'The inkstand and quill',
+              box: { left: 69.0, top: 30.0, width: 16.0, height: 16.0 },
+              caption: "Iron gall ink, a sand shaker for blotting, and a goose quill that wants cutting again. Everything in your notebook tonight was written with something like this."
+            },
+            {
+              id: 'stack-close', kind: 'look',
+              label: 'A stack of docketed papers',
+              box: { left: 65.0, top: 58.0, width: 19.0, height: 11.0 },
+              caption: "The clerk's pile. Every sheet is folded and endorsed on the outside &mdash; when it came, who sent it, where it goes. That is how a government remembers anything."
+            }
+          ]
+        }
+      },
       editor: {
-        open: "Four reasons, boy. Not three, not &ldquo;some.&rdquo; Four, and a piece of paper behind each one. Anything glowing warm is what you came for. Anything glowing cool is just me being nosy on your behalf &mdash; look at it or don't.",
+        open: "Four reasons, boy. Not three, not &ldquo;some.&rdquo; Four, and a piece of paper behind each one. Lean over anything you want a proper look at &mdash; you are a printer's apprentice, not a portrait painter, you may pick things up.",
         1: "Good. Now stop admiring your handwriting and find me the next one. And no, I will not accept &ldquo;the British were mean&rdquo; as a reason.",
         2: "Two down. There's a cartoon of a turtle pinned up over the desk &mdash; read its name backwards before you go. That one's free.",
         3: "Three. The fourth is in the drawer and the drawer is locked, because of course it is. You have the numbers. You have been carrying them around all night."
@@ -247,9 +280,10 @@ act1: {
         /* 1 ------------------------------------------------ IMPRESSMENT */
         {
           id: 'letter', kind: 'evidence',
-          label: "An open letter on the desk, sealed in red wax",
+          station: 'desk',
+          label: "An open letter, sealed in red wax",
           standAt: 36.5,
-          box: { left: 25.9, top: 54.5, width: 3.9, height: 7.0 },
+          box: { left: 37.0, top: 27.0, width: 26.0, height: 36.0 },
           tag: 'Reason 1 &middot; Impressment',
           heading: "A Sailor's Letter Home",
           doc: {
@@ -369,15 +403,16 @@ act1: {
             "For settlers in the west, that ended the argument. They stopped seeing a man defending his homeland and saw a British weapon instead. The way to make the frontier safe, they decided, was not to beat Tecumseh &mdash; it was to take Canada."
           ],
           record: "The frontier &mdash; Tecumseh, a Shawnee leader, argued that Native land belonged to all nations together so no one nation could sell it, and built an alliance to stop the sales. At the Battle of Tippecanoe (November 1811) American soldiers found new British muskets on the field. Americans blamed Britain for the fighting and wanted the British pushed out of North America.",
-          hint: "Back at the desk. The bottom drawer is locked, and whatever the President wanted kept shut is inside it."
+          hint: "Back to the desk. Lean over it again &mdash; the bottom drawer is locked, and there are three brass dials under the lock."
         },
 
         /* 4 ------------------------------------- THE DRAWER AND THE HAWKS */
         {
           id: 'drawer', kind: 'puzzle',
-          label: "A locked drawer in the desk",
+          station: 'desk',
+          label: "The locked drawer, and its three brass dials",
           standAt: 38.5,
-          box: { left: 29.2, top: 64.5, width: 5.6, height: 9.0 },
+          box: { left: 33.0, top: 76.0, width: 30.0, height: 18.0 },
 
           puzzle: {
             tag: 'The locked drawer',
@@ -541,10 +576,33 @@ act2: {
       art: 'burned',
       startAt: 94,
       facing: -1,
-      objective: 'Same rooms. Someone laid a plank across the burned desk to work on. There is a ledger open on it.',
+      objective: 'Same rooms. Someone laid a plank across the burned desk to work on. Walk down and lean over it.',
       chained: true,
+
+      stations: {
+        desk: {
+          label: 'The burned desk, with a plank laid across it',
+          standAt: 37.5,
+          box: { left: 25.0, top: 55.0, width: 12.0, height: 22.0 },
+          art: STATIONS.desk1815,
+          objects: [
+            {
+              id: 'lamp-close2', kind: 'look',
+              label: 'What is left of the Argand lamp',
+              box: { left: 14.0, top: 46.0, width: 16.0, height: 16.0 },
+              caption: "The brass ran like candle wax and set again in a puddle, in the same spot it stood in when you were last here. Whatever burned in this room burned far hotter than a house fire usually does."
+            },
+            {
+              id: 'dials-close2', kind: 'look',
+              label: 'The three brass dials, seized shut',
+              box: { left: 33.0, top: 71.0, width: 30.0, height: 14.0 },
+              caption: "The dials are still here, green and seized solid. Somebody did not bother with the combination the second time. The drawer was pulled apart with a bar."
+            }
+          ]
+        }
+      },
       editor: {
-        open: "Same job, harder question. Four again. And before you ask: no, &ldquo;we won&rdquo; is not an answer, because we did not, and neither did they. Find me what actually changed.",
+        open: "Same desk, same job, harder question. Four again. And before you ask: no, &ldquo;we won&rdquo; is not an answer, because we did not, and neither did they. Find me what actually changed.",
         1: "Right. Next one's nailed to the wall where you can't miss it, which tells you something about whoever nailed it there.",
         2: "Careful with that one. Everybody in this city is writing the same cheerful paragraph about New Orleans this month. You are going to write a different one.",
         3: "Last piece. It's by the fire, in bits, because the masons nearly used the peace treaty for kindling. I want that detail in the story."
@@ -662,9 +720,10 @@ act2: {
         /* 1 ----------------------------------------------- THE ECONOMY */
         {
           id: 'ledger', kind: 'evidence',
+          station: 'desk',
           label: 'A merchant ledger open on the plank',
           standAt: 36.5,
-          box: { left: 25.9, top: 55.0, width: 3.9, height: 6.5 },
+          box: { left: 31.0, top: 27.0, width: 34.0, height: 26.0 },
           tag: 'Impact 1 &middot; The economy learned to stand alone',
           heading: 'A Merchant&rsquo;s Ledger',
           doc: {

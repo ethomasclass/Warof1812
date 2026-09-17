@@ -251,6 +251,37 @@ still being argued with in red ink. They lie at an angle on a desk with the
 historical reading pinned beside them. Paper grain, fold creases, torn edges and
 age spots are all generated in CSS and SVG &mdash; there are no image files.
 
+### Close-up stations
+
+A letter that is the right size on a six-foot desk is a 130&times;50px click
+target on a Chromebook trackpad. Most of the fiddly work in this build &mdash;
+nudging boxes, untangling overlaps &mdash; came from that one fact.
+
+Rather than cheat the scale, the desk is a **place you lean over**. Clicking it
+opens a close-up view with its own artwork and its own hotspots. The same letter
+is then 369&times;274px. The room stays honest about how big things are, and the
+objects get big enough to hit.
+
+- Only the **small** things move to a station. The pinned broadside, the charts,
+  the globe and the hearth stay out in the room, so walking keeps its job: you
+  travel between places, and lean in when you get there.
+- A station is a **place, not a step**. It stays enterable after its item is
+  found, and glows dimly rather than with the warm pulse unless the next piece
+  of evidence is waiting on it.
+- Finding an item whose successor is elsewhere **steps you back out
+  automatically**, so a student never has to work out that they are stuck
+  inside a close-up.
+- Escape steps back. Walking and floor-clicks are suspended while leaning.
+
+The biggest single win is the drawer: at room scale it was a dark rectangle with
+a keyhole, and **the three brass dials the puzzle is about were not visible at
+all.** In the close-up they are the most obvious thing on the drawer front.
+
+Both acts share a station on the same desk, drawn to the same layout, so Act Two
+lands as a comparison: the ledger sits on a scaffold plank laid across the
+charred carcass, the Argand lamp is a puddle of brass in the spot it stood in,
+and the same three dials are green and seized.
+
 ### Hotspots glow, they do not draw boxes
 
 A rectangle with a border reads as user interface. A soft pool of light reads as
