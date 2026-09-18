@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidence Tracking Sheet</title>
+<meta name="description" content="Student tracking sheet for The War of 1812 Investigation, in the exact order the game presents each artifact.">
+<style>
+/* ------------------------------------------------------------------
+   Worksheet for "The War of 1812 Investigation".
+   Print-first: black ink on white paper, no background fills that eat
+   toner, page breaks between the two acts. Screen view is the same
+   document, just centred.
+   Order below is locked to the chain in assets/js/content.js. If a
+   hotspot moves in the game, move it here too.
+------------------------------------------------------------------- */
+:root{
+  --ink:#141210;
+  --soft:#5b5449;
+  --rule:#241f1a;
+  --hair:#b9b0a2;
+  --page:#ffffff;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+}
+*{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:var(--page);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:15px;
+  line-height:1.45;
+}
+.sheet{
+  max-width:44rem;
+  margin:0 auto;
+  padding-block:2.25rem 3rem;
+  padding-left:20px;
+  padding-right:20px;
+}
+
+/* ---------- masthead ---------- */
+.mast{ border-bottom:3px double var(--rule); padding-bottom:.7rem; }
+.mast h1{
+  font-size:1.6rem; line-height:1.15; margin:0 0 .2rem;
+  letter-spacing:.01em; text-wrap:balance;
+}
+.mast .sub{ margin:0; font-family:var(--sans); font-size:.78rem;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--soft); }
+
+.namebar{
+  display:flex; flex-wrap:wrap; gap:.55rem 1.4rem;
+  margin:.85rem 0 1.4rem;
+  font-family:var(--sans); font-size:.8rem; color:var(--soft);
+}
+.namebar span{ flex:1 1 9rem; border-bottom:1px solid var(--hair); padding-bottom:.35rem; }
+
+.howto{
+  font-size:.9rem; margin:0 0 1.5rem; padding-left:1rem;
+  border-left:2px solid var(--hair); color:var(--soft);
+}
+.howto strong{ color:var(--ink); }
+
+/* ---------- act headers ---------- */
+.act{ margin-top:2rem; }
+.act-head{
+  display:flex; align-items:baseline; gap:.75rem;
+  border-bottom:1.5px solid var(--rule); padding-bottom:.35rem; margin-bottom:.3rem;
+}
+.act-head h2{ font-size:1.15rem; margin:0; }
+.act-head .q{ font-family:var(--sans); font-size:.72rem; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--soft); margin-left:auto; }
+.act-ask{ font-size:.92rem; font-style:italic; color:var(--soft); margin:.35rem 0 1.25rem; }
+
+/* ---------- one artifact ---------- */
+.item{ margin:0 0 1.35rem; break-inside:avoid; page-break-inside:avoid; }
+.item-head{ display:flex; gap:.6rem; align-items:flex-start; }
+.tick{
+  flex:none; width:1.05rem; height:1.05rem; margin-top:.22rem;
+  border:1.5px solid var(--rule);
+}
+.num{ flex:none; font-family:var(--sans); font-weight:700; font-size:.95rem; min-width:1.1rem; }
+.titles h3{ margin:0; font-size:1rem; line-height:1.25; }
+.titles .tag{
+  display:block; font-family:var(--sans); font-size:.7rem; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--soft); margin-top:.15rem;
+}
+.where{ font-size:.82rem; color:var(--soft); margin:.3rem 0 .5rem 2.6rem; font-style:italic; }
+
+.field{ margin:.45rem 0 0 2.6rem; }
+.field-label{
+  font-family:var(--sans); font-size:.73rem; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--soft); margin:0 0 .15rem;
+}
+.lines{ margin:0; }
+.lines i{ display:block; border-bottom:1px solid var(--hair); height:1.45rem; }
+.field-inline{ display:flex; align-items:baseline; gap:.5rem; }
+.field-inline .field-label{ margin:0; flex:0 1 auto; }
+.field-inline .rule{ flex:1 1 4rem; border-bottom:1px solid var(--hair); height:1.2rem; }
+
+/* ---------- puzzle / bonus / callouts ---------- */
+.code{
+  margin:1rem 0 1.35rem; padding:.75rem .9rem;
+  border:1.5px solid var(--rule); break-inside:avoid;
+}
+.code p{ margin:0 0 .5rem; font-size:.88rem; }
+.code .riddle{ font-style:italic; color:var(--soft); }
+.dials{ display:flex; gap:.9rem; font-family:var(--sans); font-size:.7rem;
+  letter-spacing:.05em; text-transform:uppercase; color:var(--soft); }
+.dials div{ flex:1 1 0; }
+.dials b{ display:block; border:1.5px solid var(--rule); height:2.1rem; margin-top:.2rem; }
+
+.bonus{
+  margin:.25rem 0 1.25rem 0; padding:.6rem .8rem;
+  border:1px dashed var(--hair); break-inside:avoid;
+}
+.bonus > p:first-child{
+  margin:0 0 .45rem; font-family:var(--sans); font-size:.7rem;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--soft);
+}
+.bonus .item{ margin-bottom:.8rem; }
+.bonus .item:last-child{ margin-bottom:0; }
+
+/* ---------- closing ---------- */
+.close{ margin-top:2.25rem; border-top:3px double var(--rule); padding-top:1rem; }
+.close h2{ font-size:1.1rem; margin:0 0 .35rem; }
+.close .eq{ font-size:.95rem; margin:0 0 .9rem; }
+.close .field{ margin-left:0; }
+
+.finish{ margin-top:1.5rem; font-size:.85rem; color:var(--soft); }
+.finish ol{ margin:.35rem 0 0; padding-left:1.15rem; }
+.finish li{ margin-bottom:.2rem; }
+
+/* ---------- print ---------- */
+@media print{
+  @page{ margin:0.5in; }
+  body{ font-size:10.5pt; line-height:1.3; }
+  .sheet{ max-width:none; padding:0; }
+  .pagebreak{ break-before:page; page-break-before:always; }
+  .howto{ font-size:9pt; margin-bottom:.9rem; }
+  .namebar{ margin:.6rem 0 .9rem; }
+  .act{ margin-top:1rem; }
+  .act-ask{ margin-bottom:.8rem; }
+  .item{ margin-bottom:.6rem; }
+  .where{ margin:.2rem 0 .3rem 2.6rem; }
+  .field{ margin-top:.3rem; }
+  .lines i{ height:0.23in; }
+  .code{ margin:.7rem 0 .9rem; }
+  .bonus{ margin-bottom:.6rem; padding:.45rem .7rem; }
+  .close{ margin-top:1rem; }
+  .finish{ margin-top:1rem; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="mast">
+    <p class="sub">The War of 1812 Investigation &middot; Evidence Tracking Sheet</p>
+    <h1>Four Reasons, Four Results</h1>
+  </header>
+
+  <div class="namebar">
+    <span>Name</span><span>Period</span><span>Date</span>
+  </div>
+
+  <p class="howto">
+    Work through the game and fill this in <strong>as you go</strong>. The items below are in the
+    exact order the game gives them to you, so if you are on number 3 here, you are on
+    number 3 there. For each one write <strong>evidence</strong> (a quote or a specific detail
+    from the document itself) and then <strong>explanation</strong> (what that evidence proves).
+    Copying the caption is not evidence. A number, a name, or a line from the page is.
+  </p>
+
+  <!-- ================= ACT ONE ================= -->
+  <section class="act">
+    <div class="act-head">
+      <h2>Act One &middot; Why We Went to War</h2>
+      <span class="q">June 18, 1812</span>
+    </div>
+    <p class="act-ask">Congress declared war tonight. Your editor wants the four real reasons &mdash; not the headline.</p>
+
+    <!-- 1 -->
+    <article class="item">
+      <div class="item-head">
+        <span class="tick" aria-hidden="true"></span>
+        <span class="num">1</span>
+        <div class="titles">
+          <h3>A Sailor&rsquo;s Letter Home</h3>
+          <span class="tag">Reason 1 &middot; Impressment</span>
+        </div>
+      </div>
+      <p class="where">On the President&rsquo;s desk. Click the desk to lean over it.</p>
+      <div class="field">
+        <p class="field-label">Evidence &mdash; what happened to William Hale, in his own words</p>
+        <p class="lines"><i></i><i></i></p>
+      </div>
+      <div class="field">
+        <p class="field-label">Explanation &mdash; define <em>impressment</em>, and say why it made Americans furious</p>
+        <p class="lines"><i></i><i></i><i></i></p>
+      </div>
+      <div class="field field-inline">
+        <p class="field-label">How many men were taken off the deck that morning?</p>
+        <span class="rule"></span>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="item">
+      <div class="item-head">
+        <span class="tick" aria-hidden="true"></span>
+        <span class="num">2</span>
+        <div class="titles">
+          <h3>The Orders in Council</h3>
+          <span class="tag">Reason 2 &middot; Blocked trade &amp; the Embargo Act</span>
+        </div>
+      </div>
+      <p class="where">Printed notice pinned to the wall, back toward the window.</p>
+      <div class="field">
+        <p class="field-label">Evidence &mdash; what Britain ordered American ships to do</p>
+        <p class="lines"><i></i><i></i></p>
+      </div>
+      <div class="field">
+        <p class="field-label">Explanation &mdash; Jefferson answered with the <em>Embargo Act of 1807</em>. What was it supposed to do, and what did it actually do to Americans?</p>
+        <p class="lines"><i></i><i></i><i></i></p>
+      </div>
+      <div class="field field-inline">
+        <p class="field-label">Which numbered Article carries the rule about neutral ships?</p>
+        <span class="rule"></span>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="item">
+      <div class="item-head">
+        <span class="tick" aria-hidden="true"></span>
+        <span class="num">3</span>
+        <div class="titles">
+          <h3>Tecumseh Speaks at Vincennes</h3>
+          <span class="tag">Reason 3 &middot; The frontier</span>
+        </div>
+      </div>
+      <p class="where">Through the arch, on the long cabinet table.</p>
+      <div class="field">
+        <p class="field-label">Evidence &mdash; Tecumseh&rsquo;s argument about who owns the land</p>
+        <p class="lines"><i></i><i></i></p>
+      </div>
+      <div class="field">
+        <p class="field-label">Explanation &mdash; what was found on the field at the Battle of Tippecanoe, and why did that change how settlers saw the fighting?</p>
+        <p class="lines"><i></i><i></i><i></i></p>
+      </div>
+      <div class="field field-inline">
+        <p class="field-label">On what day of November 1811 was the battle fought?</p>
+        <span class="rule"></span>
+      </div>
+    </article>
+
+    <!-- puzzle -->
+    <div class="code">
+      <p><strong>The locked drawer.</strong> Three brass dials. All three numbers are already on this page.</p>
+      <p class="riddle">&ldquo;What the Navy took. What the Article numbered. What the day was at Tippecanoe.&rdquo;</p>
+      <div class="dials">
+        <div>The Navy took<b></b></div>
+        <div>The Article<b></b></div>
+        <div>The day<b></b></div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <article class="item">
+      <div class="item-head">
+        <span class="tick" aria-hidden="true"></span>
+        <span class="num">4</span>
+        <div class="titles">
+          <h3>A War Hawk&rsquo;s Speech Notes</h3>
+          <span class="tag">Reason 4 &middot; Land and pride</span>
+        </div>
+      </div>
+      <p class="where">Inside the drawer, once it opens.</p>
+      <div class="field">
+        <p class="field-label">Evidence &mdash; a line from Henry Clay&rsquo;s notes</p>
+        <p class="lines"><i></i><i></i></p>
+      </div>
+      <div class="field">
+        <p class="field-label">Explanation &mdash; who were the <em>War Hawks</em>, and why did they think taking Canada would fix reasons 1, 2 and 3 all at once?</p>
+        <p class="lines"><i></i><i></i><i></i></p>
+      </div>
+    </article>
+
+    <div class="bonus">
+      <p>Worth a detour &mdash; optional</p>
+      <article class="item">
+        <div class="item-head">
+          <span class="tick" aria-hidden="true"></span>
+          <div class="titles">
+            <h3>Ograbme, the Snapping Turtle</h3>
+            <span class="tag">A cartoon on the study wall &middot; the Embargo Act</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Spell the turtle&rsquo;s name backwards. Who is the turtle biting &mdash; and what is the cartoonist&rsquo;s point?</p>
+          <p class="lines"><i></i><i></i></p>
+        </div>
+      </article>
+    </div>
+
+    <div class="field" style="margin-left:0">
+      <p class="field-label">End of Act One &mdash; in one sentence, which of the four reasons do you think mattered most, and why?</p>
+      <p class="lines"><i></i><i></i></p>
+    </div>
+  </section>
+
+  <!-- ================= ACT TWO ================= -->
+  <section class="act pagebreak">
+    <div class="act-head">
+      <h2>Act Two &middot; What Actually Changed</h2>
+      <span class="q">Spring 1815</span>
+    </div>
+    <p class="act-ask">The treaty gave nobody anything and moved no borders. So what actually changed?</p>
+
+    <!-- 1 -->
+    <article class="item">
+      <div class="item-head">
+        <span class="tick" aria-hidden="true"></span>
+        <span class="num">5</span>
+        <div class="titles">
+          <h3>A Merchant&rsquo;s Ledger</h3>
+          <span class="tag">Impact 1 &middot; The economy learned to stand alone</span>
+        </div>
+      </div>
+      <p class="where">In the burned-out rooms. Lean over the desk again.</p>
+      <div class="field">
+        <p class="field-label">Evidence &mdash; a number or entry from the ledger</p>
+        <p class="lines"><i></i><i></i></p>
+      </div>
+      <div class="field">
+        <p class="field-label">Explanation &mdash; why did American factories grow <em>because</em> of the war?</p>
+        <p class="lines"><i></i><i></i><i></i></p>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="item">
+      <div class="item-head">
+        <span class="tick" aria-hidden="true"></span>
+        <span class="num">6</span>
+        <div class="titles">
+          <h3>The Making of Andrew Jackson</h3>
+          <span class="tag">Impact 2 &middot; How a country makes a hero</span>
+        </div>
+      </div>
+      <p class="where">A printer&rsquo;s proof, still smelling of ink.</p>
+      <div class="field">
+        <p class="field-label">Evidence &mdash; the two dates that matter: when the treaty was signed, and when the Battle of New Orleans was fought</p>
+        <p class="lines"><i></i><i></i></p>
+      </div>
+      <div class="field">
+        <p class="field-label">Explanation &mdash; the battle was fought after the war was legally over. So how did it turn Jackson into a national hero?</p>
+        <p class="lines"><i></i><i></i><i></i></p>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="item">
+      <div class="item-head">
+        <span class="tick" aria-hidden="true"></span>
+        <span class="num">7</span>
+        <div class="titles">
+          <h3>A Map of the Cessions</h3>
+          <span class="tag">Impact 3 &middot; Native nations lost the most</span>
+        </div>
+      </div>
+      <p class="where">A map, and a petition filed with it.</p>
+      <div class="field">
+        <p class="field-label">Evidence &mdash; how much land did the Treaty of Fort Jackson take, and from whom?</p>
+        <p class="lines"><i></i><i></i></p>
+      </div>
+      <div class="field">
+        <p class="field-label">Explanation &mdash; Article 9 of the peace treaty made a promise about Native land. What was it, and what happened to it?</p>
+        <p class="lines"><i></i><i></i><i></i></p>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="item">
+      <div class="item-head">
+        <span class="tick" aria-hidden="true"></span>
+        <span class="num">8</span>
+        <div class="titles">
+          <h3>The Treaty of Ghent</h3>
+          <span class="tag">Impact 4 &middot; The treaty that changed nothing</span>
+        </div>
+      </div>
+      <p class="where">The last piece. Printed by order of Congress.</p>
+      <div class="field">
+        <p class="field-label">Evidence &mdash; what the treaty says the two countries agreed to</p>
+        <p class="lines"><i></i><i></i></p>
+      </div>
+      <div class="field">
+        <p class="field-label">Explanation &mdash; impressment and blocked trade both stopped after 1815. If the treaty never mentioned either one, why did they stop?</p>
+        <p class="lines"><i></i><i></i><i></i></p>
+      </div>
+    </article>
+
+    <div class="bonus">
+      <p>Worth a detour &mdash; optional</p>
+      <article class="item">
+        <div class="item-head">
+          <span class="tick" aria-hidden="true"></span>
+          <div class="titles">
+            <h3>The Delegates from New England</h3>
+            <span class="tag">The Hartford Convention</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">What were the New England Federalists meeting about &mdash; and why did the timing destroy their party?</p>
+          <p class="lines"><i></i><i></i></p>
+        </div>
+      </article>
+      <article class="item">
+        <div class="item-head">
+          <span class="tick" aria-hidden="true"></span>
+          <div class="titles">
+            <h3>A Song Sheet</h3>
+            <span class="tag">Fort McHenry &middot; &ldquo;The Star-Spangled Banner&rdquo;</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">What did Key watch for twenty-five hours, and what was still there at dawn?</p>
+          <p class="lines"><i></i><i></i></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= CLOSING ================= -->
+  <section class="close">
+    <h2>Put It Together</h2>
+    <p class="eq">
+      What does a government owe its citizens when their rights are violated abroad &mdash;
+      and why can a war fought in the name of national unity still expose how divided
+      a nation really is?
+    </p>
+    <div class="field">
+      <p class="field-label">Answer in a paragraph. Use at least three artifacts from this sheet by name.</p>
+      <p class="lines"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></p>
+    </div>
+
+    <div class="finish">
+      <p><strong>Before you turn this in, check that you have:</strong></p>
+      <ol>
+        <li>All eight boxes ticked.</li>
+        <li>A real quote or number in every evidence line &mdash; not a summary.</li>
+        <li>The three drawer numbers written down.</li>
+        <li>Three artifacts named by name in your final paragraph.</li>
+      </ol>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

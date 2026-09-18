@@ -66,6 +66,12 @@ body{ overflow: hidden; overscroll-behavior: none; }
   font-family: var(--sans); font-size: 0.82rem;
   color: rgba(207,228,226,0.5); margin-top: 22px;
 }
+.title-foot + .title-foot{ margin-top: 8px; }
+.title-link{
+  color: var(--cold-hi); text-decoration: none;
+  border-bottom: 1px solid rgba(79,211,196,0.45);
+}
+.title-link:hover, .title-link:focus-visible{ border-bottom-color: var(--cold-hi); }
 
 /* ==================================================================
    BUTTONS
