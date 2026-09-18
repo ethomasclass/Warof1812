@@ -793,8 +793,8 @@ act2: {
           label: 'A newspaper extra nailed to the wall',
           standAt: 20.0,
           box: { left: 23.4, top: 30.5, width: 3.4, height: 18.0 },
-          tag: 'Impact 2 &middot; How a country makes a hero',
-          heading: 'The Making of Andrew Jackson',
+          tag: 'Impact 2 &middot; Intense nationalism',
+          heading: 'Glorious News',
           doc: {
             type: 'news',
             paper: 'The National Intelligencer',
@@ -823,15 +823,16 @@ act2: {
               '<em>A toast last night: &ldquo;The Hero of New Orleans &mdash; he has redeemed the year.&rdquo;</em>'
             ]
           },
-          found: "This is your own paper's printer's proof, pulled the hour the express rider got in. Two thousand copies were struck off and sold out by noon, and every other paper in the country reprinted it within the month. This sheet is not a record of what Jackson did. It is the thing that <em>made</em> him.",
+          found: "This is your own paper's printer's proof, pulled the hour the express rider got in. Two thousand copies were struck off and sold out by noon, and every other paper in the country reprinted it within the month. This sheet is not a record of what happened at New Orleans. It is the thing that told the country how to feel about it.",
           quote: "&ldquo;The Hero of New Orleans &mdash; he has redeemed the year.&rdquo;",
           body: [
             "Look at what the country had to show for three years of war. Three failed invasions of Canada. A navy of sixteen ships against hundreds. The Capitol and the President's House burned. Then, on January 8, 1815, Andrew Jackson's army broke a British attack outside New Orleans in half an hour, losing about 70 men against roughly 2,000.",
             "Two things turned that into something bigger. First, <strong>the news arrived in the wrong order.</strong> Word of the victory reached the east coast in the first week of February. Word that the war had already ended &mdash; the treaty was signed in Europe two weeks <em>before</em> the battle &mdash; did not arrive until about ten days later. So for ten days Americans believed they had won the war by winning this battle.",
-            "Second, <strong>newspapers like this one did the rest.</strong> They printed it, reprinted it, and put a name on it. Not the army: a man. Farmers and shopkeepers had beaten the troops who defeated Napoleon, and Andrew Jackson had led them.",
-            "It was not true that the battle won the war. It did not change one word of the treaty. But people remember how a story ends, and this is how this one ended. Jackson became <strong>&ldquo;Old Hickory,&rdquo;</strong> the most famous man in America &mdash; and thirteen years later, President."
+            "Second, <strong>newspapers like this one did the rest.</strong> They printed it, reprinted it, and told people what it meant. Farmers and shopkeepers had beaten the troops who defeated Napoleon. Read the extra again: <em>standing together behind one bank of earth.</em> That is not a battle report. That is a country being told who it is.",
+            "What came next is the biggest change in this room. <strong>Nationalism</strong> means intense pride in your own country and loyalty to it above anything else. After New Orleans, and after the flag at Fort McHenry that everybody was already singing about, that pride went off like a firework. People started calling the whole mess a <strong>second war of independence</strong> &mdash; proof that the United States could stand up to the most powerful empire on earth and survive.",
+            "It did not have to be true to work. The invasions failed, the capital burned, and the treaty gave America nothing. But people remember how a story <em>ends</em>, and this is how this one ended &mdash; and the results were real even if the story was not. The Federalist Party had spent the war complaining about it, and now looked like a pack of traitors; within a few years it was gone, leaving one party and a stretch of politics so quiet that people named it the <strong>Era of Good Feelings</strong>. Americans started thinking of themselves as <em>Americans</em> first and Virginians or New Yorkers second. And the face of all that pride was <strong>&ldquo;Old Hickory&rdquo;</strong> &mdash; Andrew Jackson, the most famous man in the country, and thirteen years later, President."
           ],
-          record: "Making a hero &mdash; Jackson's victory at New Orleans (January 8, 1815) came two weeks AFTER the peace treaty was signed, but news of the win reached America before news of the peace. Newspapers turned it into proof that America had won the war, and turned Jackson into a national hero. He was elected President in 1828.",
+          record: "Intense nationalism &mdash; nationalism means intense pride in your own country. Jackson's victory at New Orleans (January 8, 1815) came two weeks AFTER the peace treaty was signed, but the news reached America first. Newspapers turned it into proof that America had beaten the British Empire, and Americans began calling the war a second war of independence. The Federalist Party collapsed, the Era of Good Feelings followed, people started thinking of themselves as Americans first, and Jackson became a national hero who was elected President in 1828.",
           hint: "Through the arch, on what is left of the cabinet table, a map has been left unrolled."
         },
 
@@ -981,7 +982,7 @@ act2: {
     heading: 'So What Actually Changed?',
     text:
       "<p>Not the map. Not the treaty. Not one of the four reasons you wrote down on the night the war began.</p>" +
-      "<p>But the country fought the most powerful navy on earth and was still standing at the end. It stopped buying what it could make itself. It got a hero out of New Orleans and a song out of Fort McHenry. The party that opposed the war was finished. And Native nations east of the Mississippi lost the last ally who had any reason to help them.</p>" +
+      "<p>But the country fought the most powerful navy on earth and was still standing at the end. It stopped buying what it could make itself. It got a hero out of New Orleans and a song out of Fort McHenry, and it came out of the whole business prouder of itself than it went in. The party that opposed the war was finished. And Native nations east of the Mississippi lost the last ally who had any reason to help them.</p>" +
       "<p>The walls of this house held. That is about as good a summary of the whole war as you are going to get.</p>" +
       "<p class=\"card-ask\">Now write it.</p>",
     button: 'Review all my evidence'

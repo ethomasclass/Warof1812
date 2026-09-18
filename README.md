@@ -351,7 +351,7 @@ voice.
 The muskets survive in the docket, which is also where the puzzle's third number
 now lives.
 
-### How a country makes a hero
+### Intense nationalism
 
 Impact 2 was a casualty report. The casualties were never the point &mdash;
 the point is that a battle fought after the war ended turned a general into a
@@ -363,6 +363,16 @@ The analysis names the two things that did the work: the news arrived in the
 **wrong order** (victory first, peace ten days later, so for ten days Americans
 believed the battle had won the war), and **newspapers put a name on it** &mdash;
 not the army, a man.
+
+The main idea on top of that mechanism is **intense nationalism**, named and
+defined in the text: pride in your own country and loyalty to it above anything
+else. The station carries the chain from New Orleans and Fort McHenry to the
+phrase *second war of independence*, the collapse of the Federalist Party, the
+**Era of Good Feelings**, and Americans beginning to describe themselves as
+Americans first. Jackson is the face of that feeling rather than the subject of
+the station &mdash; which is also why the heading is now the extra's own
+headline, *Glorious News*, and the station tag reads
+**Impact 2 &middot; Intense nationalism**.
 
 ### The cession map
 
